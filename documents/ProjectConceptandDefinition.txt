@@ -48,4 +48,5 @@ Admin (Separate account):
 
 
 Goals:
-Have a fully navigable frontend.  Reduce friction of grading.  Easy to create courses, assignments, add professors, graders, and students.
+Have a fully navigable frontend.  Reduce friction of grading.  Easy to create courses, assignments, add professors,
+graders, and students.
