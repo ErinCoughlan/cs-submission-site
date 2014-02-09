@@ -1,0 +1,43 @@
+td, th {
+	padding: 10px;
+	text-align: left;
+	width: 400px;
+}
+
+td {
+	border-bottom: 1px solid #000;
+	border-right: 1px solid #000;
+}
+
+th {
+	border: 3px solid #000;
+	border-left: 0px;
+}
+
+td:first-child {
+	border-left: 1px solid #000;
+	width: 200px;
+}
+
+th:first-child {
+	border-left: 3px solid #000;
+	width: 200px;
+}
+
+.fixedTable {
+	height: 300px;
+	table-layout: fixed;
+	width: 100%;
+}
+
+.fixedTable thead tr {
+	display: block;
+	position: relative;
+}
+
+.fixedTable tbody {
+	display: block;
+	overflow: auto;
+	width: 100%;
+	height: 300px;
+}

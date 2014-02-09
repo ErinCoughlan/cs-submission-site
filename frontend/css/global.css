@@ -1,0 +1,45 @@
+body {
+	background: #283B61;
+	color: #dbc9a7;
+	direction: ltr;
+	line-height: 1.28;
+	margin: 10px;
+	text-align: left;
+}
+
+body, button, input, label, select, td, textarea {
+	font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
+	font-size: 11px;
+}
+
+a {
+	color: #3b5998;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+img {
+	border: 0;
+}
+
+.fixed_elem {
+	position: fixed !important;
+}
+
+.rfloat {
+	float: right;
+}
+
+.lfloat {
+	float: left;
+}
+
+.center {
+	margin: 0 auto;
+}
