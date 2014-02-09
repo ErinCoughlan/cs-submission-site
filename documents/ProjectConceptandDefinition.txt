@@ -1,0 +1,57 @@
+﻿Project Concept and Definition
+
+
+General Concept:
+Allow students to submit homework assignments and allow graders/professors to grade these assignments.
+
+
+Users / Needs of Users:
+Overall:
+* Change password
+* Login / Logout
+* Select course
+* Add email for password reset (no need for professor or admin interaction)
+
+
+Student:
+* Submit a particular file to a given assignment
+* View grades/comments on assignments
+* Submit support files for an assignment
+* Jointly submit a file with a “partner”
+* (Help from vs. jointly submitting with partner?)
+
+
+Grader:
+* Submit a grade for a particular file and assignment and student
+* View all submissions for an assignment (files separate)
+* View all submissions for a student
+* View a submission and inline comment code
+* Rerun autograder
+* Lock and unlock specific submissions
+* Go to next submission by student
+* Go to next submission by file
+
+
+Professor:
+* Add graders to their class (create account if not exist)
+* Add students to their class (create account if not exist)
+* Add assignments and files for class
+* All of the above grader requirements
+* Reset passwords for every student and grader in class
+* Auto apply Euros to late assignments
+* Specify Euro rules for class
+* Override Euro assignment for a given student and assignment
+* View all grades for the class (including subgroups of assignments)
+
+
+Admin (Separate account):
+* Add courses
+* Add professors to a given course
+* Reset all passwords
+* All of above professor and grader requirements for all classes
+
+
+
+
+Goals:
+Have a fully navigable frontend.  Reduce friction of grading.  Easy to create courses, assignments, add professors, graders, and students.
