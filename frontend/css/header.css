@@ -1,0 +1,35 @@
+#header {
+	background-position: 0 0;
+	border: 0;
+	height: 96px;
+	min-width: 981px;
+	position: relative;
+	z-index: 300;
+	width: 100%;
+}
+
+#pageHead {
+	margin: 0 auto;
+	width: 981px;
+}
+
+.alien {
+	height: 90px;
+	margin: 0px 20px;
+	vertical-align: bottom;
+	z-index: -1;
+}
+
+#loginTitle {
+	background: #283B61;
+	border: 2px solid #7d8ca9;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+	display: inline-block;
+	font-size: 42px;
+	font-weight: bold;
+	height: 90px;
+	line-height: 90px;
+	padding: 5px;
+	margin: 3px;
+}
