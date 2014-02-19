@@ -4,17 +4,22 @@
 }
 
 #contentArea {
+	height: 80%; /* Works for most sizes; probably should determine actual height in JS */
 	min-width: 981px;
 }
 
 #leftCol {
 	background-color: green;
 	float: left;
+	height: 100%;
+	overflow: scroll;
 	width: 300px;
 }
 
 #rightCol {
 	background-color: red;
 	border-left: 3px solid white;
+	height: 100%;
 	margin-left: 300px;
+	overflow: scroll;
 }

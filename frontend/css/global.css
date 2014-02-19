@@ -4,6 +4,7 @@ body {
 	direction: ltr;
 	line-height: 1.28;
 	margin: 10px;
+	overflow: hidden;
 	text-align: left;
 }
 
