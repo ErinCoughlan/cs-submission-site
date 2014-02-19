@@ -4,9 +4,8 @@ td, th {
 	width: 400px;
 }
 
-td {
-	border-bottom: 1px solid #000;
-	border-right: 1px solid #000;
+table {
+	border: 1px solid #000;
 }
 
 th {
@@ -15,13 +14,16 @@ th {
 }
 
 td:first-child {
-	border-left: 1px solid #000;
 	width: 200px;
 }
 
 th:first-child {
 	border-left: 3px solid #000;
 	width: 200px;
+}
+
+tbody tr:nth-child(odd) {
+	background-color: gray;
 }
 
 .fixedTable {
@@ -37,7 +39,30 @@ th:first-child {
 
 .fixedTable tbody {
 	display: block;
+	height: 300px;
 	overflow: auto;
 	width: 100%;
-	height: 300px;
+}
+
+tbody.scrollcontent::-webkit-scrollbar {
+	-webkit-appearance: none;
+}
+
+tbody.scrollcontent::-webkit-scrollbar:vertical {
+	width: 11px;
+}
+
+tbody.scrollcontent::-webkit-scrollbar:horizontal {
+	height: 11px;
+}
+
+tbody.scrollcontent::-webkit-scrollbar-thumb {
+	background-color: rgba(0,0,0,.5);
+	border: 1px solid parent(background-color);
+	border-radius: 8px;
+}
+
+tbody.scrollcontent::-webkit-scrollbar-track {
+	background-color: parent(background-color);
+	border-radius: 8px;
 }
