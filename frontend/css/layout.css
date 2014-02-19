@@ -1,11 +1,20 @@
 #header {
 	background-color: blue;
+	border-bottom: 3px solid white;
 }
 
-#rightCol {
-	background-color: red;
+#contentArea {
+	min-width: 981px;
 }
 
 #leftCol {
 	background-color: green;
+	float: left;
+	width: 300px;
+}
+
+#rightCol {
+	background-color: red;
+	border-left: 3px solid white;
+	margin-left: 300px;
 }
