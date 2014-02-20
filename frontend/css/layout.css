@@ -1,6 +1,6 @@
 #header {
 	background-color: blue;
-	border-bottom: 3px solid white;
+
 }
 
 #contentArea {
@@ -17,7 +17,7 @@
 
 #rightCol {
 	background-color: red;
-	border-left: 3px solid white;
+
 	height: 100%;
 	margin-left: 300px;
 	overflow: scroll;
