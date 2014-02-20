@@ -1,10 +1,10 @@
 #header {
+	height: 10%;
 	background-color: blue;
-
 }
 
 #contentArea {
-	height: 80%; /* Works for most sizes; probably should determine actual height in JS */
+	height: 90%;
 	min-width: 981px;
 }
 
@@ -17,7 +17,6 @@
 
 #rightCol {
 	background-color: red;
-
 	height: 100%;
 	margin-left: 300px;
 	overflow: scroll;
