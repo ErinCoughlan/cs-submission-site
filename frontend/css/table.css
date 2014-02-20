@@ -43,26 +43,3 @@ tbody tr:nth-child(odd) {
 	overflow: auto;
 	width: 100%;
 }
-
-tbody.scrollcontent::-webkit-scrollbar {
-	-webkit-appearance: none;
-}
-
-tbody.scrollcontent::-webkit-scrollbar:vertical {
-	width: 11px;
-}
-
-tbody.scrollcontent::-webkit-scrollbar:horizontal {
-	height: 11px;
-}
-
-tbody.scrollcontent::-webkit-scrollbar-thumb {
-	background-color: rgba(0,0,0,.5);
-	border: 1px solid parent(background-color);
-	border-radius: 8px;
-}
-
-tbody.scrollcontent::-webkit-scrollbar-track {
-	background-color: parent(background-color);
-	border-radius: 8px;
-}
