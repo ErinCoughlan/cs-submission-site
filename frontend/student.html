@@ -1,5 +1,5 @@
 <!-- Login page - Spring 2014 - Erin Coughlan & Philip Davis & Luke Sedney -->
-<html lang="en" id="submission-student">
+<html lang="en" id="submission-student" ng-app="submissionApp">
 <head>
 	<title> CS Submissions </title>
 	<link rel="stylesheet" type="text/css" href="css/global.css">
@@ -7,57 +7,24 @@
 	<link rel="stylesheet" type="text/css" href="css/header.css">
 	<link rel="stylesheet" type="text/css" href="css/left_column.css">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
+	<script src="js/controllers.js"></script>
 </head>
-<body>
+<body ng-controller="StudentCtrl">
 	<div id="header">
 		<div id="title">HMC CS
 			<img class="alien" src="img/alien.png">
 		</div>
 	</div>
 	<div id="contentArea">
-		<ul id="leftCol">
-            <li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>stuff in the left column</li>
-			<li>LAST stuff in the left column</li>
-		</ul>
+		<div id="leftCol">
+			<ul>
+				<li ng-repeat="assignment in assignments">
+					{{assignment.name}}
+				</li>
+				<li>static item in the left column</li>
+			</ul>
+		</div>
 		<div id="rightCol">
 			<p>stuff in the right column</p>
 			<p>stuff in the right column</p>
