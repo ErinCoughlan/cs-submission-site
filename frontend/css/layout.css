@@ -1,6 +1,6 @@
 #header {
-	height: 10%;
 	border-bottom: 3px solid #7d8ca9;
+	height: 10%;
 }
 
 #contentArea {
@@ -12,12 +12,15 @@
 	float: left;
 	height: 100%;
 	overflow: scroll;
+	padding: 15px 0px 0px 0px;
 	width: 300px;
 }
 
 #rightCol {
+	border-left: 2px solid #7d8ca9;
 	height: 100%;
 	margin-left: 300px;
 	overflow: scroll;
 	padding: 15px;
+	padding-bottom: 0px;
 }

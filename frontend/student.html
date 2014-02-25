@@ -24,26 +24,29 @@
       </ul>
     </div>
   </div>
- 
- <div id="contentArea">
-
-    <div id="leftCol">
-      <ul>
-	<li class="static">Assignments</li>
-	<li ng-repeat="assignment in assignments">
-	  {{assignment.name}}
-	</li>
-      </ul>
-    </div>
-
-    <div id="rightCol">
-      <h1>Due: {{assignment0.due}}</h1>
-      <ul>
-	<li ng-repeat="file in assignment0.files">
-	  {{file.name}}
-	</li>
-      </ul>
-    </div>
-  </div>
+	<div id="contentArea">
+		<div id="leftCol">
+			<ul>
+				<li class="static">Assignments</li>
+				<li ng-repeat="assignment in assignments">
+					{{assignment.name}}
+				</li>
+			</ul>
+		</div>
+		<div id="rightCol">
+			<div class="colHeader">Due: {{assignment0.due}}</div>
+			<table cellspacing="0" cellpadding="0">
+				<tr ng-repeat="file in assignment0.files">
+					<td>{{file.name}}</td>
+					<td><input type="file"></td>
+					<td>
+						<textarea rows="4" cols="50" placeholder="Comments or partners. (Enter joint submissions using @username)"></textarea>
+					</td>
+				</tr>
+			</table>
+			<input type="submit" value="Submit">
+		</div>
+	</div>
+>>>>>>> b439f39edd06e72d56b7b737ba646902236717ac
 </body>
 </html>
