@@ -6,6 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="css/layout.css">
 	<link rel="stylesheet" type="text/css" href="css/header.css">
 	<link rel="stylesheet" type="text/css" href="css/left_column.css">
+	<link rel="stylesheet" type="text/css" href="css/right_column.css">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
 	<script src="js/controllers.js"></script>
@@ -26,12 +27,16 @@
 			</ul>
 		</div>
 		<div id="rightCol">
-			<h1>Due: {{assignment0.due}}</h1>
-			<ul>
-				<li ng-repeat="file in assignment0.files">
-					{{file.name}}
-				</li>
-			</ul>
+			<div class="colHeader">Due: {{assignment0.due}}</div>
+			<table cellspacing="0" cellpadding="0">
+				<tr ng-repeat="file in assignment0.files">
+					<td>{{file.name}}</td>
+					<td><input type="file"></td>
+					<td>
+						<textarea rows="4" cols="50">Comments or partners. (Enter joint submissions using @username)</textarea>
+					</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 </body>

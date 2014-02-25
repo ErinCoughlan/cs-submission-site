@@ -1,0 +1,36 @@
+#rightCol .colHeader {
+	font-size: 2em;
+}
+
+tr {
+	font-size: 1.5em;
+    padding-top: .1em;
+    padding-left: .2em;
+}
+
+tr:nth-child(even) {
+    background: rgb(40, 77, 97);
+}
+
+td, th {
+	border-left: 2px solid #7d8ca9;
+	font-size: 20px;
+	padding: 10px;
+	text-align: left;
+	width: 400px;
+}
+
+table {
+	border: 2px solid #7d8ca9;
+	margin-top: 42px;
+}
+
+th {
+	border: 3px solid #7d8ca9;
+	border-left: 0px;
+}
+
+td:first-child, th:first-child {
+	border-left: 0px;
+	width: 200px;
+}
