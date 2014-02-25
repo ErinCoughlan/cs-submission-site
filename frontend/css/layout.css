@@ -12,6 +12,7 @@
 	float: left;
 	height: 100%;
 	overflow: scroll;
+	padding: 15px 0px 0px 0px;
 	width: 300px;
 }
 
@@ -21,4 +22,5 @@
 	margin-left: 300px;
 	overflow: scroll;
 	padding: 15px;
+	padding-bottom: 0px;
 }
