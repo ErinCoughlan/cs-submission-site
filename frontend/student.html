@@ -1,14 +1,14 @@
 <!-- Student page - Spring 2014 - Erin Coughlan & Philip Davis & Luke Sedney -->
 <html lang="en" id="submission-student" ng-app="submissionApp">
 <head>
-	<title> CS Submissions </title>
-	<link rel="stylesheet" type="text/css" href="css/global.css">
-	<link rel="stylesheet" type="text/css" href="css/layout.css">
-	<link rel="stylesheet" type="text/css" href="css/header.css">
-	<link rel="stylesheet" type="text/css" href="css/left_column.css">
+    <title> CS Submissions </title>
+    <link rel="stylesheet" type="text/css" href="css/global.css">
+    <link rel="stylesheet" type="text/css" href="css/layout.css">
+    <link rel="stylesheet" type="text/css" href="css/header.css">
+    <link rel="stylesheet" type="text/css" href="css/left_column.css">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
-	<script src="js/controllers.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
+    <script src="js/controllers.js"></script>
 </head>
 <body ng-controller="StudentCtrl">
   <div id="header">
@@ -24,29 +24,28 @@
       </ul>
     </div>
   </div>
-	<div id="contentArea">
-		<div id="leftCol">
-			<ul>
-				<li class="static">Assignments</li>
-				<li ng-repeat="assignment in assignments">
-					{{assignment.name}}
-				</li>
-			</ul>
-		</div>
-		<div id="rightCol">
-			<div class="colHeader">Due: {{assignment0.due}}</div>
-			<table cellspacing="0" cellpadding="0">
-				<tr ng-repeat="file in assignment0.files">
-					<td>{{file.name}}</td>
-					<td><input type="file"></td>
-					<td>
-						<textarea rows="4" cols="50" placeholder="Comments or partners. (Enter joint submissions using @username)"></textarea>
-					</td>
-				</tr>
-			</table>
-			<input type="submit" value="Submit">
-		</div>
-	</div>
->>>>>>> b439f39edd06e72d56b7b737ba646902236717ac
+    <div id="contentArea">
+        <div id="leftCol">
+            <ul>
+                <li class="static">Assignments</li>
+                <li ng-repeat="assignment in assignments">
+                    {{assignment.name}}
+                </li>
+            </ul>
+        </div>
+        <div id="rightCol">
+            <div class="colHeader">Due: {{assignment0.due}}</div>
+            <table cellspacing="0" cellpadding="0">
+                <tr ng-repeat="file in assignment0.files">
+                    <td>{{file.name}}</td>
+                    <td><input type="file"></td>
+                    <td>
+                        <textarea rows="4" cols="50" placeholder="Comments or partners. (Enter joint submissions using @username)"></textarea>
+                    </td>
+                </tr>
+            </table>
+            <input type="submit" value="Submit">
+        </div>
+    </div>
 </body>
 </html>
