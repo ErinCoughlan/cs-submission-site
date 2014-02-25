@@ -19,14 +19,19 @@
 	<div id="contentArea">
 		<div id="leftCol">
 			<ul>
+				<li>Assignments</li>
 				<li ng-repeat="assignment in assignments">
 					{{assignment.name}}
 				</li>
-				<li>static item in the left column</li>
 			</ul>
 		</div>
 		<div id="rightCol">
-			<h1>Due: 2/25/14 11:59pm</h1>
+			<h1>Due: {{assignment0.due}}</h1>
+			<ul>
+				<li ng-repeat="file in assignment0.files">
+					{{file.name}}
+				</li>
+			</ul>
 		</div>
 	</div>
 </body>

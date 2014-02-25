@@ -21,6 +21,17 @@
             $scope.assignments = data;
         });
 
+
+        // get the list of files for the first assignment from jsonstub
+        $http.get('http://jsonstub.com/spring2014/cs130/assignment0', {
+            headers: {
+                'JsonStub-User-Key': '2d70b72a-502e-4fbd-9a8f-c9246b9d0fff',
+                'JsonStub-Project-Key': 'cc74f36f-3235-4d8b-bfdc-4a94cdedad45'
+            }
+        }).success(function (data) {
+            $scope.assignment0 = data;
+        });
+
     });
     
 }());
