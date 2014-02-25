@@ -1,11 +1,17 @@
 
 #leftCol li {
+	font-size: 1.5em;
     padding-top: .1em;
     padding-left: .2em;
-    font-size: 1.5em;
 }
 
 #leftCol li:nth-child(even) {
     background: rgb(40, 77, 97);
+}
+
+#leftCol .static {
+	border-bottom: 2px solid #7d8ca9;
+	font-size: 2em;
+	text-align: center;
 }
 
