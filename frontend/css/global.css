@@ -49,7 +49,6 @@ img {
   clear: both;
 }
 
-/*
 ::-webkit-scrollbar {
 	-webkit-appearance: none;
 }
@@ -58,22 +57,23 @@ img {
 	width:11px;
 }
 
+/*
 ::-webkit-scrollbar:horizontal {
 	height: 11px;
 }
+*/
 
-::-webkit-scrollbar-corner{
+::-webkit-scrollbar-corner {
 	background-color: rgba(0,0,0,.1);
 }
 
-::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb:vertical {
 	background-color: rgba(0,0,0,.4);
 	border: 1px solid parent(background-color);
 	border-radius: 8px;
 }
 
-::-webkit-scrollbar-track {
+::-webkit-scrollbar-track:vertical {
 	background-color: rgba(0,0,0,.1);
 	border-radius: 8px;
 }
-/*
