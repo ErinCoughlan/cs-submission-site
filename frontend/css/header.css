@@ -1,70 +1,34 @@
 #header {
-	background-position: 0 0;
+  font-size: 42px;
 	min-width: 981px;
-	position: relative;
+  width: 100%;
 	z-index: 300;
-	width: 100%;
 }
 
 .alien {
-	height: 95%;
+  display: inline-block;
+	height: 80%;
 	margin: 0px 20px;
-	vertical-align: bottom;
 	z-index: -1;
 }
 
-#loginTitle {
-	background: #283B61;
-	border: 2px solid #7d8ca9;
-		-moz-border-radius: 10px;
-		-webkit-border-radius: 10px;
-	display: inline-block;
-	font-size: 42px;
-	font-weight: bold;
-	height: 90px;
-	line-height: 90px;
-	padding: 5px;
-	margin: 3px;
-}
-
-#title {
-       background: #283B61;
-       border: 2px solid #7d8ca9;
-               -moz-border-radius:10px;
-               -webkit-border-radius: 10px;
-       display: inline-block;
-       font-size: 42px;
-       font-weight: bold;
-       height: 50px;
-       line-height: 50px;
-       padding: 5px;
-       margin: 3px;
+#title, #navbar li {
+  background: #283B61;
+  border: 2px solid #7d8ca9;
+         -moz-border-radius:10px;
+         -webkit-border-radius: 10px;
+  display: inline-block;
+  height: 75%;
+  font-weight: bold;
+  margin: 5px 3px;
+  padding: 0 5px;
 }
 
 #navbar { 
-        display:inline-block;
-        height: 50px;
-        line-height: 50px;
-        z-index: -1;
-}
-
-#navbar li {
-    display:inline-block;     
-    border: 2px solid #7d8ca9;
-            -moz-border-radius:10px;
-            -webkit-border-radius: 10px;
-    font-size: 20px;
-    font-weight: bold;
-    height: 50px;
-    line-height: 50px;
-    padding: 5px;
-    margin:3px;
+  display: inline-block;
+  z-index: -1;
 }
 
 #navbar li:hover {
-        background: #7d8ca9;
-}
-
-#navbar h1 {
-        display:inline;
+  background: #7d8ca9;
 }
