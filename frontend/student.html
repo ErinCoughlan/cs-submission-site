@@ -27,13 +27,14 @@
   </div>
     <div id="contentArea">
         <div id="leftCol">
-        		<div class="colHeader">Assignments</div>
-            <ul>
-                <li ng-repeat="assignment in assignments">
-                    {{assignment.name}}
-                </li>
-            </ul>
-        </div>
+            <div class="colHeader">Assignments</div>
+                <ul>
+                    <li ng-repeat="assignment in assignments"
+                         ng-class="{active: assignment.name=='Homework 3'}">
+                        {{assignment.name}}
+                    </li>
+                </ul>
+            </div>
         <div id="rightCol">
             <div class="colHeader">Due: {{assignment0.due}}</div>
             <form id="form-submit">
