@@ -36,16 +36,18 @@
         </div>
         <div id="rightCol">
             <div class="colHeader">Due: {{assignment0.due}}</div>
-            <table cellspacing="0" cellpadding="0">
-                <tr ng-repeat="file in assignment0.files">
-                    <td>{{file.name}}</td>
-                    <td><input type="file"></td>
-                    <td>
-                        <textarea rows="4" cols="50" placeholder="Comments or partners. (Enter joint submissions using @username)"></textarea>
-                    </td>
-                </tr>
-            </table>
-            <input type="submit" value="Submit">
+            <form id="form-submit">
+                <table cellspacing="0" cellpadding="0">
+                    <tr ng-repeat="file in assignment0.files">
+                        <td>{{file.name}}</td>
+                        <td><input type="file"></td>
+                        <td>
+                            <textarea rows="4" cols="50" placeholder="Comments or partners. (Enter joint submissions using @username)"></textarea>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <input type="button" id="submit" value="Submit" onClick="mockSubmit(event)">
         </div>
     </div>
 </body>
