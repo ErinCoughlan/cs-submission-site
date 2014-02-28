@@ -31,10 +31,13 @@
             <div id="leftCol">
                 <div class="colHeader">Assignments</div>
                 <ul>
-                    <li ng-repeat="assignment in assignments"
-                        ng-class="{active: isActive('/assignments/'+assignment.id)}">
-                        <a href="student.html#/assignments/{{assignment.id}}">{{assignment.name}}</a>
-                    </li>
+                    <a ng-repeat="assignment in assignments" 
+                       href="student.html#/assignments/{{assignment.id}}">
+                        <li 
+                            ng-class="{active: isActive('/assignments/'+assignment.id)}">
+                            {{assignment.name}}
+                        </li>
+                    </a>
                 </ul>
             </div>
             <div id="rightCol">

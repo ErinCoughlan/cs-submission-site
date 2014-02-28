@@ -4,7 +4,7 @@
     padding-left: .2em;
 }
 
-#leftCol li a {
+#leftCol a{
 	text-decoration: none;
     color: inherit;
 }
