@@ -31,9 +31,6 @@
         <div id="contentArea">
             <div id="leftCol">
                 <div class="colHeader">Assignments</div>
-                <div ng-show="!assignments">
-                    <div class="spinner"></div>
-                </div>
                 <ul ng-cloak ng-show="assignments">
                     <a ng-repeat="assignment in assignments" 
                        href="student.html#/assignments/{{assignment.id}}">
