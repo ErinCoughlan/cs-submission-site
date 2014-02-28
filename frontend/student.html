@@ -7,6 +7,7 @@
         <link rel="stylesheet" type="text/css" href="css/header.css">
         <link rel="stylesheet" type="text/css" href="css/right_column.css">
         <link rel="stylesheet" type="text/css" href="css/left_column.css">
+        <link rel="stylesheet" type="text/css" href="css/loader.css">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-route.js"></script>
@@ -31,7 +32,7 @@
             <div id="leftCol">
                 <div class="colHeader">Assignments</div>
                 <div ng-show="!assignments">
-                    <img class="loading" src="img/ajax-loader.gif">
+                    <div class="spinner"></div>
                 </div>
                 <ul ng-cloak ng-show="assignments">
                     <a ng-repeat="assignment in assignments" 
