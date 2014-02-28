@@ -4,6 +4,11 @@
     padding-left: .2em;
 }
 
+#leftCol li a {
+	text-decoration: none;
+    color: inherit;
+}
+
 #leftCol li:nth-child(even) {
     background: rgb(40, 77, 97);
 }
