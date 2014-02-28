@@ -30,7 +30,10 @@
         <div id="contentArea">
             <div id="leftCol">
                 <div class="colHeader">Assignments</div>
-                <ul ng-cloak>
+                <div ng-show="!assignments">
+                    <img class="loading" src="img/ajax-loader.gif">
+                </div>
+                <ul ng-cloak ng-show="assignments">
                     <a ng-repeat="assignment in assignments" 
                        href="student.html#/assignments/{{assignment.id}}">
                         <li 
