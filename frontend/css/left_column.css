@@ -9,7 +9,7 @@
     color: inherit;
 }
 
-#leftCol li:nth-child(even) {
+#leftCol a:nth-child(even) li {
     background: rgb(40, 77, 97);
 }
 
