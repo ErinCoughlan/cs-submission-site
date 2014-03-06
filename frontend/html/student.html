@@ -19,7 +19,6 @@
             <div id="title">HMC CS
                 <img class="alien" src="../img/alien.png">
             </div>
-
             <div id="navbar">
                 <ul>
                     <li>CS5</li>
@@ -32,9 +31,9 @@
             <div id="leftCol">
                 <div class="colHeader">Assignments</div>
                 <ul ng-cloak ng-show="assignments">
-                    <a ng-repeat="assignment in assignments" 
+                    <a ng-repeat="assignment in assignments"
                        href="#/assignments/{{assignment.id}}">
-                        <li 
+                        <li
                             ng-class="{active: isActive('/assignments/'+assignment.id)}">
                             {{assignment.name}}
                         </li>
