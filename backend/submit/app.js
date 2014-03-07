@@ -26,6 +26,34 @@ app.use(express.session());
 app.use(app.router);
 app.use(express.static(frontBase));
 
+// sketcy createdb route
+app.post('/cratedb', function(req, res) {
+    nano.db.create(req.body.dbname, function(err) {
+        // Create db 
+        if(err) {
+            res.sent("Error creating db " + req.body.dbname);
+            return;
+        }
+        res.sent("Database " + req.body.dbname + " was created successfully");
+    });
+});
+
+// TODO make this, you know, actually submit
+app.post('/submit', funcion(req,res) {
+    var name = req.body.name;
+    var assignment = req.body.assignment;
+    var file = req.body.file;
+
+    db.insert({name:name, assignment:assignment, file:file}, file, function(err,body,header) {
+        if(err) {
+            res.send("Error creating or modifying submission");
+            return;
+        }
+
+        res.send("Submission successful");
+    });
+});
+
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
@@ -37,6 +65,8 @@ app.get('/', function(req, res){
 app.get('/cs5', function(req, res){
     res.render('student');
 });
+
+
 
 http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));
