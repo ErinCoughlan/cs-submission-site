@@ -30,6 +30,10 @@ img {
     border: 0;
 }
 
+::-webkit-file-upload-button, input[type="submit"], input[type="button"] {
+    cursor: pointer;
+}
+
 .fixed_elem {
     position: fixed !important;
 }

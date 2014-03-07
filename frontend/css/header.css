@@ -30,4 +30,5 @@
 
 #navbar li:hover {
     background: #7d8ca9;
+    cursor: pointer;
 }
