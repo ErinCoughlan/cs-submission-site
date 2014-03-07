@@ -27,7 +27,7 @@ app.use(app.router);
 app.use(express.static(frontBase));
 
 // sketcy createdb route
-app.post('/cratedb', function(req, res) {
+app.post('/createdb', function(req, res) {
     nano.db.create(req.body.dbname, function(err) {
         // Create db 
         if(err) {
@@ -44,7 +44,8 @@ app.post('/submit', funcion(req,res) {
     var assignment = req.body.assignment;
     var file = req.body.file;
 
-    db.insert({name:name, assignment:assignment, file:file}, file, function(err,body,header) {
+    db.insert({name:name, assignment:assignment, file:file}, file, 
+              function(err,body,header) {
         if(err) {
             res.send("Error creating or modifying submission");
             return;
