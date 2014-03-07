@@ -38,15 +38,17 @@ var app = express();
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(frontBase, 'html'));
 app.set('view engine', 'jade');
+app.use(express.static(frontBase));
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.cookieParser('your secret here'));
-app.use(express.session());
+app.use(express.session({ secret: 'more secrets' }));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(app.router);
-app.use(express.static(frontBase));
 
 // sketcy createdb route
 app.post('/createdb', function(req, res) {
