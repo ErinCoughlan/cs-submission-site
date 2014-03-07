@@ -4,7 +4,7 @@
     padding-left: .2em;
 }
 
-#leftCol a{
+#leftCol a {
 	text-decoration: none;
     color: inherit;
 }
@@ -14,7 +14,7 @@
 }
 
 #leftCol li.active {
-  box-shadow: inset 0px 1px 6px 1px rgba(255,255,255,.7);
+    box-shadow: inset 0px 1px 6px 1px rgba(255,255,255,.7);
 }
 
 #leftCol .colHeader {
