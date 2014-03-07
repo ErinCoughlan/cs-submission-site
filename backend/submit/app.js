@@ -39,13 +39,12 @@ app.post('/createdb', function(req, res) {
 });
 
 // TODO make this, you know, actually submit
-app.post('/submit', funcion(req,res) {
+app.post('/submit', function(req,res) {
     var name = req.body.name;
     var assignment = req.body.assignment;
     var file = req.body.file;
 
-    db.insert({name:name, assignment:assignment, file:file}, file, 
-              function(err,body,header) {
+    db.insert({name:name, assignment:assignment, file:file}, file, function(err,body,header) {
         if(err) {
             res.send("Error creating or modifying submission");
             return;
