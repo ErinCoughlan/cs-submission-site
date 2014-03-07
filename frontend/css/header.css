@@ -10,7 +10,13 @@
     z-index: -1;
 }
 
-#title, #navbar li {
+#navbar {
+    display: inline-block;
+    width: inherit;
+    z-index: -1;
+}
+
+#navbar li {
     -moz-border-radius:10px;
     -webkit-border-radius: 10px;
     background: #283B61;
@@ -23,12 +29,13 @@
     padding: 0 5px;
 }
 
-#navbar {
-    display: inline-block;
-    z-index: -1;
-}
-
 #navbar li:hover {
     background: #7d8ca9;
     cursor: pointer;
 }
+
+#navbar li.disabled {
+    background: #283B61;
+    cursor: default;
+}
+
