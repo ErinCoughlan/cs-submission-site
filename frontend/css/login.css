@@ -28,7 +28,7 @@ label, input {
 	z-index: -1;
 }
 
-#title {
+#loginTitle {
 	background: #283B61;
 	border: 2px solid #7d8ca9;
 		-moz-border-radius: 10px;
