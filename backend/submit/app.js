@@ -1,4 +1,6 @@
 
+/*global require, __dirname */
+
 /**
  * Module dependencies.
  */
@@ -8,6 +10,8 @@ var routes = require('./routes');
 var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
+var mongoose = require('mongoose');
+
 var frontBase = __dirname + '/../../frontend/';
 
 // Login configuration
@@ -53,7 +57,7 @@ app.use(app.router);
 // sketcy createdb route
 app.post('/createdb', function(req, res) {
     nano.db.create(req.body.dbname, function(err) {
-        // Create db 
+        // Create db
         if(err) {
             res.sent("Error creating db " + req.body.dbname);
             return;
