@@ -20,39 +20,21 @@ var configDB = require('./config/database.js');
 mongoose.connect(configDB.url);
 
 
-//var passConfig = require('./config/passport.js');
+
 var frontBase = __dirname + '/../../frontend/';
 
 // Login configuration
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+
 var User = require('./models/user.js');
 
-// Configuration to (among other things) handle the removal of req.flash
+// Configuration to handle the removal of req.flash
 var app = express()
 app.use(flash()); // use connect-flash for flash messages stored in session
 
-passport.use(new LocalStrategy({
-    usernameField: 'username',
-    passwordField: 'password'
-  },
-  function(username, password, done) {
-    User.findOne({ username: username }, function (err, user) {
-      if (err) { return done(err); }
-      if (!user) {
-        return done(null, false, { message: 'Incorrect username or password.' });
-      }
-      if (!user.validPassword(password)) {
-        return done(null, false, { message: 'Incorrect username or password.' });
-      }
-      return done(null, user);
-    });
-  }
-));
-
 
 // configure passport stuff
-//require('./config/passport')(passport);
+require('./config/passport')(passport);
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -110,25 +92,25 @@ app.get('/cs5', function(req, res){
     res.render('student');
 });
 app.post('/login',
-  passport.authenticate('local', { successRedirect: '/cs5',
+  passport.authenticate('local-login', { successRedirect: '/cs5',
                                    failureRedirect: '/',
                                    failureFlash: true })
 );
 
-/*
+
 app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect : '/profile', // redirect to the secure profile section
+    successRedirect : '/', // redirect to the secure profile section
     failureRedirect : '/signup', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
 }));
 
 // TODO remove this, it's only here so I can add an account
-app.set('view engine', 'ejs'); // set up ejs for templating
+
 app.get('/signup', function(req, res) {
         // render the page and pass in any flash data if it exists
-    res.render('signup.ejs', { message: req.flash('signupMessage') });
+    res.render('signup', { message: req.flash('signupMessage') });
 });
-*/
+
 http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));
 });
