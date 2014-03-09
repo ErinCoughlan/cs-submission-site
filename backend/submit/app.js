@@ -5,18 +5,30 @@
  * Module dependencies.
  */
 
+// Must come before requiring express
+var flash = require('connect-flash');
+
 var express = require('express');
 var routes = require('./routes');
 var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
+
+// Config mongoose
 var mongoose = require('mongoose');
+var configDB = require('./config/database.js');
+mongoose.connect(configDB.url);
 
 var frontBase = __dirname + '/../../frontend/';
 
 // Login configuration
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var User = require('./models/user.js');
+
+// Configuration to (among other things) handle the removal of req.flash
+var app = express()
+app.use(flash()); // use connect-flash for flash messages stored in session
 
 passport.use(new LocalStrategy({
     usernameField: 'username',
@@ -36,7 +48,6 @@ passport.use(new LocalStrategy({
   }
 ));
 
-var app = express();
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -88,7 +99,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', function(req, res){
-    res.render('index');
+    res.render('index')
 });
 app.get('/cs5', function(req, res){
     res.render('student');
