@@ -98,6 +98,22 @@ app.get('/assignment/:assignment', isLoggedIn, function(req, res){
     });
 });
 
+// json route for downloading submissions
+app.get('/submission/:submission', isLoggedIn, function(req, res){
+    var userid = req.session.passport.user;
+    var submissionid = req.params.submission;
+    console.log("got request for submission", req.params, "from", req.session);
+    Submission.findById(submissionid, function ( err, submission){
+        console.log("sending", submission);
+        if(err) {
+            res.send("Error getting assignment.");
+            return;
+        }
+        // actually send the file
+        res.send(submission.location);
+    });
+});
+
 // TODO make this, you know, actually submit
 app.post('/submit', isLoggedIn, function(req,res) {
     var name = req.body.name;
