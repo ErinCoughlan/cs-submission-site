@@ -5,9 +5,6 @@
         <link rel="stylesheet" type="text/css" href="../css/global.css">
         <link rel="stylesheet" type="text/css" href="../css/layout.css">
         <link rel="stylesheet" type="text/css" href="../css/header.css">
-        <link rel="stylesheet" type="text/css" href="../css/right_column.css">
-        <link rel="stylesheet" type="text/css" href="../css/left_column.css">
-        <link rel="stylesheet" type="text/css" href="../css/loader.css">
         <link rel="stylesheet" type="text/css" href="../css/settings.css">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.js"></script>
@@ -24,25 +21,26 @@
                 <img class="alien" src="../img/alien.png">
               </div>
             </li>
-            <li>{{course.name}}</li>
-            <li class="rfloat">logout</li>
-            <li class="rfloat">settings</li>
+            <!-- Disabled only if one course; otherwise show as dropdown -->
+            <li class="disabled">{{course.name}}</li>
+            <li class="rfloat"><a ng-href="logout">logout</a></li>
+            <li class="rfloat"><a ng-href="settings">settings<a></li>
           </ul>
         </div>
       </div>
       
-      <div id="globalContainer">
+      <div id="contentArea">
         <div class="center box">
           <!--TODO make this a real settings page -->
           <form class="settings" action="/changemail" method="post">
-            <label for="email">New email:</label>
+            <label for="email">New email:</label><br>
             <input type="text" name="email"><br>
             <input type="submit" value="Change email">
           </form>
 
           <form class="settings" action="/changepw" method="post">
-            <label for="password">New password:</label>
-            <input type="password" name="password">
+            <label for="password">New password:</label><br>
+            <input type="password" name="password"><br>
             <input type="submit" value="Change password">
           </form>
         </div>

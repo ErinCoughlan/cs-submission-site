@@ -12,15 +12,6 @@ label, input {
 	width: 100%;
 }
 
-#pageHead {
-	margin: 0 auto;
-	width: 981px;
-}
-
-#pageHeadContainer {
-	display: block;
-}
-
 .alien {
 	height: 90px;
 	margin: 0px 20px;

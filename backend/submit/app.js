@@ -212,6 +212,7 @@ function isLoggedIn(req, res, next) {
 
 // Make this whole mechanism less sketch
 app.post('/changemail', function(req, res) {
+    console.log("Changing your email");
     if(req.isAuthenticated()) {
         user = req.user;
         user.local.email = req.body.email;
@@ -241,7 +242,7 @@ app.post('/changepw', function(req, res) {
     res.redirect('/cs5');
 });
 
-app.get('/settings', function(req, res) {
+app.get('/settings', isLoggedIn, function(req, res) {
     res.render('settings');
 });
 
