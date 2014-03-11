@@ -215,7 +215,7 @@ app.post('/changemail', function(req, res) {
     console.log("Changing your email");
     if(req.isAuthenticated()) {
         user = req.user;
-        user.local.email = req.params.email;
+        user.local.email = req.body.email;
         console.log(user);
         user.save(function(err) {
             if(err) {

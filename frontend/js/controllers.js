@@ -38,18 +38,23 @@
             var form = document.getElementById("email-form");
             var fd = new FormData(form);
 
-            $http.post("/changemail", fd, {
-                transformRequest: angular.identity,
-                headers: {'Content-Type': undefined}
-            })
-            .success(function(m){
-                console.log(m);
-                window.location.href="/cs5";
-            })
-            .error(function(m){
-                console.log(m);
-            });
+            var emailAddr = document.getElementById('email').value;
 
+            var dataStr = JSON.stringify({ email : emailAddr });
+
+            $.ajax({
+                url : "/changemail",
+                data : dataStr,
+                type : "POST",
+                contentType : "application/json",
+                success : function(m) {
+                    console.log(m);
+                    window.location.href="/cs5";
+                },
+                failure : function (m) {
+                    console.log(m);
+                }
+            });
         };
 
         $scope.changePassword = function changePassword($event) {
