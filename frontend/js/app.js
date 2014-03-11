@@ -16,9 +16,8 @@ var submissionApp = angular.module('submissionApp', ['ngRoute']);
             controller: 'AssignmentCtrl',
             controllerAs: 'assignment'
         });
-        $routeProvider.otherwise({redirectTo: '/assignments/3'});
-    }); 
-    
+    });
+
 })();
 
 /**

@@ -14,22 +14,23 @@ var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
 
+var frontBase = __dirname + '/../../frontend/';
+
 // Config mongoose
 var mongoose = require('mongoose');
 var configDB = require('./config/database.js');
 mongoose.connect(configDB.url);
 
-
-
-var frontBase = __dirname + '/../../frontend/';
-
 // Login configuration
 var passport = require('passport');
 
 var User = require('./models/user.js');
+var Course = require('./models/course.js');
+var Assignment = require('./models/assignment.js');
+var Submission = require('./models/submission.js');
 
 // Configuration to handle the removal of req.flash
-var app = express()
+var app = express();
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 
@@ -52,20 +53,53 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(app.router);
 
-// sketcy createdb route
-app.post('/createdb', function(req, res) {
-    nano.db.create(req.body.dbname, function(err) {
-        // Create db
+//routes
+app.get('/', function(req, res){
+    res.render('index');
+});
+
+app.post('/login',
+  passport.authenticate('local-login', { successRedirect: '/cs5',
+                                   failureRedirect: '/',
+                                   failureFlash: true })
+);
+
+app.get('/cs5', isLoggedIn, function(req, res){
+    res.render('student');
+});
+
+// json route for course info
+app.get('/assignments/:course', isLoggedIn, function(req, res){
+    var userid = req.session.passport.user;
+    var courseid = req.params.course;
+    console.log("got request for course", req.params, "from", req.session);
+    Course.findById(courseid, function ( err, course){
+        console.log("sending", course);
         if(err) {
-            res.sent("Error creating db " + req.body.dbname);
+            res.send("Error getting list of assignments.");
             return;
         }
-        res.sent("Database " + req.body.dbname + " was created successfully");
+        res.send(course);
+    });
+});
+
+// json route for assignment info
+app.get('/assignment/:assignment', isLoggedIn, function(req, res){
+    var userid = req.session.passport.user;
+    var assignmentid = req.params.assignment;
+    console.log("got request for assignment", req.params, "from", req.session);
+    Assignment.findById(assignmentid, function ( err, assignment){
+        console.log("sending", assignment);
+        if(err) {
+            res.send("Error getting assignment.");
+            return;
+        }
+        res.send(assignment);
     });
 });
 
 // TODO make this, you know, actually submit
-app.post('/submit', function(req,res) {
+app.post('/submit', isLoggedIn, function(req,res) {
     var name = req.body.name;
     var assignment = req.body.assignment;
     var file = req.body.file;
@@ -80,36 +114,33 @@ app.post('/submit', function(req,res) {
     });
 });
 
-// development only
-if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+
+// make sure a user is logged in
+function isLoggedIn(req, res, next) {
+
+    // if user is authenticated in the session, carry on
+    if (req.isAuthenticated())
+        return next();
+
+    // if they aren't, redirect them to the home page
+    res.redirect('/');
 }
 
-app.get('/', function(req, res){
-    res.render('index')
-});
-app.get('/cs5', function(req, res){
-    res.render('student');
-});
-app.post('/login',
-  passport.authenticate('local-login', { successRedirect: '/cs5',
-                                   failureRedirect: '/',
-                                   failureFlash: true })
-);
-
-
+// TODO remove this, it's only here so I can add an account
 app.post('/signup', passport.authenticate('local-signup', {
     successRedirect : '/', // redirect to the secure profile section
     failureRedirect : '/signup', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
 }));
-
-// TODO remove this, it's only here so I can add an account
-
 app.get('/signup', function(req, res) {
         // render the page and pass in any flash data if it exists
     res.render('signup', { message: req.flash('signupMessage') });
 });
+
+// development only
+if ('development' == app.get('env')) {
+  app.use(express.errorHandler());
+}
 
 http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));
