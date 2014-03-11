@@ -39,6 +39,8 @@
     });
 
     submissionApp.controller('AssignmentCtrl', function ($scope, $http, $routeParams) {
+        $scope.isDefined = angular.isDefined
+
         this.params = $routeParams;
 
         // get the list of files for the first assignment from jsonstub
