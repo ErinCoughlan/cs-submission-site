@@ -28,8 +28,8 @@
                     </div>
                 </td>
                 <td class="lastCol">
-                    <textarea ng-if="!isDefined(file.grade)" rows="4" cols="30" placeholder="Comments or partners. (Enter joint submissions using @username)" ng-model="file.comment_to_submit">{{file.comment}}</textarea>
-                    <p>{{file.comment}}</p>
+                    <textarea ng-if="!isDefined(file.grade)" rows="4" cols="30" placeholder="{{file.comment || 'Comments or partners. (Enter joint submissions using @username)'}}" ng-model="file.comment_to_submit"></textarea>
+                    <p ng-if="isDefined(file.grade)">{{file.comment}}</p>
                 </td>
             </tr>
         </table>
