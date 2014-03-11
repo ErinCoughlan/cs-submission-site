@@ -1,0 +1,16 @@
+#globalContainer {
+	clear: both;
+	margin: 0 auto;
+	position: relative;
+	width: 981px;
+	zoom: 1;
+}
+#header {
+	background-position: 0 0;
+	border: 0;
+	height: 96px;
+	min-width: 981px;
+	position: relative;
+	z-index: 300;
+	width: 100%;
+}
