@@ -51,7 +51,7 @@ function mockSubmit(e) {
 
     var form = document.getElementById('form-submit');
     form.reset();
-}
+};
 
 function submit(e) {
     e.preventDefault();
@@ -61,22 +61,19 @@ function submit(e) {
 
     // Printing out the files that were uploaded
     var inputs = document.querySelectorAll('input[type=file]');
-    var filenames = document.querySelectorAll('td input[type=hidden]');
     for (var i= 0; i < inputs.length; i++) {
         var input = inputs[i];
-        var filename = filenames[i];
-        alert(filename);
-
-        // Locate the first cell in the row
-        var rowId = input.parentNode.parentNode;
-        var cells = rowId.getElementsByTagName('td');
 
         // Determine if any files were uploaded
         var files = input.files;
-        if (files && cells.length >= 1) {
+        if (files) {
             for (var j = 0; j < files.length; j++) {
+                var row = $(input).closest('tr');
+                var filename = $(row).find('input[type=hidden]').val();
+                alert(filename);
+
                 alert(files[j].name);
             }
         }
     }
-}
+};

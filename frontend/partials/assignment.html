@@ -4,11 +4,11 @@
 <div ng-cloak ng-show="assignment.files.length>0">
     <div class="colHeader">Due: {{assignment.due | date : 'MMM d, yyyy h:mm a'}}</div>
     <form id="form-submit">
-        <input id="assignment" type="hidden" name="assignment" value="{{assignment.id}}">
-        <table cellspacing="0" cellpadding="0">
+        <input id="assignment" type="hidden" name="assignment" value="{{assignment.name}}">
+        <table id="files-table" cellspacing="0" cellpadding="0">
             <tr ng-repeat="file in assignment.files">
                 <td>
-                    <input type="hidden" name="name" value="{{file.name}}">
+                    <input id="filename" type="hidden" name="name" value="{{file.name}}">
                     {{file.name}}
                 </td>
                 <td>
