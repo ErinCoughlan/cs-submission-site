@@ -19,10 +19,3 @@ var submissionApp = angular.module('submissionApp', ['ngRoute']);
     });
 
 })();
-
-function submit(e) {
-	e.preventDefault();
-
-	var form = document.getElementById('form-submit');
-	form.reset();
-}

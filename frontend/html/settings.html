@@ -31,17 +31,16 @@
       
       <div id="contentArea">
         <div class="center box">
-          <!--TODO make this a real settings page -->
-          <form class="settings" action="/changemail" method="post">
+          <form id="email-form" class="settings">
             <label for="email">New email:</label><br>
-            <input type="text" name="email"><br>
-            <input type="submit" value="Change email">
+            <input id="email" type="text" name="email"><br>
+            <input type="button" value="Change email" ng-click="changeEmail(event)">
           </form>
 
-          <form class="settings" action="/changepw" method="post">
+          <form id="password-form" class="settings">
             <label for="password">New password:</label><br>
-            <input type="password" name="password"><br>
-            <input type="submit" value="Change password">
+            <input id="password" type="password" name="password"><br>
+            <input type="button" value="Change password" ng-click="changePassword(event)">
           </form>
         </div>
       </div>

@@ -34,6 +34,55 @@
             }
         };
 
+        $scope.changeEmail = function changeEmail($event) {
+            var form = document.getElementById("email-form");
+            var fd = new FormData(form);
+
+            $http.post("/changemail", fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            })
+            .success(function(m){
+                console.log(m);
+                window.location.href="/cs5";
+            })
+            .error(function(m){
+                console.log(m);
+            });
+
+        };
+
+        $scope.changePassword = function changePassword($event) {
+            var form = document.getElementById("password-form");
+            var fd = new FormData(form);
+
+            var pw = document.getElementById('password').value;
+
+            var dataStr = JSON.stringify({ password : pw });  
+
+            $.ajax({
+                url : "/changepw",
+                data : dataStr,
+                type : "POST",
+                contentType: "application/json",
+                success: function(m){
+                    console.log(m);
+                    window.location.href="/cs5";
+                },
+                failure: function(m){
+                    console.log(m);
+                }
+            });
+            /*
+            .success(function(m){
+                console.log(m);
+                window.location.href="/cs5";
+            })
+            .error(function(m){
+                console.log(m);
+            });
+*/
+        }
     });
 
     submissionApp.controller('AssignmentCtrl', function ($scope, $http, $routeParams) {

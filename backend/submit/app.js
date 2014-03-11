@@ -215,7 +215,7 @@ app.post('/changemail', function(req, res) {
     console.log("Changing your email");
     if(req.isAuthenticated()) {
         user = req.user;
-        user.local.email = req.body.email;
+        user.local.email = req.params.email;
         console.log(user);
         user.save(function(err) {
             if(err) {
@@ -227,18 +227,20 @@ app.post('/changemail', function(req, res) {
     res.redirect('/cs5');
 });
 
-app.post('/changepw', function(req, res) {
-    if(req.isAuthenticated()) {
-        user = req.user;
-        // TODO HOLY SHIT WE ARE POSTING PLAINTEXT PASSWORDS FIXME
-        user.local.password = user.generateHash(req.body.password);
-        user.save(function(err) {
-            if(err) {
-                console.log("Error saving user password");
-                throw err;
-            }
-        });
-    }
+app.post('/changepw', isLoggedIn, function(req, res) {
+    console.log(req.password);
+    console.log(req.data);
+    console.log(req.params);
+    console.log(req.param);
+    user = req.user;
+    // TODO HOLY SHIT WE ARE POSTING PLAINTEXT PASSWORDS FIXME
+    user.local.password = user.generateHash(req.params.password);
+    user.save(function(err) {
+        if(err) {
+            console.log("Error saving user password");
+            throw err;
+        }
+    });
     res.redirect('/cs5');
 });
 
