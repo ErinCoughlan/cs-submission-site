@@ -64,12 +64,17 @@ app.post('/login',
                                    failureFlash: true })
 );
 
-app.get('/cs5', isLoggedIn, function(req, res){
+app.get('/logout', function(req, res) {
+    req.logout();
+    res.redirect('/');
+});
+
+app.get('/cs5', isLoggedIn, function(req, res) {
     res.render('student');
 });
 
 // json route for course info
-app.get('/assignments/:course', isLoggedIn, function(req, res){
+app.get('/assignments/:course', isLoggedIn, function(req, res) {
     var userid = req.session.passport.user;
     var courseid = req.params.course;
     console.log("got request for course", req.params, "from", req.session);
@@ -84,7 +89,7 @@ app.get('/assignments/:course', isLoggedIn, function(req, res){
 });
 
 // json route for assignment info
-app.get('/assignment/:assignment', isLoggedIn, function(req, res){
+app.get('/assignment/:assignment', isLoggedIn, function(req, res) {
     var userid = req.session.passport.user;
     var assignmentid = req.params.assignment;
     console.log("got request for assignment", req.params, "from", req.session);
@@ -99,7 +104,7 @@ app.get('/assignment/:assignment', isLoggedIn, function(req, res){
 });
 
 // json route for downloading submissions
-app.get('/submission/:submission', isLoggedIn, function(req, res){
+app.get('/submission/:submission', isLoggedIn, function(req, res) {
     var userid = req.session.passport.user;
     var submissionid = req.params.submission;
     console.log("got request for submission", req.params, "from", req.session);
@@ -173,6 +178,6 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-http.createServer(app).listen(app.get('port'), function(){
+http.createServer(app).listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));
 });
