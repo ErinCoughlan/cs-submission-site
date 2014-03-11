@@ -14,6 +14,12 @@ var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
 
+// file uploading
+var multiparty = require('multiparty');
+var util = require('util');
+var path = require('path');
+var fs = require('fs');
+
 var frontBase = __dirname + '/../../frontend/';
 
 // Config mongoose
@@ -61,10 +67,10 @@ app.get('/', function(req, res){
 });
 
 app.post('/login',
-  passport.authenticate('local-login', { successRedirect: '/cs5',
-                                   failureRedirect: '/',
-                                   failureFlash: true })
-);
+         passport.authenticate('local-login', { successRedirect: '/cs5',
+                                               failureRedirect: '/',
+                                               failureFlash: true })
+        );
 
 app.get('/logout', function(req, res) {
     req.logout();
@@ -117,26 +123,81 @@ app.get('/submission/:submission', isLoggedIn, function(req, res) {
             return;
         }
         // actually send the file
-        res.send(submission.location);
+        var readStream = fs.createReadStream(submission.location);
+        readStream.pipe(res);
     });
 });
 
-// TODO make this, you know, actually submit
-app.post('/submit', isLoggedIn, function(req,res) {
-    var name = req.body.name;
-    var assignment = req.body.assignment;
-    var file = req.body.file;
-
-    db.insert({name:name, assignment:assignment, file:file}, file, function(err,body,header) {
-        if(err) {
-            res.send("Error creating or modifying submission");
-            return;
-        }
-
-        res.send("Submission successful");
+// recieve file uploads
+app.post('/submit/:assignment', isLoggedIn, function(req,res) {
+    console.log(req.files);
+    console.log(req.body);
+    var assignmentid = req.params.assignment;
+    var userid = req.session.passport.user;
+    var form = new multiparty.Form();
+    form.parse(req, function(err, fields, files) {
+        console.log("fields", fields);
+        console.log("files", files);
+        Object.keys(files).forEach(function(key) {
+            var file = files[key][0];
+            var fileid = file.fieldName;
+            // make a submission schema
+            var submission = new Submission();
+            // TODO: copy the file to a better location
+            var new_file = path.join(__dirname, "files", (new Date()).getTime().toString());
+            copyFile(file.path, new_file);
+            submission.location = new_file;
+            submission.date = new Date().toJSON();
+            // save to mongo
+            submission.save(function (err) {
+                console.log(err);
+            });
+            console.log(submission);
+            // update the assignment object to be aware of the submission
+            Assignment.findById(assignmentid, function ( err, assignment){
+                console.log("assignment", assignment);
+                if(err) {
+                    res.send("Error getting assignment to associate file with.");
+                    return;
+                }
+                var assignment_file = assignment.files.filter(function(f){
+                    console.log("f", f)
+                    return f.id == fileid
+                })[0];
+                console.log(assignment_file.submissions)
+                assignment_file.submissions.push({
+                    id: submission._id,
+                    date: submission.date
+                });
+                assignment.save(function (err) {
+                    console.log(err);
+                });
+            });
+        });
+        var comments = JSON.parse(fields.comments[0]);
+        Object.keys(comments).forEach(function(key) {
+            var comment = comments[key];
+            var fileid = key;
+            // update the assignment object to be aware of the comment
+            Assignment.findById(assignmentid, function ( err, assignment){
+                console.log("assignment", assignment);
+                if(err) {
+                    res.send("Error getting assignment to associate file with.");
+                    return;
+                }
+                var assignment_file = assignment.files.filter(function(f){
+                    console.log("f", f)
+                    return f.id == fileid
+                })[0];
+                assignment_file.comment = comment;
+                assignment.save(function (err) {
+                    console.log(err);
+                });
+            });
+        });
     });
+    res.send("good");
 });
-
 
 // make sure a user is logged in
 function isLoggedIn(req, res, next) {
@@ -168,12 +229,12 @@ app.post('/changemail', function(req, res) {
 app.post('/changepw', function(req, res) {
     if(req.isAuthenticated()) {
         user = req.user;
-        // TODO HOLY SHIT WE ARE POSTING PLAINTEXT PASSWORDS FIXME 
+        // TODO HOLY SHIT WE ARE POSTING PLAINTEXT PASSWORDS FIXME
         user.local.password = user.generateHash(req.body.password);
         user.save(function(err) {
             if(err) {
                 console.log("Error saving user password");
-                throw err; 
+                throw err;
             }
         });
     }
@@ -183,20 +244,47 @@ app.post('/changepw', function(req, res) {
 app.get('/settings', function(req, res) {
     res.render('settings');
 });
-         
+
 app.post('/signup', passport.authenticate('local-signup', {
     successRedirect : '/', // redirect to the secure profile section
     failureRedirect : '/signup', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
 }));
 app.get('/signup', function(req, res) {
-        // render the page and pass in any flash data if it exists
+    // render the page and pass in any flash data if it exists
     res.render('signup', { message: req.flash('signupMessage') });
 });
 
+// copy a file
+function copyFile(source, target, cb) {
+    var cbCalled = false;
+
+    var rd = fs.createReadStream(source);
+    rd.on("error", function(err) {
+        done(err);
+    });
+    var wr = fs.createWriteStream(target);
+    wr.on("error", function(err) {
+        done(err);
+    });
+    wr.on("close", function(ex) {
+        done();
+    });
+    rd.pipe(wr);
+
+    function done(err) {
+        if (!cbCalled) {
+            if(cb){
+                cb(err);
+            }
+            cbCalled = true;
+        }
+    }
+}
+
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+    app.use(express.errorHandler());
 }
 
 http.createServer(app).listen(app.get('port'), function() {
