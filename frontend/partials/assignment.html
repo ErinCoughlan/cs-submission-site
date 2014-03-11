@@ -2,7 +2,7 @@
     <div id="rightSpinner" class="spinner"></div>
 </div>
 <div ng-cloak ng-show="assignment.files.length>0">
-    <div class="colHeader">Due: {{assignment.due}}</div>
+    <div class="colHeader">Due: {{assignment.due | date : 'MMM d, yyyy h:mm a'}}</div>
     <form id="form-submit">
         <input id="assignment" type="hidden" name="assignment" value="{{assignment.id}}">
         <table cellspacing="0" cellpadding="0">
