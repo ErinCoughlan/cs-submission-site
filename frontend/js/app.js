@@ -53,3 +53,28 @@ function mockSubmit(e) {
     var form = document.getElementById('form-submit');
     form.reset();
 }
+
+function submit(e) {
+    e.preventDefault();
+
+    var assignment = document.getElementById('assignment').value;
+    alert(assignment);
+
+    // Printing out the files that were uploaded
+    var inputs = document.querySelectorAll('input[type=file]');
+    for (var i= 0; i < inputs.length; i++) {
+        var input = inputs[i];
+
+        // Locate the first cell in the row
+        var rowId = input.parentNode.parentNode;
+        var cells = rowId.getElementsByTagName('td');
+
+        // Determine if any files were uploaded
+        var files = input.files;
+        if (files && cells.length >= 1) {
+            for (var j = 0; j < files.length; j++) {
+                alert(files[j].name);
+            }
+        }
+    }
+}

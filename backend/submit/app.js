@@ -65,7 +65,7 @@ app.post('/createdb', function(req, res) {
 });
 
 // TODO make this, you know, actually submit
-app.post('/submit', function(req,res) {
+app.post('/submit', function(req, res) {
     var name = req.body.name;
     var assignment = req.body.assignment;
     var file = req.body.file;

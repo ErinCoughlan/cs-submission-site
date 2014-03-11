@@ -44,7 +44,6 @@
         this.params = $routeParams;
 
         // get the list of files for the first assignment from jsonstub
-        // TODO: change from 'assignment/0' to  'assignment/' + this.params.assignmentId 
         $http.get('http://jsonstub.com/spring2014/cs130/assignment/' + this.params.assignmentId, config).success(
             function (data) {
                 $scope.assignment = data;
