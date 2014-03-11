@@ -39,6 +39,7 @@ img {
 }
 
 .rfloat {
+    display: inline-block;
     float: right;
 }
 

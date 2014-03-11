@@ -1,11 +1,11 @@
 #leftCol li {
-	font-size: 1.5em;
+    font-size: 1.5em;
     padding-top: .1em;
     padding-left: .2em;
 }
 
 #leftCol a {
-	text-decoration: none;
+    text-decoration: none;
     color: inherit;
 }
 
@@ -18,8 +18,13 @@
 }
 
 #leftCol .colHeader {
-	border-bottom: 2px solid #7d8ca9;
-	font-size: 2em;
-	text-align: center;
+    border-bottom: 2px solid #7d8ca9;
+    font-size: 2em;
+    text-align: center;
+}
+
+#leftCol .points {
+    float: right;
+    margin-right: 3px;
 }
 
