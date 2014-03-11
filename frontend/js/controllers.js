@@ -71,6 +71,9 @@
             })
             .success(function(m){
                 console.log(m);
+
+                // TODO: only refresh the right column (table)
+                location.reload();
             })
             .error(function(m){
                 console.log(m);
