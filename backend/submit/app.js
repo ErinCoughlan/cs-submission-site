@@ -127,6 +127,21 @@ function isLoggedIn(req, res, next) {
 }
 
 // TODO remove this, it's only here so I can add an account
+app.post('/changemail', function(req, res) {
+    if(req.isAuthenticated()) {
+        user = req.user;
+        user.email = req.email;
+        
+        user.save(function(err) {
+            if(err) {
+                console.log("Error saving user email");
+                throw err;
+            }
+            return done(null, user);
+        });
+    }
+});
+         
 app.post('/signup', passport.authenticate('local-signup', {
     successRedirect : '/', // redirect to the secure profile section
     failureRedirect : '/signup', // redirect back to the signup page if there is an error
