@@ -52,6 +52,8 @@ app.use(express.session({ secret: 'more secrets' }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(app.router);
+app.use(express.json());       // to support JSON-encoded bodies
+app.use(express.urlencoded()); // to support URL-encoded bodies
 
 //routes
 app.get('/', function(req, res){
@@ -147,20 +149,24 @@ function isLoggedIn(req, res, next) {
     res.redirect('/');
 }
 
-// TODO remove this, it's only here so I can add an account
+// Make this whole mechanism less sketch
 app.post('/changemail', function(req, res) {
     if(req.isAuthenticated()) {
         user = req.user;
-        user.email = req.email;
-        
+        user.local.email = req.body.email;
+        console.log(user);
         user.save(function(err) {
             if(err) {
                 console.log("Error saving user email");
                 throw err;
             }
-            return done(null, user);
         });
     }
+    res.redirect('/cs5');
+});
+
+app.get('/settings', function(req, res) {
+    res.render('settings');
 });
          
 app.post('/signup', passport.authenticate('local-signup', {
