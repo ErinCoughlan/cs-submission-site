@@ -228,13 +228,11 @@ app.post('/changemail', function(req, res) {
 });
 
 app.post('/changepw', isLoggedIn, function(req, res) {
-    console.log(req.password);
-    console.log(req.data);
-    console.log(req.params);
-    console.log(req.param);
     user = req.user;
     // TODO HOLY SHIT WE ARE POSTING PLAINTEXT PASSWORDS FIXME
-    user.local.password = user.generateHash(req.params.password);
+    pw = req.body.password;
+    console.log(pw);
+    user.local.password = user.generateHash(pw);
     user.save(function(err) {
         if(err) {
             console.log("Error saving user password");
