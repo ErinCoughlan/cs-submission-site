@@ -2,29 +2,26 @@
 //  Spring 2014 - Erin Coughlan & Philip Davis & Luke Sedney
 
 // for the benefit of JSLint:
-/*global submissionApp*/
+/*global submissionApp, angular*/
 
 
 (function(){
     "use strict";
-
-    // define jsonstub headers
-    var config = {
-        headers: {
-            'JsonStub-User-Key': '2d70b72a-502e-4fbd-9a8f-c9246b9d0fff',
-            'JsonStub-Project-Key': 'cc74f36f-3235-4d8b-bfdc-4a94cdedad45'
-        }
-    };
 
     submissionApp.controller('StudentCtrl', function ($scope, $http, $route, $routeParams, $location) {
         this.$route = $route;
         this.$location = $location;
         this.$routeParams = $routeParams;
 
-        // get the list of assignments from jsonstub.
-        $http.get('http://jsonstub.com/spring2014/cs130/assignments', config).success(
+        // TODO: get this from the server during page load somehow.
+        // maybe a <script src="/courses.js"></script> in student.html
+        // with a route on the server that supplies the list of courses?
+        var courseid = "531ea533e4b0ea5911efe9f6";
+
+        // get the list of assignments
+        $http.get('/assignments/'+courseid).success(
             function (data) {
-                $scope.assignments = data;
+                $scope.course = data;
             }
         );
 
@@ -36,19 +33,21 @@
                 return false;
             }
         };
+
     });
 
     submissionApp.controller('AssignmentCtrl', function ($scope, $http, $routeParams) {
-        $scope.isDefined = angular.isDefined
+        $scope.isDefined = angular.isDefined;
 
         this.params = $routeParams;
 
-        // get the list of files for the first assignment from jsonstub
-        $http.get('http://jsonstub.com/spring2014/cs130/assignment/' + this.params.assignmentId, config).success(
+        // get the list of files for the assignment
+        $http.get('/assignment/' + this.params.assignmentId).success(
             function (data) {
                 $scope.assignment = data;
             }
         );
+
     });
 
 })();

@@ -23,7 +23,7 @@
                             <img class="alien" src="../img/alien.png">
                         </div>
                     </li>
-                    <li>CS5</li>
+                    <li>{{course.name}}</li>
                     <li class="rfloat">logout</li>
                     <li class="rfloat">settings</li>
                 </ul>
@@ -32,11 +32,11 @@
         <div id="contentArea">
             <div id="leftCol">
                 <div class="colHeader">Assignments</div>
-                <div ng-cloak ng-show="!assignments">
+                <div ng-cloak ng-show="!course">
                     <div id="leftSpinner" class="spinner"></div>
                 </div
                 <ul ng-cloak ng-show="assignments">
-                    <a ng-repeat="assignment in assignments"
+                    <a ng-repeat="assignment in course.assignments"
                        ng-href="#/assignments/{{assignment.id}}">
                         <li
                             ng-class="{active: isActive('/assignments/'+assignment.id)}">
