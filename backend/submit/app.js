@@ -165,6 +165,21 @@ app.post('/changemail', function(req, res) {
     res.redirect('/cs5');
 });
 
+app.post('/changepw', function(req, res) {
+    if(req.isAuthenticated()) {
+        user = req.user;
+        // TODO HOLY SHIT WE ARE POSTING PLAINTEXT PASSWORDS FIXME 
+        user.local.password = user.generateHash(req.body.password);
+        user.save(function(err) {
+            if(err) {
+                console.log("Error saving user password");
+                throw err; 
+            }
+        });
+    }
+    res.redirect('/cs5');
+});
+
 app.get('/settings', function(req, res) {
     res.render('settings');
 });
