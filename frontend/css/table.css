@@ -6,6 +6,7 @@ td, th {
 
 table {
 	border: 1px solid #000;
+	width: 800px;
 }
 
 th {
@@ -22,24 +23,15 @@ th:first-child {
 	width: 200px;
 }
 
-tbody tr:nth-child(odd) {
+tr:nth-child(odd) {
 	background-color: gray;
 }
 
 .fixedTable {
 	height: 300px;
 	table-layout: fixed;
-	width: 100%;
 }
 
-.fixedTable thead tr {
-	display: block;
-	position: relative;
-}
-
-.fixedTable tbody {
-	display: block;
-	height: 300px;
-	overflow: auto;
-	width: 100%;
+.fixedHeader th {
+	text-align: center;
 }
