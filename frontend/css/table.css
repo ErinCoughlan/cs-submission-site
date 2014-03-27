@@ -19,17 +19,12 @@ td:first-child {
 }
 
 th:first-child {
-	border-left: 3px solid #000;
+	border: 3px solid #000;
 	width: 200px;
 }
 
 tr:nth-child(odd) {
 	background-color: gray;
-}
-
-.fixedTable {
-	height: 300px;
-	table-layout: fixed;
 }
 
 .fixedHeader th {
