@@ -11,11 +11,36 @@ var submissionApp = angular.module('submissionApp', ['ngRoute']);
 
     // define routes
     submissionApp.config(function($routeProvider, $locationProvider) {
-        $routeProvider.when('/assignments/:assignmentId', {
-            templateUrl: 'partials/assignment.html',
-            controller: 'AssignmentCtrl',
+        $routeProvider.when('/student/assignments/:assignmentId', {
+            templateUrl: 'partials/student_assignment.html',
+            controller: 'StudentAssignmentCtrl',
             controllerAs: 'assignment'
         });
     });
+
+    // define routes
+    submissionApp.config(function($routeProvider, $locationProvider) {
+        $routeProvider.when('/grader/assignments/:assignmentId', {
+            templateUrl: 'partials/grader_assignment.html',
+            controller: 'GraderAssignmentCtrl',
+            controllerAs: 'assignment'
+        });
+    });
+
+    submissionApp.directive('fileModel', ['$parse', function ($parse) {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                var model = $parse(attrs.fileModel);
+                var modelSetter = model.assign;
+
+                element.bind('change', function(){
+                    scope.$apply(function(){
+                        modelSetter(scope, element[0].files[0]);
+                    });
+                });
+            }
+        };
+    }]);
 
 })();

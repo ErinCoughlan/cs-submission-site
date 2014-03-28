@@ -8,7 +8,7 @@
 (function(){
     "use strict";
 
-    submissionApp.controller('StudentCtrl', function ($scope, $http, $route, $routeParams, $location) {
+    submissionApp.controller('GraderCtrl', function ($scope, $http, $route, $routeParams, $location) {
         this.$route = $route;
         this.$location = $location;
         this.$routeParams = $routeParams;
@@ -63,7 +63,7 @@
 
             var pw = document.getElementById('password').value;
 
-            var dataStr = JSON.stringify({ password : pw });  
+            var dataStr = JSON.stringify({ password : pw });
 
             $.ajax({
                 url : "/changepw",
@@ -90,7 +90,7 @@
         }
     });
 
-    submissionApp.controller('AssignmentCtrl', function ($scope, $http, $routeParams) {
+    submissionApp.controller('GraderAssignmentCtrl', function ($scope, $http, $routeParams) {
         $scope.isDefined = angular.isDefined;
 
         this.params = $routeParams;

@@ -15,7 +15,7 @@
         <script src="../js/grader_controllers.js"></script>
         <script src="../js/student_controllers.js"></script>
     </head>
-    <body ng-controller="StudentCtrl">
+    <body ng-controller="GraderCtrl">
         <ng-include src=" 'partials/header.html' "></ng-include>
         <div id="contentArea">
             <div id="leftCol">
@@ -25,9 +25,9 @@
                 </div
                 <ul ng-cloak ng-show="assignments">
                     <a ng-repeat="assignment in course.assignments"
-                       ng-href="#/student/assignments/{{assignment.id}}">
+                       ng-href="#/grader/assignments/{{assignment.id}}">
                         <li
-                            ng-class="{active: isActive('/student/assignments/'+assignment.id)}">
+                            ng-class="{active: isActive('/grader/assignments/'+assignment.id)}">
                             {{assignment.name}}
                             <div class="points">{{assignment.grade || "NA"}}/{{assignment.point}}</div>
                         </li>

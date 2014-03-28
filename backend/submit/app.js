@@ -81,6 +81,10 @@ app.get('/cs5', isLoggedIn, function(req, res) {
     res.render('student');
 });
 
+app.get('/grader', isLoggedIn, function(req, res) {
+    res.render('grader');
+});
+
 // json route for course info
 app.get('/assignments/:course', isLoggedIn, function(req, res) {
     var userid = req.session.passport.user;
