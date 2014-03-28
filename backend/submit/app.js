@@ -1,5 +1,5 @@
 
-/*global require, __dirname */
+/*global require, __dirname, console, process */
 
 /**
  * Module dependencies.
@@ -234,7 +234,7 @@ app.post('/changemail', function(req, res) {
 app.post('/changepw', isLoggedIn, function(req, res) {
     user = req.user;
     // TODO HOLY SHIT WE ARE POSTING PLAINTEXT PASSWORDS FIXME
-    pw = req.body.password;
+    var pw = req.body.password;
     console.log(pw);
     user.local.password = user.generateHash(pw);
     user.save(function(err) {
