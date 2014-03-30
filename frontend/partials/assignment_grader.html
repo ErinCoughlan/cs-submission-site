@@ -1,0 +1,30 @@
+<div ng-cloak ng-show="!assignment.files.length>0">
+    <div id="rightSpinner" class="spinner"></div>
+</div>
+<div ng-cloak ng-show="assignment.files.length>0">
+    <table ng-repeat="file in assignment.files" id="files-table" cellspacing="0" cellpadding="0">
+        <tr id="{{file.name}}" class="fixedHeader">
+            <th>
+                {{file.numGraded}} / {{course.numStudents}}
+            <th>
+                {{file.name}}
+            </th>
+            <th>
+                <input type="button" id="gradeUnsubmitted_{{file.name}}" value="Grade Unsubmitted">
+            </th>
+        </tr>
+        <tr ng-repeat="student in course.students" class="{{file.name}}">
+            <td colspan="2">
+                {{student.name}}
+            </td>
+            <td class="lastCol">
+                <div ng-if="!isDefined(file.grade)">
+                    <input type="button" id="grade_{{file.name}}_{{student.name}}" value="Grade Problem">
+                </div>
+                <div ng-if="isDefined(file.grade)">
+                    <input type="button" id="grade_{{file.name}}_{{student.name}}" value="Graded by {{file.gradedBy}}">
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
