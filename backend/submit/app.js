@@ -9,8 +9,6 @@
 var flash = require('connect-flash');
 
 var express = require('express');
-var routes = require('./routes');
-var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
 
@@ -62,6 +60,8 @@ app.use(express.json());       // to support JSON-encoded bodies
 app.use(express.urlencoded()); // to support URL-encoded bodies
 
 //routes
+var routes = require('./routes/routes')(app, passport);
+
 app.get('/', function(req, res){
     res.render('index');
 });
@@ -77,9 +77,6 @@ app.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
-app.get('/cs5', isLoggedIn, function(req, res) {
-    res.render('student');
-});
 
 // json route for course info
 app.get('/assignments/:course', isLoggedIn, function(req, res) {
