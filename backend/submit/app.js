@@ -210,42 +210,6 @@ function isLoggedIn(req, res, next) {
     res.redirect('/');
 }
 
-// Make this whole mechanism less sketch
-app.post('/changemail', function(req, res) {
-    console.log("Changing your email");
-    if(req.isAuthenticated()) {
-        user = req.user;
-        user.local.email = req.body.email;
-        console.log(user);
-        user.save(function(err) {
-            if(err) {
-                console.log("Error saving user email");
-                throw err;
-            }
-        });
-    }
-    res.redirect('/cs5');
-});
-
-app.post('/changepw', isLoggedIn, function(req, res) {
-    user = req.user;
-    // TODO HOLY SHIT WE ARE POSTING PLAINTEXT PASSWORDS FIXME
-    pw = req.body.password;
-    console.log(pw);
-    user.local.password = user.generateHash(pw);
-    user.save(function(err) {
-        if(err) {
-            console.log("Error saving user password");
-            throw err;
-        }
-    });
-    res.redirect('/cs5');
-});
-
-app.get('/settings', isLoggedIn, function(req, res) {
-    res.render('settings');
-});
-
 app.post('/signup', passport.authenticate('local-signup', {
     successRedirect : '/', // redirect to the secure profile section
     failureRedirect : '/signup', // redirect back to the signup page if there is an error
