@@ -8,7 +8,8 @@ var courseSchema = mongoose.Schema({
         name: String,
         current_assignment: ObjectId,
         // TODO: add these types
-        // students: [ObjectId],
+        students: [ObjectId],
+        numStudents: Number,
         // graders: [ObjectId],
         // professors: [ObjectId],
         assignments: {

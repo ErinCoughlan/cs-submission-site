@@ -12,6 +12,7 @@ var studentSchema = mongoose.Schema({
             name: String,
             point: Number,
             grade: Number,
+            gradedBy: ObjectId,
             comment: String,
             // TODO
             // partners: [ObjectId],
