@@ -107,8 +107,20 @@ app.get('/logout', function(req, res) {
 });
 
 
-app.get('/grader', isLoggedIn, function(req, res) {
+app.get('/grader/course/:course', isLoggedIn, function(req, res) {
     res.render('grader');
+});
+
+app.get('/students/:course', isLoggedIn, function(req, res) {
+    var courseid = req.params.course;
+    Course.findOne({"name": courseid}, function(err, course) {
+        
+        // Find all matching students
+        Student.find({"course_id": course._id}, function(err, students) {
+            var data = { 'students' : students };
+            res.json(data);
+        });
+    });
 });
 
 app.get('/grade', isLoggedIn, function(req, res) {
@@ -131,7 +143,7 @@ app.get('/assignments/:course', isLoggedIn, function(req, res) {
         Assignment.find({"_id": {$in: course.assignments}} , function(err, assignments) {
             var myArr = {
                 'course': course,
-                'assignments': assignments
+                 'assignments': assignments
             };
             res.json(myArr);
         });
