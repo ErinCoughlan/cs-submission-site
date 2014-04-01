@@ -25,6 +25,9 @@
             }
         );
 
+        // set the default left column view to assignment
+        $scope.view = "assignments"
+
         // indicates whether the path is currently active
         $scope.isActive = function(path) {
             if ($location.path().substr(0, path.length) == path) {

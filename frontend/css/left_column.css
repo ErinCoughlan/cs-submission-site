@@ -23,8 +23,16 @@
     text-align: center;
 }
 
+#leftCol .colHeader .option{
+    width: 50%;
+    display: inline-block;
+}
+
+#leftCol .colHeader .option.active{
+    box-shadow: inset 0px 1px 6px 1px rgba(255,255,255,.7);
+}
+
 #leftCol .points {
     float: right;
     margin-right: 3px;
 }
-
