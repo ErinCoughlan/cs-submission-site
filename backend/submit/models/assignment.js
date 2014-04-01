@@ -5,6 +5,7 @@ var filetemplate = require('filetemplate');
 // ObjectId allows us to reference other objects
 
 var ObjectId = mongoose.Schema.ObjectId;
+var ObjIdTy = mongoose.Types.ObjectId;
 var assignmentSchema = mongoose.Schema({
         name: String,
         due: Date,
@@ -12,7 +13,7 @@ var assignmentSchema = mongoose.Schema({
         // type: ObjectId,
         euros: Number,
         files: [{
-            type: Schema.Types.ObjectId, ref: 'FileTemplate'
+            type: ObjIdTy, ref: 'FileTemplate'
         }];
     });
 

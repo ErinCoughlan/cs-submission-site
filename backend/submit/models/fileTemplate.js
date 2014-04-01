@@ -2,8 +2,9 @@ var mongoose = require('mongoose');
 
 // the model an assignment uses as a template for file submissions.
 var objectId = mongoose.Schema.ObjectId;
+var ObjIdTy = mongoose.Types.ObjectId;
 var fileTemplateSchema = mongoose.Schema({
-    assignment: {type: ObjectId, ref: "AssignmentSchema"}
+    assignment: {type: ObjIdTy, ref: "AssignmentSchema"}
     name: String,
     maxScore: Number,
     partnerable: Boolean,

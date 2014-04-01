@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 // define the schema for our course model
 // ObjectId allows us to reference other objects
 var ObjectId = mongoose.Schema.ObjectId;
+var ObjIdTy = mongoose.Types.ObjectId;
 var courseSchema = mongoose.Schema({
     name: String,
     current_assignment: ObjectId,
@@ -12,7 +13,7 @@ var courseSchema = mongoose.Schema({
     // graders: [ObjectId],
     // professors: [ObjectId],
     assignments: [{
-        type: ObjectId, ref: "AssignmentSchema"
+        type: ObjIdTy, ref: "AssignmentSchema"
     }];
 });
 

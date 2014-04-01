@@ -2,18 +2,19 @@ var mongoose = require('mongoose');
 
 // the model for a student's submtted file
 var objectId = mongoose.Schema.ObjectId;
+var ObjIdTy = mongoose.Types.ObjectId;
 var fileSchema = mongoose.Schema({
     grade: Number,
-    gradedBy: {type: ObjectId, ref: 'GraderSchema'},
-    owner: {type: ObjectId, ref: 'StudentSchema'},
-    partner: {type: ObjectId, ref: 'StudentSchema'},
+    gradedBy: {type: ObjIdTy, ref: 'GraderSchema'},
+    owner: {type: ObjIdTy, ref: 'StudentSchema'},
+    partner: {type: ObjIdTy, ref: 'StudentSchema'},
     studentComments: String,
     graderComments: String, 
-    course: {ObjectId, ref: 'CourseSchema'},
-    assignment: {ObjectId, ref: 'AssignmentSchema'},
-    template: {ObjectId, ref: 'FileTemplateSchema'},
+    course: {type: ObjIdTy, ref: 'CourseSchema'},
+    assignment: {type: ObjIdTy, ref: 'AssignmentSchema'},
+    template: {type: ObjIdTy, ref: 'FileTemplateSchema'},
     submissions: [{
-        ObjectId, ref: 'SubmissionSchema'
+        type: ObjIdTy, ref: 'SubmissionSchema'
     }];
 });
 
