@@ -22,4 +22,4 @@ var courseSchema = mongoose.Schema({
     });
 
 // create the model expose it to our app
-module.exports = mongoose.model('Course', courseSchema);
+module.exports = mongoose.model('CourseSchema', courseSchema);
