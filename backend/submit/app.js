@@ -153,7 +153,7 @@ app.get('/course/:course/assignment/:assignment/file/:file/submit/', isLoggedIn,
             res.send(student);
             
             // get the correct assignment
-            Assignment.findOne({"course_id": cousre._id, "name": courseName}, 
+            Assignment.findOne({"course_id": course._id, "name": courseName}, 
                 function(err, retrievedAssignment) {
                     if(err) {
                         res.send("Error getting assignment");
