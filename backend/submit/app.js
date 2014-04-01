@@ -125,7 +125,9 @@ app.get('/students/:course', isLoggedIn, function(req, res) {
                 res.send("error getting students");
                 return;
             }
-
+            // TODO unhardcode
+            students[0].name = "Zach Dodds";
+            console.log(students);
             var data = { 'students' : students };
             res.json(data);
         });
