@@ -8,4 +8,4 @@ var submissionSchema = mongoose.Schema({
     });
 
 // create the model expose it to our app
-module.exports = mongoose.model('SubmissionSchema', submissionSchema);
+module.exports = mongoose.model('Submission', submissionSchema);

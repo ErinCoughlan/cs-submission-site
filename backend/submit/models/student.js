@@ -11,5 +11,5 @@ var studentSchema = mongoose.Schema({
 
 
 // create the model expose it to our app
-module.exports = mongoose.model('StudentSchema', studentSchema);
+module.exports = mongoose.model('Student', studentSchema);
 

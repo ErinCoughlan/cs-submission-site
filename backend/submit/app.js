@@ -84,13 +84,15 @@ app.get('/assignments/:course', isLoggedIn, function(req, res) {
     var userid = req.session.passport.user;
     var courseid = req.params.course;
     console.log("got request for course", req.params, "from", req.session);
-    Course.findOne({"name":course}, function ( err, course){
-        console.log("sending", course);
+    
+    Course.findOne({'name': courseid}, function (err, course) {
+        console.log("sending", courseid);
         if(err) {
             res.send("Error getting list of assignments.");
             return;
         }
         res.send(course);
+        console.log(course);
     });
 });
 
@@ -101,12 +103,13 @@ app.get('/course/:course/assignment/:assignment', isLoggedIn, function(req, res)
     var course;
     var assignmentname = req.params.assignment;
 
-     Course.findOne({"name":coursename}, function(err, retrievedCourse) { 
+     Course.findOne({"name": coursename}, function(err, retrievedCourse) { 
          if(err) { 
              res.send("Error getting course");
              return;
          } 
          
+
          course = retrievedCourse;
          res.send(course);
          
@@ -140,7 +143,7 @@ app.get('/course/:course/assignment/:assignment/file/:file/submit/', isLoggedIn,
         res.send(course);
 
         // Get the current user's student object for the current course
-        Student.findOne({"user_id":userid.id_, "course_id":course.id_}, function(err, retrievedStudent) {
+        Student.findOne({"user_id":userid._id, "course_id":course._id}, function(err, retrievedStudent) {
             if(er) {
                 res.send("Error getting student");
                 return;
@@ -150,7 +153,7 @@ app.get('/course/:course/assignment/:assignment/file/:file/submit/', isLoggedIn,
             res.send(student);
             
             // get the correct assignment
-            Assignment.findOne({"course_id": cousre.id_, "name": courseName}, 
+            Assignment.findOne({"course_id": cousre._id, "name": courseName}, 
                 function(err, retrievedAssignment) {
                     if(err) {
                         res.send("Error getting assignment");
@@ -164,7 +167,7 @@ app.get('/course/:course/assignment/:assignment/file/:file/submit/', isLoggedIn,
                     // TODO catch edge case if assignment changes while this might be being used.
                     // Generally, assignments won't be being modified when we try to grab files,
                     // so the new-file-creation for all students should be safe usually.
-                    File.findOne({"course": course.id_, "owner": student.id_,
+                    File.findOne({"course": course._id, "owner": student._id,
                                   "assignment": assignment.id_}, function(err, retrievedFile) { 
                                       if(err) {
                                           res.send("Error getting file");
@@ -240,7 +243,7 @@ app.post('/course/:course/assignment/:assignment/', isLoggedIn, function(req,res
                 
 
                 // Get the current user's student object for this course
-                Student.findOne({"user_id":userid.id_, "course_id":course.id_}, function(err, retrievedStudent) {
+                Student.findOne({"user_id":userid._id, "course_id":course._id}, function(err, retrievedStudent) {
                     if(er) {
                         res.send("Error getting student");
                         return;
@@ -250,7 +253,7 @@ app.post('/course/:course/assignment/:assignment/', isLoggedIn, function(req,res
                     res.send(student);
                     
                     // get the correct assignment
-                    Assignment.findOne({"course_id": cousre.id_, "name": courseName}, 
+                    Assignment.findOne({"course_id": cousre._id, "name": courseName}, 
                        function(err, retrievedAssignment) {
                            if(err) {
                                res.send("Error getting assignment");
@@ -264,15 +267,15 @@ app.post('/course/:course/assignment/:assignment/', isLoggedIn, function(req,res
                            // TODO catch edge case if assignment changes while this might be being used.
                            // Generally, assignments won't be being modified when we try to grab files,
                            // so the new-file-creation for all students should be safe usually.
-                           File.findOne({"course": course.id_, "owner": student.id_,
-                                         "assignment": assignment.id_, "name": fileid}, function(err, retrievedFile) { 
+                           File.findOne({"course": course._id, "owner": student._id,
+                                         "assignment": assignment._id, "name": fileid}, function(err, retrievedFile) { 
                                              if(err) {
                                                  res.send("Error getting file");
                                                  return;
                                              }
                                              
                                              
-                                             retrievedFile.submissions.push(file.id_);
+                                             retrievedFile.submissions.push(file._id);
                                              retrievedFile.comment = comments[key];
                                              retrievedFile.save();
                                                  

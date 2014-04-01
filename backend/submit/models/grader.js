@@ -11,4 +11,4 @@ var graderSchema = mongoose.Schema({
 
 
 // create the model expose it to our app
-module.exports = mongoose.model('GraderSchema', graderSchema);
+module.exports = mongoose.model('Grader', graderSchema);

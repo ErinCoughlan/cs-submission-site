@@ -16,7 +16,7 @@
         // TODO: get this from the server during page load somehow.
         // maybe a <script src="/courses.js"></script> in student.html
         // with a route on the server that supplies the list of courses?
-        var courseid = "531ea533e4b0ea5911efe9f6";
+        var courseid = "CS5";
 
         // get the list of assignments
         $http.get('/assignments/'+courseid).success(

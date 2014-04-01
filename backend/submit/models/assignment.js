@@ -17,4 +17,4 @@ var assignmentSchema = mongoose.Schema({
 });
 
 // create the model expose it to our app
-module.exports = mongoose.model('AssignmentSchema', assignmentSchema);
+module.exports = mongoose.model('Assignment', assignmentSchema);
