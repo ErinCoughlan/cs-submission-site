@@ -161,7 +161,9 @@ app.get('/course/:course/assignment/:assignment', isLoggedIn, function(req, res)
                         // now add whatever properties are needed from either
                         return {"name": template.name, 
                                 "maxScore": template.maxScore,
-                                "grade": file.grade};
+                                "grade": file.grade,
+                                "studentComments": file.studentComments,
+                                "graderComments": file.graderComments};
                     });
                     var data = {
                         'course': course,

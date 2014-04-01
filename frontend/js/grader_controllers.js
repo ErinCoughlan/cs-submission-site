@@ -95,7 +95,10 @@
     });
 
     submissionApp.controller('GraderAssignmentCtrl', function ($scope, $http, $routeParams) {
-        $scope.isDefined = angular.isDefined;
+        $scope.isDefined = function (item){ 
+            return angular.isDefined(item) && (item !== null)
+        };
+
 
         this.params = $routeParams;
 
