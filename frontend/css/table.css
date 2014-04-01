@@ -1,30 +1,27 @@
 table.collapseTable {
-	border: 1px solid #000;
-	width: 800px;
+	margin: 0px;
 }
 
 .collapseTable td, .collapseTable th {
+	min-width: 200px;
 	padding: 10px;
 	text-align: left;
-	width: 400px;
 }
 
-.collapseTable th {
-	border: 3px solid #000;
-	border-left: 0px;
+.collapseTable tr {
+	border-bottom: 1px solid #000;
 }
 
 .collapseTable td:first-child {
-	width: 200px;
+	min-width: 100px;
 }
 
 .collapseTable th:first-child {
-	border: 3px solid #000;
-	width: 200px;
+	min-width: 100px;
 }
 
-.collapseTable tr:nth-child(odd) {
-	background-color: gray;
+.collapseTable tr:first-child {
+	background: rgb(40, 77, 97);
 }
 
 .fixedHeader th {
