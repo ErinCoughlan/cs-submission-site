@@ -5,8 +5,6 @@
         <link rel="stylesheet" type="text/css" href="../css/global.css">
         <link rel="stylesheet" type="text/css" href="../css/layout.css">
         <link rel="stylesheet" type="text/css" href="../css/header.css">
-        <link rel="stylesheet" type="text/css" href="../css/right_column.css">
-        <link rel="stylesheet" type="text/css" href="../css/left_column.css">
         <link rel="stylesheet" type="text/css" href="../css/grade.css">
         <link rel="stylesheet" type="text/css" href="../css/loader.css">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js"></script>
@@ -37,37 +35,36 @@
                     {{assignment.name}} - Problem: {{file.template.name}} - Student: {{file.owner}}
                 </div>
                 <hr id="iRule">
-                <form name="form-grade" enctype="multipart/form-data">
-                    
-                    <div class="lfloat">
-                        <div class="graderBox">
-                            Score: <input type="text" id="score" name="score"> out of {{file.template.score}}
+                <form id="form-grade" class="center" name="form-grade" enctype="multipart/form-data">
+                    <div class="formGroup">
+                        <div class="lfloat">
+                            <div class="graderBox">
+                                Score: <input type="text" id="score" name="score"> out of {{file.template.score}}
+                            </div>
+                            <div class="graderBox">
+                                Grader Comments: <br>
+                                <textarea  rows="18" cols="80%" ng-model="file.comment_to_submit">{{file.comment || ''}}</textarea>
+                            </div>
                         </div>
-                        <div class="graderBox">
-                            Grader Comments: <br>
-                            <textarea  rows="18" cols="80%" ng-model="file.comment_to_submit">{{file.comment || ''}}</textarea>
+                        <div class="rfloat">
+                            <div class="graderBox">
+                                <div ng-if="isDefined(file.partner)">
+                                    Partner Claimed: {{file.partner}}
+                                </div>
+                                <div ng-if="!isDefined(file.grade)">
+                                    No Partner Claimed.
+                                </div>
+                            </div>
+                            <div class="graderBox">
+                                Student Comments:
+                                <div class="studentComment">
+                                    <textarea rows="2" cols="80%" disabled="disabled" placeholder="None">{{file.studentComments || ''}}</textarea>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="rfloat">
-                        <div class="graderBox">
-                            <div ng-if="isDefined(file.partner)">
-                                Partner Claimed: {{file.partner}}
-                            </div>
-                            <div ng-if="!isDefined(file.grade)">
-                                No Partner Claimed.
-                            </div>
-                        </div>
-                        <div class="graderBox">
-                            Student Comments:
-                            <div class="studentComment">
-                                <textarea rows="2" cols="80%" disabled="disabled" placeholder="None">{{file.studentComments || ''}}</textarea>
-                            </div>
-                        </div>
-                    </div>
+                    <input type="submit" id="submit" value="Submit" ng-click="submit(event)">
                 </form>
-                <div class="center">
-                    <input type="button" id="submit" value="Submit" ng-click="submit(event)">
-                </div>
             </div>
         </div>
     </body>

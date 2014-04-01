@@ -6,6 +6,15 @@
 	width: 50px;
 }
 
+#submit {
+	display: block;
+	margin: 0px auto;
+}
+
 .graderBox {
 	margin: 10px;
+}
+
+.formGroup {
+	height: 350px;
 }
