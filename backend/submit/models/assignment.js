@@ -7,15 +7,16 @@ var filetemplate = require('filetemplate');
 var ObjectId = mongoose.Schema.ObjectId;
 var ObjIdTy = mongoose.Types.ObjectId;
 var assignmentSchema = mongoose.Schema({
-        name: String,
-        due: Date,
-        // TODO: add these types
-        // type: ObjectId,
-        euros: Number,
-        files: [{
-            type: ObjIdTy, ref: 'FileTemplate'
-        }];
-    });
+    course_id: {type: ObjIdTy, ref: 'Course'},
+    name: String,
+    due: Date,
+    // TODO: add these types
+    // type: ObjectId,
+    euros: Number,
+    files: [{
+        type: ObjIdTy, ref: 'FileTemplate'
+    }];
+});
 
 // create the model expose it to our app
 module.exports = mongoose.model('AssignmentSchema', assignmentSchema);
