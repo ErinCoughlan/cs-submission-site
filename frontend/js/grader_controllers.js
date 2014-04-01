@@ -21,7 +21,8 @@
         // get the list of assignments
         $http.get('/assignments/'+submissionApp.courseid).success(
             function (data) {
-                $scope.course = data;
+                $scope.course = data['course'];
+                $scope.assignments = data['assignments'];
             }
         );
 

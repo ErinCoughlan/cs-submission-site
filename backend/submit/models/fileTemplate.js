@@ -13,5 +13,6 @@ var fileTemplateSchema = mongoose.Schema({
 
 
 // create the model expose it to our app
-module.exports = mongoose.model('FileTemplate', fileTemplateSchema);
+// manuallsy set the collection name to 'fileTemplates'
+module.exports = mongoose.model('fileTemplate', fileTemplateSchema, 'fileTemplates');
 

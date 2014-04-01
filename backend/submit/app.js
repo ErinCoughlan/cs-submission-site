@@ -33,6 +33,7 @@ var Course     = require('./models/course.js');
 var Assignment = require('./models/assignment.js');
 var Submission = require('./models/submission.js');
 var File       = require('./models/file.js');
+var FileTemplate = require('./models/fileTemplate.js')
 
 // Configuration to handle the removal of req.flash
 var app = express();
@@ -65,6 +66,34 @@ var routes = require('./routes/routes')(app, passport);
 
 app.get('/', function(req, res){
     res.render('index');
+});
+
+// create file documents from fileTemplates. hardcoded to testuser.
+// running this will create duplicates.
+app.get('/filesfromtemplates', function(req, res){
+    FileTemplate.find({}, function(err, templates){
+      templates.forEach(function(template){
+        var file = {
+            "assignment": template.assignment,
+            "template": template._id,
+            "grade": null,
+            "gradedBy": null,
+            "owner": {
+                "$oid": "533abdaee4b09d8a1148b087"
+            },
+            "partner": null,
+            "studentComments": null,
+            "graderComments": null,
+            "course": {
+                "$oid": "531ea533e4b0ea5911efe9f6"
+            },
+            "submissions": []
+        }
+        console.log(file)
+        new File(file).save(file)
+      })
+    });
+    res.send('ok');
 });
 
 app.post('/login',
@@ -122,8 +151,8 @@ app.get('/course/:course/assignment/:assignment', isLoggedIn, function(req, res)
              Assignment.findById(assign, function (err, assignment) {
                  console.log(assignment.name, assignmentname);
                  if(assignment.name === assignmentname) {
-                    console.log(assignment.files)
-                    File.find({"_id": {$in: assignment.files.toObject()}} , function(err, files) {
+                    console.log("files", assignment.files)
+                    File.find({"template": {$in: assignment.files.toObject()}} , function(err, files) {
                         var myArr = {
                             'course': course,
                             'assignment': assignment,
