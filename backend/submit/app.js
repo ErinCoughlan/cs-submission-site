@@ -111,6 +111,10 @@ app.get('/grader', isLoggedIn, function(req, res) {
     res.render('grader');
 });
 
+app.get('/grade', isLoggedIn, function(req, res) {
+    res.render('grade');
+});
+
 // json route for course info
 app.get('/assignments/:course', isLoggedIn, function(req, res) {
     var userid = req.session.passport.user;

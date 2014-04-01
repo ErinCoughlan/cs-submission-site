@@ -2,37 +2,29 @@
     <div id="rightSpinner" class="spinner"></div>
 </div>
 <div ng-cloak ng-show="files.length>0">
-    <div class="colHeader">Due: {{assignment.due | date : 'MMM d, yyyy h:mm a'}}</div>
-    <form id="form-submit">
-        <input id="assignment" type="hidden" name="assignment" value="{{assignment.name}}">
-        <table id="files-table" cellspacing="0" cellpadding="0">
-            <tr ng-repeat="file in files">
-                <td>
-                    {{file.name}}
-                </td>
-                <td>
-                    <div ng-if="!isDefined(file.grade)">
-                        NA/{{file.maxScore}}
-                    </div>
-                    <div ng-if="isDefined(file.grade)">
-                        {{file.grade}}/{{file.maxScore}}
-                    </div>
-                </td>
-                <td>
-                    <input ng-if="!isDefined(file.grade)" type="file" file-model="file.file_to_submit">
-                    <div ng-if="isDefined(file.grade)">Graded.</div>
-                    <div ng-if="file.submissions">
-                        <a ng-href="/submission/{{file.submissions[file.submissions.length-1].id}}" class="download-link">
-                            File submitted on {{file.submissions[file.submissions.length-1].date | date : 'short'}}.
-                        </a>
-                    </div>
-                </td>
-                <td class="lastCol">
-                    <textarea ng-if="!isDefined(file.grade)" rows="4" cols="30" placeholder="{{file.studentComments || 'Comments or partners. (Enter joint submissions using @username)'}}" ng-model="file.comment_to_submit"></textarea>
-                    <p ng-if="isDefined(file.grade)">{{file.studentComments}}</p>
-                </td>
-            </tr>
-        </table>
-    </form>
-    <input type="button" id="submit" value="Submit" ng-click="submit(event)">
+    <table ng-repeat="file in files" class="collapseTable" id="files-table" cellspacing="0" cellpadding="0">
+        <tr id="{{file.name}}" class="fixedHeader">
+            <th>
+                {{file.numGraded}} / {{course.numStudents}}
+            <th>
+                {{file.name}}
+            </th>
+            <th>
+                <input type="button" id="gradeUnsubmitted_{{file.name}}" value="Grade Unsubmitted">
+            </th>
+        </tr>
+        <tr ng-repeat="student in course.students" class="{{file.name}}">
+            <td colspan="2">
+                {{student.name}}
+            </td>
+            <td class="lastCol">
+                <div ng-if="!isDefined(file.grade)">
+                    <input type="button" id="grade_{{file.name}}_{{student.name}}" value="Grade Problem">
+                </div>
+                <div ng-if="isDefined(file.grade)">
+                    <input type="button" id="grade_{{file.name}}_{{student.name}}" value="Graded by {{file.gradedBy}}">
+                </div>
+            </td>
+        </tr>
+    </table>
 </div>

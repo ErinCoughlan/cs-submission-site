@@ -16,6 +16,5 @@ var assignmentSchema = mongoose.Schema({
     point: Number,
     files: [ ObjectId ]
 });
-
 // create the model expose it to our app
 module.exports = mongoose.model('Assignment', assignmentSchema);

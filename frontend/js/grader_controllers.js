@@ -18,18 +18,19 @@
         this.$location = $location;
         this.$routeParams = $routeParams;
 
-        $scope.courseid = submissionApp.courseid
+        $scope.courseid = submissionApp.courseid;
 
         // get the list of assignments
         $http.get('/assignments/'+submissionApp.courseid).success(
             function (data) {
-                $scope.course = data['course'];
-                $scope.assignments = data['assignments'];
+                console.log(data);
+                $scope.course = data.course;
+                $scope.assignments = data.assignments;
             }
         );
 
         // set the default left column view to assignment
-        $scope.view = "assignments"
+        $scope.view = "assignments";
 
         // indicates whether the path is currently active
         $scope.isActive = function(path) {
@@ -84,56 +85,47 @@
                     console.log(m);
                 }
             });
-            /*
-            .success(function(m){
-                console.log(m);
-                window.location.href="/cs5";
-            })
-            .error(function(m){
-                console.log(m);
-            });
-*/
-        }
+        };
     });
 
     submissionApp.controller('GraderAssignmentCtrl', function ($scope, $http, $routeParams) {
-        $scope.isDefined = function (item){ 
-            return angular.isDefined(item) && (item !== null)
+        $scope.isDefined = function (item){
+            return angular.isDefined(item) && (item !== null);
         };
 
-        $scope.courseid = submissionApp.courseid
+        $scope.courseid = submissionApp.courseid;
 
         this.params = $routeParams;
 
         // get the list of files for the assignment
         $http.get('/course/' + submissionApp.courseid + '/assignment/' + this.params.assignmentId).success(
             function (data) {
-                console.log(data)
+                console.log(data);
                 $scope.course = data['course'];
                 $scope.assignment = data['assignment'];
                 $scope.files = data['files'];
             }
         );
 
-        // submit files and comments
+       // submit files and comments
         $scope.submit = function submit($event) {
             var assignmentid = $scope.assignment._id;
             console.log($scope, $scope.assignment, $scope.assignment.files);
             var fd = new FormData();
             var comments = {}
-            $scope.assignment.files.forEach(function(file){
-                console.log(file);
+            $scope.files.forEach(function(file){
+                console.log("file", file);
                 if(file.file_to_submit){
-                    console.log(file.file_to_submit);
-                    fd.append(file.id, file.file_to_submit);
+                    console.log("to submit", file.file_to_submit);
+                    fd.append(file.name, file.file_to_submit);
                 }
                 if(file.comment_to_submit){
-                    comments[file.id] = file.comment_to_submit
+                    comments[file.name] = file.comment_to_submit
                 }
             });
             fd.append("comments", JSON.stringify(comments));
 
-            $http.post('/course/'+$scope.courseid+'/assignment/'+assignmentid, fd, {
+            $http.post('/course/'+$scope.courseid+'/assignment/'+assignmentid+'/', fd, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             })
@@ -151,3 +143,22 @@
     });
 
 })();
+
+
+/** Set up toggling rows for grader view */
+$(document).ready(function() {
+    $('tr.fixedHeader').click(function () {
+        toggleRowChildren($(this), 'fixedHeader');
+    });
+
+    function toggleRowChildren(parentRowElement, parentClass) {
+        var childClass = parentRowElement.attr('id');
+        $('tr.'+childClass, parentRowElement.parent()).toggle();
+        $('tr.'+childClass).each(function(){
+            if ($(this).hasClass(parentClass) && !$(this).hasClass('collapsed')) {
+                toggleRowChildren($(this), parentClass);
+            }
+        });
+        parentRowElement.toggleClass('collapsed');
+    }
+});

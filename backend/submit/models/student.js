@@ -1,4 +1,4 @@
-var mongoose = require('mongoose'); 
+var mongoose = require('mongoose');
 
 // the model for a student in a specific course
 var ObjectId = mongoose.Schema.ObjectId;
@@ -12,4 +12,3 @@ var studentSchema = mongoose.Schema({
 
 // create the model expose it to our app
 module.exports = mongoose.model('Student', studentSchema);
-
