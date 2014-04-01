@@ -14,21 +14,7 @@
         <script src="../js/controllers.js"></script>
     </head>
     <body ng-controller="StudentCtrl">
-        <div id="header">
-            <div id="navbar">
-                <ul>
-                    <li class="disabled">
-                        <div id="title">HMC CS
-                            <img class="alien" src="../img/alien.png">
-                        </div>
-                    </li>
-                    <!-- Disabled only if one course; otherwise show as dropdown -->
-                    <li class="disabled">{{course.name}}</li>
-                    <li class="rfloat"><a ng-href="logout">logout</a></li>
-                    <li class="rfloat"><a ng-href="settings">settings</a></li>
-                </ul>
-            </div>
-        </div>
+        <ng-include scr=" 'partials/header.html' "></ng-include>
         <div id="contentArea">
             <div id="gradeMain">
                 <div class="gradeHeader">
@@ -63,7 +49,7 @@
                             </div>
                         </div>
                     </div>
-                    <input type="submit" id="submit" value="Submit" ng-click="submit(event)">
+                    <input type="submit" id="submit" value="Submit" ng-click="submitGrade(event)">
                 </form>
             </div>
         </div>

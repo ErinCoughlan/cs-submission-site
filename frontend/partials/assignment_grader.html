@@ -1,8 +1,8 @@
-<div ng-cloak ng-show="!assignment.files.length>0">
+<div ng-cloak ng-show="!files.length>0">
     <div id="rightSpinner" class="spinner"></div>
 </div>
-<div ng-cloak ng-show="assignment.files.length>0">
-    <table ng-repeat="file in assignment.files" class="collapseTable" id="files-table" cellspacing="0" cellpadding="0">
+<div ng-cloak ng-show="files.length>0">
+    <table ng-repeat="file in files" class="collapseTable" id="files-table" cellspacing="0" cellpadding="0">
         <tr id="{{file.name}}" class="fixedHeader">
             <th>
                 {{file.numGraded}} / {{course.numStudents}}
