@@ -1,7 +1,7 @@
 var mongoose = require('mongoose'); 
 
 // the model for a student in a specific course
-var objectId = mongoose.Schema.ObjectId;
+var ObjectId = mongoose.Schema.ObjectId;
 var ObjIdTy = mongoose.Types.ObjectId;
 var studentSchema = mongoose.Schema({
     user_id: ObjectId,

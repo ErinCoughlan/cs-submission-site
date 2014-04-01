@@ -1,6 +1,6 @@
 // app/models/assignment.js
 var mongoose = require('mongoose');
-var filetemplate = require('filetemplate');
+var filetemplate = require('./fileTemplate');
 // define the schema for our assignment model
 // ObjectId allows us to reference other objects
 

@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 // the model for a student's submtted file
-var objectId = mongoose.Schema.ObjectId;
+var ObjectId = mongoose.Schema.ObjectId;
 var ObjIdTy = mongoose.Types.ObjectId;
 var fileSchema = mongoose.Schema({
     grade: Number,

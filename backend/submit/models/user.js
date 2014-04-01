@@ -13,7 +13,7 @@ var userSchema = mongoose.Schema({
         password     : String,
     },
     // Keep refs to this user's instances as a student and a grader
-    students: [ ObjetId ],
+    students: [ ObjectId ],
     graders: [ ObjectId ] 
 });
 
