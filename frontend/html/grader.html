@@ -3,21 +3,21 @@
 <html lang="en" id="submission-student" ng-app="submissionApp">
     <head>
         <title> CS Submissions </title>
-        <link rel="stylesheet" type="text/css" href="../css/global.css">
-        <link rel="stylesheet" type="text/css" href="../css/layout.css">
-        <link rel="stylesheet" type="text/css" href="../css/header.css">
-        <link rel="stylesheet" type="text/css" href="../css/right_column.css">
-        <link rel="stylesheet" type="text/css" href="../css/left_column.css">
-        <link rel="stylesheet" type="text/css" href="../css/loader.css">
+        <link rel="stylesheet" type="text/css" href="/css/global.css">
+        <link rel="stylesheet" type="text/css" href="/css/layout.css">
+        <link rel="stylesheet" type="text/css" href="/css/header.css">
+        <link rel="stylesheet" type="text/css" href="/css/right_column.css">
+        <link rel="stylesheet" type="text/css" href="/css/left_column.css">
+        <link rel="stylesheet" type="text/css" href="/css/loader.css">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-route.js"></script>
-        <script src="../js/app.js"></script>
-        <script src="../js/grader_controllers.js"></script>
-        <script src="../js/student_controllers.js"></script>
+        <script src="/js/app.js"></script>
+        <script src="/js/grader_controllers.js"></script>
+        <script src="/js/student_controllers.js"></script>
     </head>
     <body ng-controller="GraderCtrl">
-        <ng-include src=" 'partials/header.html' "></ng-include>
+        <ng-include src=" '/partials/header.html' "></ng-include>
         <div id="contentArea">
             <div id="leftCol">
                 <div class="colHeader">
@@ -44,11 +44,11 @@
                         </a>
                     </ul>
                     <ul ng-switch-when="students">
-                        <a ng-repeat="assignment in assignments"
-                           ng-href="#/grader/assignments/{{assignment.name}}">
+                        <a ng-repeat="student in studentss"
+                           ng-href="#/grader/course/{{course.name}}/students/{{student.name}}">
                             <li
                                 ng-class="{active: isActive('/grader/assignments/'+assignment.name)}">
-                                Student {{assignment.name}}
+                              {{student.name}}
                                 <div class="points">{{assignment.grade || "NA"}}/{{assignment.point}}</div>
                             </li>
                         </a>
