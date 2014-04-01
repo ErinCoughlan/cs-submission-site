@@ -20,14 +20,14 @@
         <div id="contentArea">
             <div id="gradeMain">
                 <div class="gradeHeader">
-                    {{assignment.name}} - Problem: {{file.template.name}} - Student: {{file.owner}}
+                    Homework 1 - Problem: game.py - Student: Zach Dodds
                 </div>
                 <hr id="iRule">
                 <form id="form-grade" class="center" name="form-grade" enctype="multipart/form-data">
                     <div class="formGroup">
                         <div class="lfloat">
                             <div class="graderBox">
-                                Score: <input type="text" id="score" name="score"> out of {{file.template.score}}
+                                Score: <input type="text" id="score" name="score"> out of 42
                             </div>
                             <div class="graderBox">
                                 Grader Comments: <br>
@@ -51,7 +51,7 @@
                             </div>
                         </div>
                     </div>
-                    <input type="submit" id="submit" value="Submit" ng-click="submit(event)">
+                    <input type="submit" id="submit" value="Submit" ng-href="/cs5"><!--ng-click="submit(event)">-->
                 </form>
             </div>
         </div>

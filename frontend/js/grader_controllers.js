@@ -112,6 +112,7 @@
                 $scope.course = data.course;
                 $scope.assignment = data.assignment;
                 $scope.files = data.files;
+                $scope.students = data.students;
             }
         );
 

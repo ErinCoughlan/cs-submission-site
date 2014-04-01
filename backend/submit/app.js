@@ -190,12 +190,20 @@ app.get('/course/:course/assignment/:assignment', isLoggedIn, function(req, res)
                                 "studentComments": file.studentComments,
                                 "graderComments": file.graderComments};
                     });
-                    var data = {
-                        'course': course,
-                        'assignment': assignment,
-                        'files': combined_files
-                    };
-                    res.json(data);
+
+                    Student.find({"course_id": course._id}, function(err, students) {
+                        // TODO unhardcode
+                        console.log(students);
+                        students[0].name = "Zach Dodds";
+                        
+                        var data = {
+                            'students': students,
+                            'course': course,
+                            'assignment': assignment,
+                            'files': combined_files
+                        };
+                        res.json(data);
+                    });
                 });
             });
         });

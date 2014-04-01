@@ -14,7 +14,7 @@ module.exports = function(app, passport) {
 
 
     // TODO validate that it's a grutor for the class
-    app.post("/:course/:assignment/:student/:file/grade", isLoggedIn, function(req, res) {
+    app.post("/course/:course/assignment/:assignment/student/:student/file/:file/grade", isLoggedIn, function(req, res) {
         var grader         = req.session.passport.user;
         var courseName     = req.params.course;
         var assignmentName = req.params.assignments;
