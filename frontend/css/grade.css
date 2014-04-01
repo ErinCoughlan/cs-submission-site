@@ -1,0 +1,11 @@
+#gradeMain {
+	font-size: 2em;
+}
+
+#score {
+	width: 50px;
+}
+
+.graderBox {
+	margin: 10px;
+}

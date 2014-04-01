@@ -15,7 +15,6 @@ body, button, input, label, select, td, textarea {
 }
 
 a {
-    color: #3b5998;
     cursor: pointer;
     text-decoration: none;
 }

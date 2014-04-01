@@ -78,15 +78,6 @@
                     console.log(m);
                 }
             });
-            /*
-            .success(function(m){
-                console.log(m);
-                window.location.href="/cs5";
-            })
-            .error(function(m){
-                console.log(m);
-            });
-*/
         }
     });
 
@@ -153,3 +144,22 @@
     }]);
 
 })();
+
+
+/** Set up toggling rows for grader view */
+$(document).ready(function() {
+    $('tr.fixedHeader').click(function () { 
+        toggleRowChildren($(this), 'fixedHeader');
+    });
+
+    function toggleRowChildren(parentRowElement, parentClass) {
+        var childClass = parentRowElement.attr('id');
+        $('tr.'+childClass, parentRowElement.parent()).toggle();
+        $('tr.'+childClass).each(function(){
+            if ($(this).hasClass(parentClass) && !$(this).hasClass('collapsed')) {
+                toggleRowChildren($(this), parentClass);
+            }
+        });
+        parentRowElement.toggleClass('collapsed');
+    }
+});
