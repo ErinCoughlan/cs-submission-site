@@ -11,6 +11,7 @@ var flash = require('connect-flash');
 var express = require('express');
 var http = require('http');
 var path = require('path');
+var _ = require('underscore');
 
 // file uploading
 var multiparty = require('multiparty');
@@ -141,30 +142,37 @@ app.get('/course/:course/assignment/:assignment', isLoggedIn, function(req, res)
     var coursename = req.params.course;
     var assignmentname = req.params.assignment;
 
-     Course.findOne({"name": coursename}, function(err, course) { 
-         if(err) { 
-             res.send("Error getting course");
-             return;
-         } 
+    Course.findOne({"name": coursename}, function(err, course) { 
+        if(err) { 
+            res.send("Error getting course");
+            return;
+        } 
 
-         course.assignments.forEach(function(assign) {
-             Assignment.findById(assign, function (err, assignment) {
-                 console.log(assignment.name, assignmentname);
-                 if(assignment.name === assignmentname) {
-                    console.log("files", assignment.files)
-                    File.find({"template": {$in: assignment.files.toObject()}} , function(err, files) {
-                        var myArr = {
-                            'course': course,
-                            'assignment': assignment,
-                            'files': files
-                        }
-                        console.log(files)
-                        res.json(myArr);
-                     });
-                 };
-             });
-         });
-     });
+        Assignment.findOne({"name": assignmentname}, function (err, assignment) {
+            File.find({"template": {$in: assignment.files.toObject()}} , function(err, files) {
+                FileTemplate.find({"_id": {$in: assignment.files.toObject()}}, function(err, fileTemplates) {
+                    console.log(err, fileTemplates)
+                    // combine the file and filetemplate
+                    var combined_files = _.map(files, function(file){
+                        var template = _.find(fileTemplates, function(ft){
+                            return ft._id.toString() === file.template.toString()
+                        });
+                        console.log("template", template, "file", file)
+                        // now add whatever properties are needed from either
+                        return {"name": template.name, 
+                                "maxScore": template.maxScore,
+                                "grade": file.grade};
+                    });
+                    var data = {
+                        'course': course,
+                        'assignment': assignment,
+                        'files': combined_files
+                    }
+                    res.json(data);
+                });
+            });
+        });
+    });
 });
 
 
