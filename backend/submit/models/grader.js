@@ -4,9 +4,9 @@ var mongoose = require('mongoose');
 var objectId = mongoose.Schema.ObjectId;
 var ObjIdTy = mongoose.Types.ObjectId;
 var graderSchema = mongoose.Schema({
-    user_id: {type: ObjIdTy, ref: "UserSchema"},
-    course_id: {type: ObjIdTy, ref: "CourseSchema"},
-    gradedFiles: [{type: ObjIdTy, ref: "FileSchema"}]
+    user_id: ObjectId,
+    course_id: ObjectId,
+    gradedFiles: [ ObjectId ]
 });
 
 

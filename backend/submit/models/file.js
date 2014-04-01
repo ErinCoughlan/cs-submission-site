@@ -5,17 +5,15 @@ var objectId = mongoose.Schema.ObjectId;
 var ObjIdTy = mongoose.Types.ObjectId;
 var fileSchema = mongoose.Schema({
     grade: Number,
-    gradedBy: {type: ObjIdTy, ref: 'GraderSchema'},
-    owner: {type: ObjIdTy, ref: 'StudentSchema'},
-    partner: {type: ObjIdTy, ref: 'StudentSchema'},
+    gradedBy: ObjectId,
+    owner: ObjectId,
+    partner: ObjectId,
     studentComments: String,
     graderComments: String, 
-    course: {type: ObjIdTy, ref: 'CourseSchema'},
-    assignment: {type: ObjIdTy, ref: 'AssignmentSchema'},
-    template: {type: ObjIdTy, ref: 'FileTemplateSchema'},
-    submissions: [{
-        type: ObjIdTy, ref: 'SubmissionSchema'
-    }];
+    course: ObjectId,
+    assignment: ObjectId,
+    template: ObjectId,
+    submissions: [ ObjectId ]
 });
 
 

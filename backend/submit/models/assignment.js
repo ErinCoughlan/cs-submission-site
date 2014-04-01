@@ -7,15 +7,13 @@ var filetemplate = require('filetemplate');
 var ObjectId = mongoose.Schema.ObjectId;
 var ObjIdTy = mongoose.Types.ObjectId;
 var assignmentSchema = mongoose.Schema({
-    course_id: {type: ObjIdTy, ref: 'Course'},
+    course_id: ObjectId,
     name: String,
     due: Date,
     // TODO: add these types
     // type: ObjectId,
     euros: Number,
-    files: [{
-        type: ObjIdTy, ref: 'FileTemplate'
-    }];
+    files: [ ObjectId ]
 });
 
 // create the model expose it to our app

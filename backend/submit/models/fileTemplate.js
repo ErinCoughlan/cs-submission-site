@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var objectId = mongoose.Schema.ObjectId;
 var ObjIdTy = mongoose.Types.ObjectId;
 var fileTemplateSchema = mongoose.Schema({
-    assignment: {type: ObjIdTy, ref: "AssignmentSchema"}
+    assignment: ObjectId,
     name: String,
     maxScore: Number,
     partnerable: Boolean,

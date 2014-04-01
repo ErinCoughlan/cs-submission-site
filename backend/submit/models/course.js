@@ -12,9 +12,8 @@ var courseSchema = mongoose.Schema({
     // students: [ObjectId],
     // graders: [ObjectId],
     // professors: [ObjectId],
-    assignments: [{
-        type: ObjIdTy, ref: "AssignmentSchema"
-    }];
+    assignments: [ ObjectId ]
+
 });
 
 // create the model expose it to our app
