@@ -113,10 +113,19 @@ app.get('/grader/course/:course', isLoggedIn, function(req, res) {
 
 app.get('/students/:course', isLoggedIn, function(req, res) {
     var courseid = req.params.course;
-    Course.findOne({"name": courseid}, function(err, course) {
-        
+    Course.findOne({"name": courseid}, function(err, course) {        
         // Find all matching students
+        if(err) {
+            res.send("error getting course");
+            return;
+        }
+
         Student.find({"course_id": course._id}, function(err, students) {
+            if(err) {
+                res.send("error getting students");
+                return;
+            }
+
             var data = { 'students' : students };
             res.json(data);
         });

@@ -29,6 +29,13 @@
             }
         );
 
+        $http.get('/students/' + $scope.courseid).success(
+            function(data) {
+                $scope.students = data.students;
+            }
+        );
+
+
         // set the default left column view to assignment
         $scope.view = "assignments";
 
@@ -40,13 +47,8 @@
                 return false;
             }
         };
-/*
-        $http.get('/students/' + courseid).success(
-            function(data) {
-                $scope.students = data.students;
-            }
-        );
-*/
+
+
         $scope.changeEmail = function changeEmail($event) {
             var form = document.getElementById("email-form");
             var fd = new FormData(form);
