@@ -116,7 +116,7 @@
                     fd.append(file.name, file.file_to_submit);
                 }
                 if(file.comment_to_submit){
-                    comments[file.id] = file.comment_to_submit
+                    comments[file.name] = file.comment_to_submit
                 }
             });
             fd.append("comments", JSON.stringify(comments));
