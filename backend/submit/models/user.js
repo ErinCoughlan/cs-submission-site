@@ -4,13 +4,17 @@ var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 
 // define the schema for our user model
+var ObjectId = mongoose.Schema.ObjetId;
+var ObjIdTy = mongoose.Types.ObjectId;
 var userSchema = mongoose.Schema({
-
     local            : {
         username     : String,
         email        : String,
         password     : String,
     },
+    // Keep refs to this user's instances as a student and a grader
+    students: [ ObjectId ],
+    graders: [ ObjectId ] 
 });
 
 // methods ======================

@@ -24,10 +24,10 @@
                     <div id="leftSpinner" class="spinner"></div>
                 </div
                 <ul ng-cloak ng-show="assignments">
-                    <a ng-repeat="assignment in course.assignments"
-                       ng-href="#/student/assignments/{{assignment.id}}">
+                    <a ng-repeat="assignment in assignments"
+                       ng-href="/course/{{course.name}}/assignment/{{assignment.name}}">
                         <li
-                            ng-class="{active: isActive('/student/assignments/'+assignment.id)}">
+                            ng-class="{active: isActive('/assignments/'+assignment._id)}">
                             {{assignment.name}}
                             <div class="points">{{assignment.grade || "NA"}}/{{assignment.point}}</div>
                         </li>

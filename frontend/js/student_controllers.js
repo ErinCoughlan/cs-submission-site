@@ -16,12 +16,13 @@
         // TODO: get this from the server during page load somehow.
         // maybe a <script src="/courses.js"></script> in student.html
         // with a route on the server that supplies the list of courses?
-        var courseid = "531ea533e4b0ea5911efe9f6";
+        var courseid = "CS5";
 
         // get the list of assignments
         $http.get('/assignments/'+courseid).success(
             function (data) {
-                $scope.course = data;
+                $scope.course = data['course'];
+                $scope.assignments = data['assignments'];
             }
         );
 
@@ -78,15 +79,6 @@
                     console.log(m);
                 }
             });
-            /*
-            .success(function(m){
-                console.log(m);
-                window.location.href="/cs5";
-            })
-            .error(function(m){
-                console.log(m);
-            });
-*/
         }
     });
 
@@ -96,9 +88,12 @@
         this.params = $routeParams;
 
         // get the list of files for the assignment
-        $http.get('/assignment/' + this.params.assignmentId).success(
+
+        $http.get('/course/' + this.params.courseid + '/assignment/' + this.params.assignmentId).success(
             function (data) {
-                $scope.assignment = data;
+                $scope.course = data['course'];
+                $scope.assignment = data['assignment'];
+                $scope.files = date['files'];
             }
         );
 

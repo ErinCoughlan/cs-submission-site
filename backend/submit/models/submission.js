@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 
 // define the schema for our submission model
 var submissionSchema = mongoose.Schema({
-        location: String, // evenually this will be a path on the db
+        document: String, // evenually this will be a path on the db
         date: Date
     });
 
