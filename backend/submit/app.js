@@ -30,11 +30,12 @@ mongoose.connect(configDB.url);
 var passport = require('passport');
 
 var User       = require('./models/user.js');
+var Student    = require('./models/student.js');
 var Course     = require('./models/course.js');
 var Assignment = require('./models/assignment.js');
 var Submission = require('./models/submission.js');
 var File       = require('./models/file.js');
-var FileTemplate = require('./models/fileTemplate.js')
+var FileTemplate = require('./models/fileTemplate.js');
 
 // Configuration to handle the removal of req.flash
 var app = express();
@@ -77,22 +78,19 @@ app.get('/filesfromtemplates', function(req, res){
         var file = {
             "assignment": template.assignment,
             "template": template._id,
+           "owner": "533abdaee4b09d8a1148b087",
+            "course": "531ea533e4b0ea5911efe9f6",
             "grade": null,
+            "name": template.name,
             "gradedBy": null,
-            "owner": {
-                "$oid": "533abdaee4b09d8a1148b087"
-            },
             "partner": null,
             "studentComments": null,
             "graderComments": null,
-            "course": {
-                "$oid": "531ea533e4b0ea5911efe9f6"
-            },
             "submissions": []
-        }
-        console.log(file)
-        new File(file).save(file)
-      })
+        };
+        console.log(file);
+        new File(file).save(file);
+      });
     });
     res.send('ok');
 });
@@ -118,7 +116,7 @@ app.get('/assignments/:course', isLoggedIn, function(req, res) {
     var userid = req.session.passport.user;
     var courseid = req.params.course;
     console.log("got request for course", req.params, "from", req.session);
-    
+
     Course.findOne({'name': courseid}, function (err, course) {
         console.log("sending", courseid);
         if(err) {
@@ -130,7 +128,7 @@ app.get('/assignments/:course', isLoggedIn, function(req, res) {
             var myArr = {
                 'course': course,
                 'assignments': assignments
-            }
+            };
             res.json(myArr);
          });
     });
@@ -142,26 +140,26 @@ app.get('/course/:course/assignment/:assignment', isLoggedIn, function(req, res)
     var coursename = req.params.course;
     var assignmentname = req.params.assignment;
 
-    Course.findOne({"name": coursename}, function(err, course) { 
-        if(err) { 
+    Course.findOne({"name": coursename}, function(err, course) {
+        if(err) {
             res.send("Error getting course");
             return;
-        } 
+        }
 
         Assignment.findOne({"name": assignmentname}, function (err, assignment) {
             File.find({"template": {$in: assignment.files.toObject()}} , function(err, files) {
                 FileTemplate.find({"_id": {$in: assignment.files.toObject()}}, function(err, fileTemplates) {
-                    console.log(err, fileTemplates)
                     // combine the file and filetemplate
                     var combined_files = _.map(files, function(file){
                         var template = _.find(fileTemplates, function(ft){
-                            return ft._id.toString() === file.template.toString()
+                            return ft._id.toString() === file.template.toString();
                         });
-                        console.log("template", template, "file", file)
                         // now add whatever properties are needed from either
-                        return {"name": template.name, 
+                        console.log(file, template);
+                        return {"name": template.name,
                                 "maxScore": template.maxScore,
                                 "grade": file.grade,
+                                "submissions": file.submissions,
                                 "studentComments": file.studentComments,
                                 "graderComments": file.graderComments};
                     });
@@ -169,7 +167,7 @@ app.get('/course/:course/assignment/:assignment', isLoggedIn, function(req, res)
                         'course': course,
                         'assignment': assignment,
                         'files': combined_files
-                    }
+                    };
                     res.json(data);
                 });
             });
@@ -181,32 +179,30 @@ app.get('/course/:course/assignment/:assignment', isLoggedIn, function(req, res)
 // json route for downloading submissions
 app.get('/course/:course/assignment/:assignment/file/:file/submit/', isLoggedIn, function(req, res) {
     var userid         = req.session.passport.user;
-    var courseName     = req.params.course;
-    var assignmentName = req.params.assignment;
-    var fileName       = req.params.file;
-    
+    var coursename     = req.params.course;
+    var assignmentname = req.params.assignment;
+    var filename       = req.params.file;
+
     // get the course
-    Course.findOne({"name":coursename}, function(err, retirevedCourse) {
+    Course.findOne({"name":coursename}, function(err, retrievedCourse) {
         if(err) {
             res.send("Error getting course");
             return;
         }
 
-        course = retrievedCourse;
-        res.send(course);
+        var course = retrievedCourse;
 
         // Get the current user's student object for the current course
-        Student.findOne({"user_id":userid._id, "course_id":course._id}, function(err, retrievedStudent) {
-            if(er) {
+        Student.findOne({"user_id":userid, "course_id":course._id}, function(err, retrievedStudent) {
+            if(err) {
                 res.send("Error getting student");
                 return;
             }
 
             var student = retrievedStudent;
-            res.send(student);
-            
+
             // get the correct assignment
-            Assignment.findOne({"course_id": course._id, "name": courseName}, 
+            Assignment.findOne({"course_id": course._id, "name": assignmentname},
                 function(err, retrievedAssignment) {
                     if(err) {
                         res.send("Error getting assignment");
@@ -214,127 +210,128 @@ app.get('/course/:course/assignment/:assignment/file/:file/submit/', isLoggedIn,
                     }
 
                     var assignment = retrievedAssignment;
-                    res.send(assignment);
-                    
-                    // Get the relevant file 
+
+                    // Get the relevant file
                     // TODO catch edge case if assignment changes while this might be being used.
                     // Generally, assignments won't be being modified when we try to grab files,
                     // so the new-file-creation for all students should be safe usually.
-                    File.findOne({"course": course._id, "owner": student._id,
-                                  "assignment": assignment.id_}, function(err, retrievedFile) { 
+                    console.log(student._id, assignment._id);
+                    File.findOne({"owner": student._id,  "assignment": assignment._id, "name":filename}, function(err, retrievedFile) {
+                              if(err) {
+                                  res.send("Error getting file");
+                                  return;
+                              }
+
+                              var file = retrievedFile;
+
+                              // Get the relevant submission
+                              Submission.findById(file.submissions[
+                                  file.submissions.length - 1], function(err, retrSub) {
                                       if(err) {
-                                          res.send("Error getting file");
+                                          res.send("error getting submission");
                                           return;
                                       }
 
-                                      var file = retrievedFile;
-                                      
-                                      // Get the relevant submission
-                                      Submission.findById(file.submissions[
-                                          file.submissions.length - 1], function(err, retrSub) {
-                                              if(err) {
-                                                  res.send("error getting submission");
-                                                  return;
-                                              }
+                                      var submission = retrSub;
 
-                                              var submission = retrSub;
-                                              res.send(submission);
-                                             
-                                              // send the file
-                                              var readStream = fs.createReadStream(
-                                                  submission.location);
-                                              readStream.pipe(res);
-                                          });
+                                      // send the file
+                                      console.log("location", submission);
+                                      var readStream = fs.createReadStream(
+                                          submission.document);
+                                      readStream.pipe(res);
                                   });
+                          });
                 });
 
         });
     });
 });
- 
 
- 
+
+
 // recieve file uploads
 app.post('/course/:course/assignment/:assignment/', isLoggedIn, function(req,res) {
     console.log(req.files);
     console.log(req.body);
-    var courseid     = req.params.course;
+    var coursename     = req.params.course;
     var assignmentid = req.params.assignment;
     var userid = req.session.passport.user;
     var submission = new Submission();
-    
+
     var form = new multiparty.Form();
     form.parse(req, function(err, fields, files) {
         console.log("fields", fields);
         console.log("files", files);
         Object.keys(files).forEach(function(key) {
             var file = files[key][0];
-            var fileid = file.fieldName;
-            // make a submission schema
-            var submission = new Submission();
+            var filename = file.fieldName;
+            console.log("fileid", filename);
             // TODO: copy the file to a better location
             var new_file = path.join(__dirname, "files", (new Date()).getTime().toString());
-            copyFile(file.path, new_file);
-            submission.location = new_file;
-            submission.date = new Date().toJSON();
-            // save to mongo
-            submission.save(function (err) {
-                console.log(err);
-            });
-    
-            console.log(submission);
+            copyFile(file.path, new_file, function(err){
+                // make a submission schema
+                var submission = new Submission({
+                    "document": new_file,
+                    "date":new Date().toJSON()
+                });
+                console.log(submission);
+                // save to mongo
+                submission.save(function (err) {
+                    console.log(err);
+                    console.log(new_file, submission);
 
-            // Get the current course
-            Course.findOne({"name":coursename}, function(err, retirevedCourse) {
-                if(err) {
-                    res.send("Error getting course");
-                    return;
-                }
+                    // Get the current course
+                    Course.findOne({"name":coursename}, function(err, retrievedCourse) {
+                        if(err) {
+                            res.send("Error getting course");
+                            return;
+                        }
 
-                course = retrievedCourse;
-                res.send(course);
-                
+                        var course = retrievedCourse;
+                        res.send(course);
 
-                // Get the current user's student object for this course
-                Student.findOne({"user_id":userid._id, "course_id":course._id}, function(err, retrievedStudent) {
-                    if(er) {
-                        res.send("Error getting student");
-                        return;
-                    }
-                    
-                    var student = retrievedStudent;
-                    res.send(student);
-                    
-                    // get the correct assignment
-                    Assignment.findOne({"course_id": course._id, "name": courseName}, 
-                       function(err, retrievedAssignment) {
-                           if(err) {
-                               res.send("Error getting assignment");
-                               return;
-                           }
-                           
-                           var assignment = retrievedAssignment;
-                           res.send(assignment);
-                           
-                           // Get the correct file for this assignment
-                           // TODO catch edge case if assignment changes while this might be being used.
-                           // Generally, assignments won't be being modified when we try to grab files,
-                           // so the new-file-creation for all students should be safe usually.
-                           File.findOne({"course": course._id, "owner": student._id,
-                                         "assignment": assignment._id, "name": fileid}, function(err, retrievedFile) { 
-                                             if(err) {
-                                                 res.send("Error getting file");
-                                                 return;
-                                             }
-                                             
-                                             
-                                             retrievedFile.submissions.push(file._id);
-                                             retrievedFile.comment = comments[key];
-                                             retrievedFile.save();
-                                                 
-                                         });
-                       });
-                });                                                 
+
+                        // Get the current user's student object for this course
+                        Student.findOne({"user_id":userid, "course_id":course._id}, function(err, retrievedStudent) {
+                            if(err) {
+                                res.send("Error getting student");
+                                return;
+                            }
+
+                            var student = retrievedStudent;
+                            res.send(student);
+
+                            // get the correct assignment
+                            Assignment.findOne({"_id": assignmentid},
+                               function(err, retrievedAssignment) {
+                                   if(err) {
+                                       res.send("Error getting assignment");
+                                       return;
+                                   }
+
+                                   var assignment = retrievedAssignment;
+                                   res.send(assignment);
+
+                                   // Get the correct file for this assignment
+                                   // TODO catch edge case if assignment changes while this might be being used.
+                                   // Generally, assignments won't be being modified when we try to grab files,
+                                   // so the new-file-creation for all students should be safe usually.
+                                   File.findOne({"assignment": assignment._id, "name": filename}, function(err, retrievedFile) {
+                                                     if(err) {
+                                                         res.send("Error getting file");
+                                                         return;
+                                                     }
+
+                                                     retrievedFile.submissions.push(submission._id);
+                                                     // retrievedFile.comment = comments[key];
+                                                     console.log("about to save file");
+                                                     retrievedFile.save();
+
+                                                 });
+                               });
+                        });
+                    });
+                });
             });
         });
     });
@@ -357,7 +354,7 @@ function isLoggedIn(req, res, next) {
 app.post('/changemail', function(req, res) {
     console.log("Changing your email");
     if(req.isAuthenticated()) {
-        user = req.user;
+        var user = req.user;
         user.local.email = req.body.email;
         console.log(user);
         user.save(function(err) {
@@ -371,7 +368,7 @@ app.post('/changemail', function(req, res) {
 });
 
 app.post('/changepw', isLoggedIn, function(req, res) {
-    user = req.user;
+    var user = req.user;
     // TODO HOLY SHIT WE ARE POSTING PLAINTEXT PASSWORDS FIXME
     var pw = req.body.password;
     console.log(pw);

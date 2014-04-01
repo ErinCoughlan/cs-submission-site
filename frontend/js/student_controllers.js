@@ -18,11 +18,13 @@
         this.$location = $location;
         this.$routeParams = $routeParams;
 
+        $scope.courseid = submissionApp.courseid
+
         // get the list of assignments
         $http.get('/assignments/'+submissionApp.courseid).success(
             function (data) {
-                $scope.course = data['course'];
-                $scope.assignments = data['assignments'];
+                $scope.course = data.course;
+                $scope.assignments = data.assignments;
             }
         );
 
@@ -83,9 +85,11 @@
     });
 
     submissionApp.controller('StudentAssignmentCtrl', function ($scope, $http, $routeParams) {
-        $scope.isDefined = function (item){ 
+        $scope.isDefined = function (item){
             return angular.isDefined(item) && (item !== null)
         };
+
+        $scope.courseid = submissionApp.courseid;
 
         this.params = $routeParams;
 
@@ -93,8 +97,8 @@
         $http.get('/course/' + submissionApp.courseid + '/assignment/' + this.params.assignmentId).success(
             function (data) {
                 console.log(data)
-                $scope.course = data['course'];
-                $scope.assignment = data['assignment'];
+                $scope.course = data.course;
+                $scope.assignment = data.assignment;
                 $scope.files = data['files'];
             }
         );
@@ -105,18 +109,19 @@
             console.log($scope, $scope.assignment, $scope.assignment.files);
             var fd = new FormData();
             var comments = {}
-            $scope.assignment.files.forEach(function(file){
-                console.log(file);
+            $scope.files.forEach(function(file){
+                console.log("file", file);
                 if(file.file_to_submit){
-                    console.log(file.file_to_submit);
-                    fd.append(file.id, file.file_to_submit);
+                    console.log("to submit", file.file_to_submit);
+                    fd.append(file.name, file.file_to_submit);
                 }
                 if(file.comment_to_submit){
                     comments[file.id] = file.comment_to_submit
                 }
             });
             fd.append("comments", JSON.stringify(comments));
-            $http.post("/submit/" + assignmentid, fd, {
+
+            $http.post('/course/'+$scope.courseid+'/assignment/'+assignmentid+'/', fd, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             })

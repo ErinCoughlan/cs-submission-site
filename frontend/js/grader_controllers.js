@@ -18,6 +18,8 @@
         this.$location = $location;
         this.$routeParams = $routeParams;
 
+        $scope.courseid = submissionApp.courseid
+
         // get the list of assignments
         $http.get('/assignments/'+submissionApp.courseid).success(
             function (data) {
@@ -99,6 +101,7 @@
             return angular.isDefined(item) && (item !== null)
         };
 
+        $scope.courseid = submissionApp.courseid
 
         this.params = $routeParams;
 
@@ -129,7 +132,8 @@
                 }
             });
             fd.append("comments", JSON.stringify(comments));
-            $http.post("/submit/" + assignmentid, fd, {
+
+            $http.post('/course/'+$scope.courseid+'/assignment/'+assignmentid, fd, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             })
