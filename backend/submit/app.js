@@ -33,7 +33,6 @@ var Course     = require('./models/course.js');
 var Assignment = require('./models/assignment.js');
 var Submission = require('./models/submission.js');
 var File       = require('./models/file.js');
-var FileModel  = mongoose.model('FileModel', File);
 
 // Configuration to handle the removal of req.flash
 var app = express();
@@ -225,17 +224,6 @@ app.post('/course/:course/assignment/:assignment/', isLoggedIn, function(req,res
             });
     
             console.log(submission);
-            // update the student's file object to be aware of the submission
-
-
-
-
-
-
-
-
-
-
 
             Course.findOne({"name":coursename}, function(err, retirevedCourse) {
                 if(err) {
@@ -284,7 +272,7 @@ app.post('/course/:course/assignment/:assignment/', isLoggedIn, function(req,res
                                                  
                                          });
                        });
-                )};                                                 
+                });                                                 
             });
         });
     });
