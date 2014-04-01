@@ -12,7 +12,7 @@ var submissionApp = angular.module('submissionApp', ['ngRoute']);
     // define routes
     submissionApp.config(function($routeProvider, $locationProvider) {
         $routeProvider.when('/student/assignments/:assignmentId', {
-            templateUrl: 'partials/student_assignment.html',
+            templateUrl: '/partials/student_assignment.html',
             controller: 'StudentAssignmentCtrl',
             controllerAs: 'assignment'
         });
@@ -21,7 +21,7 @@ var submissionApp = angular.module('submissionApp', ['ngRoute']);
     // define routes
     submissionApp.config(function($routeProvider, $locationProvider) {
         $routeProvider.when('/grader/assignments/:assignmentId', {
-            templateUrl: 'partials/grader_assignment.html',
+            templateUrl: '/partials/grader_assignment.html',
             controller: 'GraderAssignmentCtrl',
             controllerAs: 'assignment'
         });
