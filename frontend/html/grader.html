@@ -39,7 +39,7 @@
                             <li
                                 ng-class="{active: isActive('/grader/assignments/'+assignment.name)}">
                                 {{assignment.name}}
-                                <div class="points">{{assignment.grade || "NA"}}/{{assignment.maxScore}}</div>
+                                <div class="points">{{assignment.grade || "NA"}}/{{assignment.point}}</div>
                             </li>
                         </a>
                     </ul>
@@ -49,7 +49,7 @@
                             <li
                                 ng-class="{active: isActive('/grader/assignments/'+assignment.name)}">
                                 Student {{assignment.name}}
-                                <div class="points">{{assignment.grade || "NA"}}/{{assignment.maxScore}}</div>
+                                <div class="points">{{assignment.grade || "NA"}}/{{assignment.point}}</div>
                             </li>
                         </a>
                     </ul>
