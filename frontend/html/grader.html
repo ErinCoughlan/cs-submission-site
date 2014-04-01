@@ -34,9 +34,9 @@
                 <ng-switch on="view">
                     <ul ng-switch-when="assignments">
                         <a ng-repeat="assignment in course.assignments"
-                           ng-href="#/grader/assignments/{{assignment.id}}">
+                           ng-href="#/grader/assignments/{{assignment.name}}">
                             <li
-                                ng-class="{active: isActive('/grader/assignments/'+assignment.id)}">
+                                ng-class="{active: isActive('/grader/assignments/'+assignment.name)}">
                                 {{assignment.name}}
                                 <div class="points">{{assignment.grade || "NA"}}/{{assignment.point}}</div>
                             </li>
@@ -44,9 +44,9 @@
                     </ul>
                     <ul ng-switch-when="students">
                         <a ng-repeat="assignment in course.assignments"
-                           ng-href="#/grader/assignments/{{assignment.id}}">
+                           ng-href="#/grader/assignments/{{assignment.name}}">
                             <li
-                                ng-class="{active: isActive('/grader/assignments/'+assignment.id)}">
+                                ng-class="{active: isActive('/grader/assignments/'+assignment.name)}">
                                 {{assignment.name}}
                                 <div class="points">{{assignment.grade || "NA"}}/{{assignment.point}}</div>
                             </li>
