@@ -25,9 +25,9 @@
                 </div
                 <ul ng-cloak ng-show="assignments">
                     <a ng-repeat="assignment in assignments"
-                       ng-href="/course/{{course.name}}/assignment/{{assignment.name}}">
+                       ng-href="#/student/assignments/{{assignment.name}}">
                         <li
-                            ng-class="{active: isActive('/assignments/'+assignment._id)}">
+                            ng-class="{active: isActive('/student/assignments/'+assignment.name)}">
                             {{assignment.name}}
                             <div class="points">{{assignment.grade || "NA"}}/{{assignment.point}}</div>
                         </li>

@@ -120,14 +120,16 @@ app.get('/course/:course/assignment/:assignment', isLoggedIn, function(req, res)
 
          course.assignments.forEach(function(assign) {
              Assignment.findById(assign, function (err, assignment) {
-                console.log(assignmentname);
+                 console.log(assignment.name, assignmentname);
                  if(assignment.name === assignmentname) {
-                    File.find({"_id": {$in: assignment.files}} , function(err, files) {
+                    console.log(assignment.files)
+                    File.find({"_id": {$in: assignment.files.toObject()}} , function(err, files) {
                         var myArr = {
                             'course': course,
                             'assignment': assignment,
                             'files': files
                         }
+                        console.log(files)
                         res.json(myArr);
                      });
                  };
