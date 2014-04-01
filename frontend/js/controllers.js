@@ -21,7 +21,8 @@
         // get the list of assignments
         $http.get('/assignments/'+courseid).success(
             function (data) {
-                $scope.course = data;
+                $scope.course = data['course'];
+                $scope.assignments = data['assignments'];
             }
         );
 
@@ -78,15 +79,6 @@
                     console.log(m);
                 }
             });
-            /*
-            .success(function(m){
-                console.log(m);
-                window.location.href="/cs5";
-            })
-            .error(function(m){
-                console.log(m);
-            });
-*/
         }
     });
 
@@ -97,9 +89,11 @@
 
         // get the list of files for the assignment
 
-        $http.get('/course/' + courseid + '/assignment/' + this.params.assignmentId).success(
+        $http.get('/course/' + this.params.courseid + '/assignment/' + this.params.assignmentId).success(
             function (data) {
-                $scope.assignment = data;
+                $scope.course = data['course'];
+                $scope.assignment = data['assignment'];
+                $scope.files = date['files'];
             }
         );
 

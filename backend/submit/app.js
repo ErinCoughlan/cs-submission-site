@@ -91,8 +91,14 @@ app.get('/assignments/:course', isLoggedIn, function(req, res) {
             res.send("Error getting list of assignments.");
             return;
         }
-        res.send(course);
-        console.log(course);
+
+        Assignment.find({"_id": {$in: course.assignments}} , function(err, assignments) {
+            var myArr = {
+                'course': course,
+                'assignments': assignments
+            }
+            res.json(myArr);
+         });
     });
 });
 
@@ -100,24 +106,26 @@ app.get('/assignments/:course', isLoggedIn, function(req, res) {
 app.get('/course/:course/assignment/:assignment', isLoggedIn, function(req, res) {
     var userid = req.session.passport.user;
     var coursename = req.params.course;
-    var course;
     var assignmentname = req.params.assignment;
 
-     Course.findOne({"name": coursename}, function(err, retrievedCourse) { 
+     Course.findOne({"name": coursename}, function(err, course) { 
          if(err) { 
              res.send("Error getting course");
              return;
          } 
-         
 
-         course = retrievedCourse;
-         res.send(course);
-         
          course.assignments.forEach(function(assign) {
              Assignment.findById(assign, function (err, assignment) {
-                 if(assign.name === assignmentname) {
-                     res.send(assignment);
-                     return;
+                console.log(assignmentname);
+                 if(assignment.name === assignmentname) {
+                    File.find({"_id": {$in: assignment.files}} , function(err, files) {
+                        var myArr = {
+                            'course': course,
+                            'assignment': assignment,
+                            'files': files
+                        }
+                        res.json(myArr);
+                     });
                  };
              });
          });

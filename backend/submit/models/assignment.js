@@ -13,6 +13,7 @@ var assignmentSchema = mongoose.Schema({
     // TODO: add these types
     // type: ObjectId,
     euros: Number,
+    point: Number,
     files: [ ObjectId ]
 });
 
