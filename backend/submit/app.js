@@ -8,6 +8,18 @@
 // Must come before requiring express
 var flash = require('connect-flash');
 
+var Parse = require('node-parse-api').Parse;
+var APP_ID = "XGtB553yyhgOfzCHDyLzorYLXfxOPvDGtsml0lQU";
+var MASTER_KEY = "D6WFBuS0zJX4MbynTtog7EUO5qClhtnn5cZwVXeJ";
+var parseApp = new Parse(APP_ID, MASTER_KEY);
+
+parseApp.insert('TestObject', {foo: 'bar'}, function (err, response) {
+  if (err) {
+    console.log(err);
+  }
+  console.log(response);
+});
+
 var express = require('express');
 var http = require('http');
 var path = require('path');
@@ -96,10 +108,11 @@ app.get('/filesfromtemplates', function(req, res){
 });
 
 app.post('/login',
-         passport.authenticate('local-login', { successRedirect: '/cs5',
-                                               failureRedirect: '/',
-                                               failureFlash: true })
-        );
+    passport.authenticate('local-login', { successRedirect: '/cs5',
+                                       failureRedirect: '/',
+                                       failureFlash: true })
+);
+
 
 app.get('/logout', function(req, res) {
     req.logout();
@@ -404,11 +417,22 @@ app.get('/settings', isLoggedIn, function(req, res) {
     res.render('settings');
 });
 
-app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect : '/', // redirect to the secure profile section
-    failureRedirect : '/signup', // redirect back to the signup page if there is an error
-    failureFlash : true // allow flash messages
-}));
+app.post('/signup', function(req, res) {
+  var username = req.body.username;
+  var password = req.body.password;
+  console.log(username);
+  console.log(password);
+  var data = {
+      username: username,
+      password: password
+  };
+
+  parseApp.insert('User', data, function (err, response) {
+    console.log(response);
+    res.redirect('/');
+  });
+});
+
 app.get('/signup', function(req, res) {
     // render the page and pass in any flash data if it exists
     res.render('signup', { message: req.flash('signupMessage') });
