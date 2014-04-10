@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-
+var Submission = require('./submission.js');
 // the model for a student's submtted file
 var ObjectId = mongoose.Schema.ObjectId;
 var ObjIdTy = mongoose.Types.ObjectId;
@@ -14,7 +14,7 @@ var fileSchema = mongoose.Schema({
     course: ObjectId,
     assignment: ObjectId,
     template: ObjectId,
-    submissions: [ ObjectId ]
+    submissions: [ Submission ]
 });
 
 

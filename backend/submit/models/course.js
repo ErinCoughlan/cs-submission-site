@@ -1,6 +1,6 @@
 // app/models/course.js
 var mongoose = require('mongoose');
-
+var Assignment = require('./assignment.js');
 // define the schema for our course model
 // ObjectId allows us to reference other objects
 var ObjectId = mongoose.Schema.ObjectId;
@@ -12,17 +12,7 @@ var courseSchema = mongoose.Schema({
     // students: [ObjectId],
     // graders: [ObjectId],
     // professors: [ObjectId],
-    assignments: [{ 
-        name: String,
-        due: Date,
-        euros: Number,
-        points: Number,
-        files: [{
-            name: String,
-            maxScore: Number,
-            partnerable: Boolean,
-            numGraded: Number
-        }],
+    assignments: [ Assignment ],
     }],
 });
 
