@@ -7,12 +7,23 @@ var ObjectId = mongoose.Schema.ObjectId;
 var ObjIdTy = mongoose.Types.ObjectId;
 var courseSchema = mongoose.Schema({
     name: String,
-    current_assignment: ObjectId,
+    current_assignment: Number, // Index into assignments
     // TODO: add these types
     // students: [ObjectId],
     // graders: [ObjectId],
     // professors: [ObjectId],
-    assignments: [ ObjectId ]
+    assignments: [{ 
+        name: String,
+        due: Date,
+        euros: Number,
+        points: Number,
+        files: [{
+            name: String,
+            maxScore: Number,
+            partnerable: Boolean,
+            numGraded: Number
+        }],
+    }],
 });
 
 // create the model expose it to our app

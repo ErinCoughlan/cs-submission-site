@@ -13,8 +13,28 @@ var userSchema = mongoose.Schema({
         password     : String,
     },
     // Keep refs to this user's instances as a student and a grader
-    students: [ ObjectId ],
-    graders: [ ObjectId ] 
+    students: [{
+        course_id: ObjectId, 
+        files: [{
+            grade: Number,
+            gradedBy: ObjectId,
+            partner: ObjectId,
+            name: String,
+            studentComments: String,
+            graderComments: String,
+            assignment: ObjectId,
+            template: ObjectId,
+            submissions: [{
+                document: String, // TODO file
+                date: Date,
+            }],
+        }],
+    }],
+               
+    graders: [{
+        course_id: ObjectId,
+        gradedFiles: [ ObjectId ];
+    }] 
 });
 
 // methods ======================
