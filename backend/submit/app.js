@@ -198,10 +198,10 @@ app.get('/course/:course/assignment/:assignment', isLoggedIn, function(req, res)
                     combined_files.push({
                         "name": template.name, 
                         "maxScore": template.maxScore,
-                        "grade": file[index].grade,
-                        "submissions": file[index].submissions,
-                        "studentComments": file[index].studentComments,
-                        "graderComments": file[index].graderComments
+                        "grade": file.grade,
+                        "submissions": file.submissions,
+                        "studentComments": file.studentComments,
+                        "graderComments": file.graderComments
                     });
                 }  else {
                     combined_files.push({
@@ -217,6 +217,84 @@ app.get('/course/:course/assignment/:assignment', isLoggedIn, function(req, res)
             
             var data = {
                 'students': student,
+                'course': course,
+                'assignment': assignment,
+                'files': combined_files
+            };
+            
+            
+            res.json(data);
+        });
+    });
+});
+
+
+// json route for assignment info
+app.get('/grader/course/:course/assignment/:assignment', isLoggedIn, function(req, res) {
+    var userid = req.session.passport.user;
+    var coursename = req.params.course;
+    var assignmentname = req.params.assignment;
+    
+    Course.findOne({"name": coursename}, function(err, course) {
+        if(err) {
+            res.send("Error getting course");
+            return;
+        }
+        
+        var assignment;
+        
+        course.assignments.forEach(function(anAssignment) {
+            if(anAssignment.name === assignmentname) {
+                assignment = anAssignment;
+            }
+        });
+        
+        if(!assignment) {
+            console.log("No matching assignment found");
+            return;
+        }
+        
+        
+        
+        Student.find({"course_id": course._id}, function(err, students) {
+            var combined_files = new Array();
+            assignment.files.forEach(function(foo) {
+                combined_files.push([]);
+            });
+            
+
+            students.forEach(function(student) {
+                var index = 0;
+                assignment.files.forEach(function(tenplate) {
+                    file = student.files[index];
+                    if(file) {
+                        combined_files[0].push({
+                            "student": student.name,
+                            "name": template.name, 
+                            "maxScore": template.maxScore,
+                            "grade": file.grade,
+                            "submissions": file.submissions,
+                            "studentComments": file.studentComments,
+                            "graderComments": file.graderComments
+                        });
+                    }  else {
+                        combined_files[0].push({
+                            "student": student.name,
+                            "name": template.name, 
+                            "maxScore": template.maxScore
+                        });
+                    }
+
+                    index += 1;                                    
+                });
+
+                
+            });
+
+            console.log(combined_files);
+            
+            var data = {
+                'students': students,
                 'course': course,
                 'assignment': assignment,
                 'files': combined_files

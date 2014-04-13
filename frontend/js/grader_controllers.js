@@ -106,7 +106,7 @@
         this.params = $routeParams;
 
         // get the list of files for the assignment
-        $http.get('/course/' + submissionApp.courseid + '/assignment/' + this.params.assignmentId).success(
+        $http.get('/grader/course/' + submissionApp.courseid + '/assignment/' + this.params.assignmentId).success(
             function (data) {
                 console.log(data);
                 $scope.course = data.course;
