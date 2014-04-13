@@ -13,7 +13,7 @@ var courseSchema = mongoose.Schema({
     // graders: [ObjectId],
     // professors: [ObjectId],
     assignments: [ Assignment ],
-});
+}, {collection: 'submit'});
 
 // create the model expose it to our app
 module.exports = mongoose.model('Course', courseSchema);

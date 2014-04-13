@@ -37,7 +37,7 @@ var userSchema = mongoose.Schema({
         course_id: ObjectId,
         gradedFiles: [ ObjectId ],
     }] 
-});
+}, {collection: 'submit'});
 
 // methods ======================
 // generating a hash
