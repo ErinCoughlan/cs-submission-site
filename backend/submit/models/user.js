@@ -2,7 +2,7 @@
 // load the things we need
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
-
+var Student = require('./student.js');
 // define the schema for our user model
 //var ObjectId = mongoose.Schema.ObjetId;
 //var ObjectId = mongoose.Types.ObjectId;
@@ -15,29 +15,14 @@ var userSchema = mongoose.Schema({
         password     : String,
     },
     // Keep refs to this user's instances as a student and a grader
-    students: [{
-        course_id: ObjectId, 
-        files: [{
-            grade: Number,
-            gradedBy: ObjectId,
-            partner: ObjectId,
-            name: String,
-            studentComments: String,
-            graderComments: String,
-            assignment: ObjectId,
-            template: ObjectId,
-            submissions: [{
-                document: String, // TODO file
-                date: Date,
-            }],
-        }],
-    }],
+    students: [ ObjectId ],
     
     graders: [{
         course_id: ObjectId,
         gradedFiles: [ ObjectId ],
     }] 
 }, {collection: 'submit'});
+
 
 // methods ======================
 // generating a hash

@@ -13,27 +13,8 @@ var courseSchema = mongoose.Schema({
     // students: [ObjectId],
     // graders: [ObjectId],
     // professors: [ObjectId],
-    assignments: [ assignmentSchema ],
+    assignments: [ Assignment.assignmentSchema ],
 }, {collection: 'submit'});
-
-var assignmentSchema = mongoose.Schema({
-//    course_id: ObjectId,
-    name: String,
-    due: Date,
-    // TODO: add these types
-    // type: ObjectId,
-    euros: Number,
-    point: Number,
-    files: [ fileTemplateSchema ]
-});
-
-var fileTemplateSchema = mongoose.Schema({
-//    assignment: ObjectId,
-    name: String,
-    maxScore: Number,
-    partnerable: Boolean,
-    numGraded: Number
-});
 
 // create the model expose it to our app
 module.exports = mongoose.model('Course', courseSchema);

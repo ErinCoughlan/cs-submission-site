@@ -30,12 +30,12 @@ mongoose.connect(configDB.url);
 var passport = require('passport');
 
 var User       = require('./models/user.js');
-//var Student    = require('./models/student.js');
+var Student    = require('./models/student.js');
 var Course     = require('./models/course.js');
-//var Assignment = require('./models/assignment.js');
-//var Submission = require('./models/submission.js');
-//var File       = require('./models/file.js');
-//var FileTemplate = require('./models/fileTemplate.js');
+var Assignment = require('./models/assignment.js');
+var Submission = require('./models/submission.js');
+var File       = require('./models/file.js');
+var FileTemplate = require('./models/fileTemplate.js');
 
 // Configuration to handle the removal of req.flash
 var app = express();
@@ -119,7 +119,7 @@ app.get('/students/:course', isLoggedIn, function(req, res) {
             res.send("error getting course");
             return;
         }
-
+        
         Student.find({"course_id": course._id}, function(err, students) {
             if(err) {
                 res.send("error getting students");
@@ -150,8 +150,15 @@ app.get('/assignments/:course', isLoggedIn, function(req, res) {
             res.send("Error getting list of assignments.");
             return;
         }
-
-        res.json(course.assignments);
+        
+        console.log("Course contents: ", course);
+        var assignments = course.assignments;
+        var data = {
+            'course': course, 
+            'assignments': assignments
+        };
+        
+        res.json(data);
     });
 });
 
@@ -160,7 +167,7 @@ app.get('/course/:course/assignment/:assignment', isLoggedIn, function(req, res)
     var userid = req.session.passport.user;
     var coursename = req.params.course;
     var assignmentname = req.params.assignment;
-
+    
     Course.findOne({"name": coursename}, function(err, course) {
         if(err) {
             res.send("Error getting course");
@@ -174,56 +181,52 @@ app.get('/course/:course/assignment/:assignment', isLoggedIn, function(req, res)
                 assignment = anAssignment;
             }
         });
-
+        
         if(!assignment) {
             console.log("No matching assignment found");
             return;
         }
-
         
-        templateIds = new Array();
         
-        assignment.files.forEach(function(aTemplate) {
-            templateIds.push(aTemplate._id);
-        });
-
-        // This MAY break with the new model, not sure. If bugs show up in files, check here.
-        File.find({"template": {$in: templateIds}} , function(err, files) {
-            // combine the file and filetemplate
-            // TODO we need to group students with their data, because right now we have ordering issues.
-                var combined_files = _.map(files, function(file){
-                    var template = _.find(fileTemplates, function(ft){
-                        return ft._id.toString() === file.template.toString();
+        
+        Student.findOne({"course_id": course._id}, function(err, student) {
+            var combined_files = new Array();
+            var index = 0;
+            assignment.files.forEach(function(template) {
+                file = student.files[index];
+                if(file) {
+                    combined_files.push({
+                        "name": template.name, 
+                        "maxScore": template.maxScore,
+                        "grade": file[index].grade,
+                        "submissions": file[index].submissions,
+                        "studentComments": file[index].studentComments,
+                        "graderComments": file[index].graderComments
                     });
-                    // now add whatever properties are needed from either
-                    console.log(file, template);
-                    return {"name": template.name,
-                            "maxScore": template.maxScore,
-                            "grade": file.grade,
-                            "submissions": file.submissions,
-                            "studentComments": file.studentComments,
-                            "graderComments": file.graderComments};
-                });
-                
-                Student.find({"course_id": course._id}, function(err, students) {
-                    // TODO unhardcode
-                    console.log(students);
-                    students[0].name = "Zach Dodds";
-                        
-                    var data = {
-                        'students': students,
-                        'course': course,
-                        'assignment': assignment,
-                        'files': combined_files
-                    };
-                    
-                    res.json(data);
-                });
+                }  else {
+                    combined_files.push({
+                        "name": template.name, 
+                        "maxScore": template.maxScore
+                    });
+                }
+
+                index += 1;                                    
             });
+
+            console.log(combined_files);
+            
+            var data = {
+                'students': student,
+                'course': course,
+                'assignment': assignment,
+                'files': combined_files
+            };
+            
+            
+            res.json(data);
         });
     });
 });
-
 
 
 // json route for downloading submissions
@@ -264,7 +267,7 @@ app.get('/course/:course/assignment/:assignment/file/:file/submit/', isLoggedIn,
                 return;
             }
             
-            `// Get the relevant file
+            // Get the relevant file
             // TODO catch edge case if assignment changes while this might be being used.
             // Generally, assignments won't be being modified when we try to grab files,
             // so the new-file-creation for all students should be safe usually.

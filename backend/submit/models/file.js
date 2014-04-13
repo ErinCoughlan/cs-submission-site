@@ -6,16 +6,14 @@ var ObjIdTy = mongoose.Types.ObjectId;
 var fileSchema = mongoose.Schema({
     grade: Number,
     gradedBy: ObjectId,
-    owner: ObjectId,
     partner: ObjectId,
-    name: String,
     studentComments: String,
     graderComments: String,
     course: ObjectId,
-    assignment: ObjectId,
-    template: ObjectId,
-    submissions: [ Submission ]
-});
+    assignment: Number, // Which element of course.assignments to look at
+    template: Number, // Which element of course.assignments.files to look at.
+    submissions: [ Submission.submissionSchema ]
+}, {collection: 'submit'});
 
 
 // create the model expose it to our app
