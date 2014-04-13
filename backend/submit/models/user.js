@@ -4,8 +4,10 @@ var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 
 // define the schema for our user model
-var ObjectId = mongoose.Schema.ObjetId;
-var ObjIdTy = mongoose.Types.ObjectId;
+//var ObjectId = mongoose.Schema.ObjetId;
+//var ObjectId = mongoose.Types.ObjectId;
+var ObjectId = mongoose.Schema.Types.ObjectId;
+
 var userSchema = mongoose.Schema({
     local            : {
         username     : String,
@@ -30,10 +32,10 @@ var userSchema = mongoose.Schema({
             }],
         }],
     }],
-               
+    
     graders: [{
         course_id: ObjectId,
-        gradedFiles: [ ObjectId ];
+        gradedFiles: [ ObjectId ],
     }] 
 });
 

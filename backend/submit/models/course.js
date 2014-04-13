@@ -3,8 +3,8 @@ var mongoose = require('mongoose');
 var Assignment = require('./assignment.js');
 // define the schema for our course model
 // ObjectId allows us to reference other objects
-var ObjectId = mongoose.Schema.ObjectId;
-var ObjIdTy = mongoose.Types.ObjectId;
+var ObjectId = mongoose.Schema.Types.ObjectId;
+//var ObjIdTy = mongoose.Types.ObjectId;
 var courseSchema = mongoose.Schema({
     name: String,
     current_assignment: Number, // Index into assignments
@@ -13,7 +13,6 @@ var courseSchema = mongoose.Schema({
     // graders: [ObjectId],
     // professors: [ObjectId],
     assignments: [ Assignment ],
-    }],
 });
 
 // create the model expose it to our app
