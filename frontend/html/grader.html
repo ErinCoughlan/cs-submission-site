@@ -45,7 +45,7 @@
                     </ul>
                     <ul ng-switch-when="students">
                         <a ng-repeat="student in students"
-                           ng-href="#/grader/course/{{course.name}}/students/{{student.name}}">
+                           ng-href="#/grader/course/{{course.name}}/student/{{student._id}}">
                             <li
                                 ng-class="{active: isActive('/grader/assignments/'+assignment.name)}">
                               {{student.name}}

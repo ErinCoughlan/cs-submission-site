@@ -120,14 +120,16 @@ app.get('/students/:course', isLoggedIn, function(req, res) {
             return;
         }
         
-        Student.find({"course_id": course._id}, function(err, students) {
+        // Since MongoDB is really dumb, searches on students also turn up graders, so we
+        // force existence of a field students have and graders do not.
+        Student.find({"course_id": course._id, "files": {$exists: true}}, function(err, students) {
             if(err) {
                 res.send("error getting students");
                 return;
             }
             // TODO unhardcode
-            students[0].name = "Zach Dodds";
-            console.log(students);
+
+            console.log("Students: " + students);
             var data = { 'students' : students };
             res.json(data);
         });
@@ -299,7 +301,7 @@ app.get('/grader/course/:course/assignment/:assignment', isLoggedIn, function(re
                
             });
 
-            console.log(combined_files);
+            console.log("Students: " + students);
             
             var data = {
                 'students': students,
