@@ -30,12 +30,10 @@ table.collapseTable {
 
 .collapseTable th:first-child {
 	border-left: 3px solid #7d8ca9;
-	min-width: 100px;
 }
 
 .collapseTable td:first-child {
 	border-left: 1px solid #7d8ca9;
-	min-width: 100px;
 }
 
 .collapseTable th:last-child {

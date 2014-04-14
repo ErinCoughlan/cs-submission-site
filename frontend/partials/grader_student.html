@@ -1,0 +1,27 @@
+<div ng-cloak ng-show="!assignments.length>0">
+    <div id="rightSpinner" class="spinner"></div>
+</div>
+<div ng-cloak ng-show="assignments.length>0">
+    <table ng-repeat="assignment in assignments" class="collapseTable" cellspacing="0" cellpadding="0">
+        <tr id="{{assignment.name | letters}}" class="fixedHeader" onClick="toggleRow(this)">
+            <th></th>
+            <th>
+                {{assignment.name}}
+            </th>
+            <th></th>
+        </tr>
+        <tr ng-repeat="file in assignment.files" class="{{assignment.name | letters}}">
+            <td colspan="2">
+                {{file.name}}
+            </td>
+            <td class="lastCol">
+                <div ng-if="!isDefined(student.grade)">
+                    <input type="button" id="grade_{{file.name}}_{{student.student}}" value="Grade Problem" ng-href="/cs5">
+                </div>
+                <div ng-if="isDefined(student.grade)">
+                    <input type="button" id="grade_{{file.name}}_{{student.student}}" value="Graded by {{student.gradedBy}}" onclick="window.location='/grade'">
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
