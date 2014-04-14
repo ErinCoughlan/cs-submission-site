@@ -141,3 +141,8 @@ function toggleRowChildren(parentRowElement, parentClass) {
     });
     parentRowElement.toggleClass('collapsed');
 };
+
+function gradeUnsubmitted(e) {
+    e.stopPropagation();
+    window.location = '/grade';
+};
