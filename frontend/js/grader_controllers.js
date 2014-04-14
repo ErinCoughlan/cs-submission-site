@@ -108,7 +108,6 @@
         // get the list of files for the assignment
         $http.get('/grader/course/' + submissionApp.courseid + '/assignment/' + this.params.assignmentId).success(
             function (data) {
-                console.log(data);
                 $scope.course = data.course;
                 $scope.assignment = data.assignment;
                 $scope.files = data.files;

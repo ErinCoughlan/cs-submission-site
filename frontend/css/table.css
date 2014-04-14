@@ -1,15 +1,26 @@
 table.collapseTable {
+	border: none;
 	margin: 0px;
 }
 
+.collapseTable tr {
+	background: none;
+}
+
+.collapseTable tr:first-child {
+	background: rgb(40, 77, 97);
+}
+
 .collapseTable td, .collapseTable th {
+	border: 1px solid #7d8ca9;
 	min-width: 200px;
 	padding: 10px;
 	text-align: left;
 }
 
-.collapseTable tr {
-	border-bottom: 1px solid #000;
+.collapseTable th {
+	border-top: 3px solid #7d8ca9;
+	border-bottom: 3px solid #7d8ca9;
 }
 
 .collapseTable td:first-child {
@@ -18,10 +29,6 @@ table.collapseTable {
 
 .collapseTable th:first-child {
 	min-width: 100px;
-}
-
-.collapseTable tr:first-child {
-	background: rgb(40, 77, 97);
 }
 
 .fixedHeader th {
