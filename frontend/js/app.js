@@ -27,6 +27,15 @@ var submissionApp = angular.module('submissionApp', ['ngRoute', 'submissionFilte
         });
     });
 
+    // define routes
+    submissionApp.config(function($routeProvider, $locationProvider) {
+        $routeProvider.when('/grader/student/:studentId', {
+            templateUrl: '/partials/grader_student.html',
+            controller: 'GraderAssignmentCtrl',
+            controllerAs: 'assignment'
+        });
+    });
+
     submissionApp.directive('fileModel', ['$parse', function ($parse) {
         return {
             restrict: 'A',

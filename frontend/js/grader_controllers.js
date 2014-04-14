@@ -21,7 +21,7 @@
         $scope.courseid = submissionApp.courseid;
 
         // get the list of assignments
-        $http.get('/assignments/'+submissionApp.courseid).success(
+        $http.get('/assignments/'+ submissionApp.courseid).success(
             function (data) {
                 $scope.course = data.course;
                 $scope.assignments = data.assignments;
@@ -113,40 +113,6 @@
                 $scope.students = data.students;
             }
         );
-
-       // submit files and comments
-        $scope.submit = function submit($event) {
-            var assignmentid = $scope.assignment._id;
-            console.log($scope, $scope.assignment, $scope.assignment.files);
-            var fd = new FormData();
-            var comments = {};
-            $scope.files.forEach(function(file){
-                console.log("file", file);
-                if(file.file_to_submit){
-                    console.log("to submit", file.file_to_submit);
-                    fd.append(file.name, file.file_to_submit);
-                }
-                if(file.comment_to_submit){
-                    comments[file.name] = file.comment_to_submit;
-                }
-            });
-            fd.append("comments", JSON.stringify(comments));
-
-            $http.post('/course/'+$scope.courseid+'/assignment/'+assignmentid+'/', fd, {
-                transformRequest: angular.identity,
-                headers: {'Content-Type': undefined}
-            })
-            .success(function(m){
-                console.log(m);
-
-                // TODO: only refresh the right column (table)
-                location.reload();
-            })
-            .error(function(m){
-                console.log(m);
-            });
-        };
-
     });
 
 })();

@@ -189,8 +189,6 @@ app.get('/course/:course/assignment/:assignment', isLoggedIn, function(req, res)
             return;
         }
         
-        
-        
         Student.findOne({"course_id": course._id}, function(err, student) {
             var combined_files = new Array();
             var index = 0;

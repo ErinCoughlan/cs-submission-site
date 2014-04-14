@@ -16,8 +16,7 @@
         </tr>
         <tr ng-repeat="student in file.studentSubmissions" class="{{file.name | letters}}">
             <td colspan="2">
-                <div ng-if="isDefined(student.grade)">{{student.student}}, current grade: {{student.grade}}</div>
-                <div ng-if="!isDefined(student.grade)">{{student.student}}</div>
+                {{student.student}}
             </td>
             <td class="lastCol">
                 <div ng-if="!isDefined(student.grade)">
