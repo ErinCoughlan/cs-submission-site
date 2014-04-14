@@ -144,5 +144,5 @@ function toggleRowChildren(parentRowElement, parentClass) {
 
 function gradeUnsubmitted(e) {
     e.stopPropagation();
-    window.location = '/grade';
+    var grade = parseInt(prompt("What grade would you like to give all unsubmitted assignments?",0));
 };
