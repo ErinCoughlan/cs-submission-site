@@ -255,30 +255,38 @@ app.get('/grader/course/:course/assignment/:assignment', isLoggedIn, function(re
         }
         
         
-        
-        Student.find({"course_id": course._id}, function(err, students) {
+ 
+        // MongoDB is really, really dumb, so when we search for students we also get graders.
+        // So, I force it to exclude graders by requiring a field they shouldn't have.
+        Student.find({"course_id": course._id, "files": {$exists:true}}, function(err, students) {
             var combined_files = new Array();
             assignment.files.forEach(function(foo) {
-                combined_files.push([]);
+                combined_files.push({"name": foo.name, "studentSubmissions": []});
             });
-            
+            console.log(students);
 
             students.forEach(function(student) {
+                if(student.gradedFiles) {
+                    return;
+                }
+                console.log("student:", student);
+
                 var index = 0;
-                assignment.files.forEach(function(tenplate) {
+                assignment.files.forEach(function(template) {
                     file = student.files[index];
                     if(file) {
-                        combined_files[0].push({
+                        combined_files[index].studentSubmissions.push({
                             "student": student.name,
                             "name": template.name, 
                             "maxScore": template.maxScore,
                             "grade": file.grade,
+                            "gradedBy": file.gradedByName,
                             "submissions": file.submissions,
                             "studentComments": file.studentComments,
                             "graderComments": file.graderComments
                         });
                     }  else {
-                        combined_files[0].push({
+                        combined_files[index].studentSubmissions.push({
                             "student": student.name,
                             "name": template.name, 
                             "maxScore": template.maxScore
@@ -288,7 +296,7 @@ app.get('/grader/course/:course/assignment/:assignment', isLoggedIn, function(re
                     index += 1;                                    
                 });
 
-                
+               
             });
 
             console.log(combined_files);

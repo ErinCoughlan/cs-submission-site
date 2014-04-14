@@ -17,10 +17,7 @@ var userSchema = mongoose.Schema({
     // Keep refs to this user's instances as a student and a grader
     students: [ ObjectId ],
     
-    graders: [{
-        course_id: ObjectId,
-        gradedFiles: [ ObjectId ],
-    }] 
+    graders: [ ObjectId ]
 }, {collection: 'submit'});
 
 

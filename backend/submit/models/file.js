@@ -6,6 +6,7 @@ var ObjIdTy = mongoose.Types.ObjectId;
 var fileSchema = mongoose.Schema({
     grade: Number,
     gradedBy: ObjectId,
+    gradedByName: String,
     partner: ObjectId,
     studentComments: String,
     graderComments: String,
