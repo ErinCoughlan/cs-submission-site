@@ -23,7 +23,6 @@
         // get the list of assignments
         $http.get('/assignments/'+submissionApp.courseid).success(
             function (data) {
-                console.log(data);
                 $scope.course = data.course;
                 $scope.assignments = data.assignments;
             }
@@ -152,21 +151,27 @@
 
 })();
 
+/**
+ * Helper which calls toggle with the correct parent
+ */
+function toggleRow(e) {
+    // Convert to jquery object so methods will work
+    var row = document.getElementById(e.id);
+    toggleRowChildren($(row), 'fixedHeader');
+};
 
-/** Set up toggling rows for grader view */
-$(document).ready(function() {
-    $('tr.fixedHeader').click(function () {
-        toggleRowChildren($(this), 'fixedHeader');
+/**
+ * Toggles all of the rows under a given header.
+ */
+function toggleRowChildren(parentRowElement, parentClass) {
+    console.log(parentRowElement);
+    // escape periods because jquery thinks they are selectors
+    var childClass = parentRowElement.attr('id');
+    $('tr.'+childClass, parentRowElement.parent()).toggle();
+    $('tr.'+childClass).each(function(){
+        if ($(this).hasClass(parentClass) && !$(this).hasClass('collapsed')) {
+            toggleRowChildren($(this), parentClass);
+        }
     });
-
-    function toggleRowChildren(parentRowElement, parentClass) {
-        var childClass = parentRowElement.attr('id');
-        $('tr.'+childClass, parentRowElement.parent()).toggle();
-        $('tr.'+childClass).each(function(){
-            if ($(this).hasClass(parentClass) && !$(this).hasClass('collapsed')) {
-                toggleRowChildren($(this), parentClass);
-            }
-        });
-        parentRowElement.toggleClass('collapsed');
-    }
-});
+    parentRowElement.toggleClass('collapsed');
+};

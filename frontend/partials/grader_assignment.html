@@ -3,7 +3,7 @@
 </div>
 <div ng-cloak ng-show="files.length>0">
     <table ng-repeat="file in files" class="collapseTable" cellspacing="0" cellpadding="0">
-        <tr id="{{file.name}}" class="fixedHeader">
+        <tr id="{{file.name | letters}}" class="fixedHeader" onClick="toggleRow(this)">
             <th>
                 {{file.numGraded}} / {{course.numStudents}}
             </th>
@@ -14,7 +14,7 @@
                 <input type="button" id="gradeUnsubmitted_{{file.name}}" value="Grade Unsubmitted">
             </th>
         </tr>
-        <tr ng-repeat="student in file.studentSubmissions" class="{{file.name}}">
+        <tr ng-repeat="student in file.studentSubmissions" class="{{file.name | letters}}">
             <td colspan="2">
                 <div ng-if="isDefined(student.grade)">{{student.student}}, current grade: {{student.grade}}</div>
                 <div ng-if="!isDefined(student.grade)">{{student.student}}</div>

@@ -4,7 +4,7 @@
 // for the benefit of JSLint:
 /*global angular*/
 
-var submissionApp = angular.module('submissionApp', ['ngRoute']);
+var submissionApp = angular.module('submissionApp', ['ngRoute', 'submissionFilters']);
 
 (function(){
   "use strict";

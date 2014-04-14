@@ -9,6 +9,7 @@ table.collapseTable {
 
 .collapseTable tr:first-child {
 	background: rgb(40, 77, 97);
+	cursor: pointer;
 }
 
 .collapseTable td, .collapseTable th {
