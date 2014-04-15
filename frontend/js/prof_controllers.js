@@ -13,7 +13,23 @@
     // with a route on the server that supplies the list of courses?
     submissionApp.courseid = "CS5";
 
-    submissionApp.controller('ProfCtrl', function ($scope, $http, $routeParams) {
+    submissionApp.controller('ProfCtrl', function ($scope, $http, $route, $routeParams, $location) {
+        this.$route = $route;
+        this.$location = $location;
+        this.$routeParams = $routeParams;
+
+        $scope.courseid = submissionApp.courseid
+
+        // get the list of assignments
+        $http.get('/assignments/'+submissionApp.courseid).success(
+            function (data) {
+                $scope.course = data.course;
+                $scope.assignments = data.assignments;
+            }
+        );
+    });
+
+    submissionApp.controller('ProfAssignmentCtrl', function ($scope, $http, $routeParams) {
         $scope.isDefined = function (item){
             return angular.isDefined(item) && (item !== null);
         };
