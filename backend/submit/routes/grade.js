@@ -27,17 +27,17 @@ module.exports = function(app, passport) {
                 res.send("error getting course");
                 return;
             }
-            
+
             var assignments = course.assignments;
 
             // TODO this will break if an assignment is deleted (not sure if it
             // matters, arguably then we should just never see this page anyway)
             var assignment = course.assignments[assignmentNumber];
 
-            Grader.find({"course_id": course._id, "name": graderUser.name}, 
+            Grader.find({"course_id": course._id, "name": graderUser.name},
                         function(err, grader) {
                             Student.find({"files": {$exists: true}, "course_id": course.id,
-                                          "name": studentName}, 
+                                          "name": studentName},
                                          function(err, student) {
                                              var file;
                                              student.files.forEach(function(aFile) {
@@ -46,7 +46,7 @@ module.exports = function(app, passport) {
                                                      file = aFile;
                                                  }
                                              });
-                                             
+
                                          });
                         });
         });
@@ -62,25 +62,27 @@ module.exports = function(app, passport) {
         var studentName    = req.params.student;
         var fileNumber       = req.params.file;
 
+        console.log(req.params);
         // Hit the database for all the things we need to save this. Cry inside.
         Course.findOne({"name": courseName}, function(err, course) {
             if (err) {
                 res.send("error getting course");
                 return;
             }
-            
+
             var assignments = course.assignments;
 
             // TODO this will break if an assignment is deleted (not sure if it
             // matters, arguably then we should just never see this page anyway)
             var assignment = course.assignments[assignmentNumber];
 
-            Grader.find({"course_id": course._id, "name": graderUser.name}, 
+            Grader.find({"course_id": course._id, "name": graderUser.name},
                         function(err, grader) {
-                            Student.find({"files": {$exists: true}, "course_id": course.id,
-                                          "name": studentName}, 
+                            Student.findOne({"files": {$exists: true}, "course_id": course.id,
+                                          "name": studentName},
                                          function(err, student) {
                                              var file;
+                                             console.log(student);
                                              student.files.forEach(function(aFile) {
                                                  if(aFile.assignment == assignmentNumber &&
                                                     aFile.template == fileNumber) {
@@ -94,14 +96,28 @@ module.exports = function(app, passport) {
                                                  "course": course,
                                                  "grader": grader
                                              }
-                                             
+
+                                             res.json(data);
                                          });
                         });
         });
     });
 
+    // TODO validate that it's a grutor for the class
+    app.get("/course/:course/assignment/:assignment/student/:student/file/:file/grade/", isLoggedIn, function(req, res) {
+        res.render("grade", {
+          course: req.params.course,
+          assignment: req.params.assignment,
+          student: req.params.student,
+          file: req.params.file
+        });
+      });
 
-});
+    app.get("/grade/", isLoggedIn, function(req, res) {
+        res.render("grade");
+    });
+
+};
 
 
 function isLoggedIn(req, res, next) {
@@ -113,4 +129,3 @@ function isLoggedIn(req, res, next) {
     // if they aren't, redirect them to the home page
     res.redirect('/');
 }
-

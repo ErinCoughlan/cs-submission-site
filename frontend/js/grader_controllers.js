@@ -11,6 +11,7 @@
     // TODO: get this from the server during page load somehow.
     // maybe a <script src="/courses.js"></script> in student.html
     // with a route on the server that supplies the list of courses?
+    // TODO: This shouldn't be hardcoded.
     submissionApp.courseid = "CS5";
 
     submissionApp.controller('GraderCtrl', function ($scope, $http, $route, $routeParams, $location) {
@@ -124,9 +125,9 @@
 
         this.params = $routeParams;
 
-        $http.get('/course/' + submissionApp.courseid + '/assignment/' + this.params.assignmentId + '/student/' + this.params.student + '/file/' + this.params.file + '/grade/info/').success(
+        $http.get('/course/' + submissionApp.courseid + '/assignment/' + assignment +
+         '/student/' + student + '/file/' + file + '/grade/info/').success(
             function (data) {
-                console.log(data);
                 $scope.course = data.course;
                 $scope.file = data.file;
                 $scope.student = data.student;
