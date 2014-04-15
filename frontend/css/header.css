@@ -24,6 +24,7 @@
     height: 100px;
     line-height: 100px;
     padding: 0px 5px;
+    position: relative;
 }
 
 #navbar li.rfloat {
@@ -46,16 +47,26 @@
 }
 
 #navbar ul.dropdown-menu {
-    margin: 0px;
-    padding: 0px;
+    position: absolute;
+    top: 100px;
+    left: 0;
+    width: auto;
 }
 
 #navbar li.submenu {
+    border: 2px solid #7d8ca9;
+    border-top: none;
     display: none;
     font-size: 24px;
     height: 30px;
     line-height: 30px;
+    margin: 0px -2px; /* To align with border of parent */
     visibility: hidden;
+    white-space: nowrap;
+}
+
+#navbar li.submenu:first-child {
+    border-top: 2px solid #7d8ca9;
 }
 
 #navbar li.dropdown:hover li.submenu {
