@@ -44,8 +44,8 @@
                     </tr>
                 </table>
 
-                <div class="title">Or add a new assignment.</div>
-                <table class="newAssignment" cellspacing="0" cellpadding="0">
+                <div class="title">Or create a new assignment.</div>
+                <table id="newAssignment" class="newAssignment" cellspacing="0" cellpadding="0">
                     <tr id="{{assignment.name | letters}}" class="fixedHeader">
                         <th colspan="2">
                             <input type="text" name="assignmentName" placeholder="Assignment Name">
@@ -56,24 +56,25 @@
                     </tr>
                     <tr>
                         <td>
-                            <input type="text" name="fileName" placeholder="File Name">
+                            <input type="text" name="fileName-1" placeholder="File Name">
                         </td>
                         <td>
                             Points:
-                            <input type="number" class="score" name="fileMaxPoints" placeholder="Points">
+                            <input type="number" class="score" name="fileMaxPoints-1" placeholder="Points">
                         </td>
                         <td>
                             Partner:
-                            <input type="radio" name="partnerable" value="yes">Yes
-                            <input type="radio" name="partnerable" checked="true" value="no">No
+                            <input type="radio" name="partnerable-1" value="yes">Yes
+                            <input type="radio" name="partnerable-1" checked="true" value="no">No
                         </td>
                     </tr>
-                    <tr>
+                    <tr id="addNew">
                         <td colspan="3">
-                            <input type="button" value="Add Another File" name="addFile">
+                            <input type="button" value="Add Another File" name="addFile" onClick="addFile(event)">
                         </td>
                     </tr>
                 </table>
+                <input type="submit" value="Create New Assignment" name="createAssignment" onClick="createAssignment()">
             </div>
         </div>
     </body>

@@ -18,7 +18,7 @@
         this.$location = $location;
         this.$routeParams = $routeParams;
 
-        $scope.courseid = submissionApp.courseid
+        $scope.courseid = submissionApp.courseid;
 
         // get the list of assignments
         $http.get('/assignments/'+submissionApp.courseid).success(
@@ -31,6 +31,31 @@
 
 })();
 
-$(function(){
-  $('#datetimepicker').datepicker();
-});
+
+/**
+ * Adds a row to the table so that another file can be added
+ */
+function addFile (e) {
+    var table = $(e.target).parents('table');
+    console.log(table);
+
+    var index = $('#addNew').index();
+    
+    // Make sure this is actual html somehow
+    var html = '<tr>'+
+                    '<td>'+
+                        '<input type="text" name="fileName-'+index+'" placeholder="File Name">'+
+                    '</td>'+
+                    '<td>'+
+                        'Points: '+
+                        '<input type="number" class="score" name="fileMaxPoints-'+index+'" placeholder="Points">'+
+                    '</td>'+
+                    '<td>'+
+                        'Partner: '+
+                        '<input type="radio" name="partnerable-'+index+'" value="yes">Yes '+
+                        '<input type="radio" name="partnerable-'+index+'" checked="true" value="no">No '+
+                    '</td>'+
+                '</tr>';
+
+    $('#addNew').before(html);
+};
