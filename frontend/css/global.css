@@ -47,6 +47,14 @@ img {
     float: left;
 }
 
+.alignLeft {
+    text-align: left;
+}
+
+.alignRight {
+    text-align: right;
+}
+
 .center {
     margin: 0 auto;
 }

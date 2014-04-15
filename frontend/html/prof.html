@@ -22,18 +22,24 @@
                 <div class="title">Click an assignment name to edit.</div>
                 <table ng-repeat="assignment in assignments" cellspacing="0" cellpadding="0">
                     <tr id="{{assignment.name | letters}}" class="fixedHeader">
-                        <th>
+                        <th colspan="2">
                             <a class="underline" ng-href="/edit">
                                 {{assignment.name}}
                             </a>
                         </th>
-                        <th>
+                        <th class="alignRight">
                             Due: {{assignment.due | date : 'MMM d, yyyy h:mm a'}}
                         </th>
                     </tr>
                     <tr ng-repeat="file in assignment.files">
-                        <td colspan="2">
+                        <td>
                             {{file.name}}
+                        </td>
+                        <td>
+                            Points: {{file.maxScore}}
+                        </td>
+                        <td>
+                            Partner: {{file.partnerable}}
                         </td>
                     </tr>
                 </table>
