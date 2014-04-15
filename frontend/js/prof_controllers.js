@@ -35,20 +35,20 @@
 /**
  * Adds a row to the table so that another file can be added
  */
-function addFile (e) {
+function addFile(e) {
     var table = $(e.target).parents('table');
     console.log(table);
 
-    var index = $('#addNew').index();
+    var index = $('#addNew').index() - 1;
     
     // Make sure this is actual html somehow
-    var html = '<tr>'+
+    var html = '<tr class="file">'+
                     '<td>'+
-                        '<input type="text" name="fileName-'+index+'" placeholder="File Name">'+
+                        '<input type="text" name="filename-'+index+'" placeholder="File Name">'+
                     '</td>'+
                     '<td>'+
                         'Points: '+
-                        '<input type="number" class="score" name="fileMaxPoints-'+index+'" placeholder="Points">'+
+                        '<input type="number" class="score" name="maxPoints-'+index+'" placeholder="Points">'+
                     '</td>'+
                     '<td>'+
                         'Partner: '+
@@ -58,4 +58,88 @@ function addFile (e) {
                 '</tr>';
 
     $('#addNew').before(html);
+};
+
+/**
+ * Create a new assignment (NO ACTUAL SUBMIT FOR NOW)
+ */
+ function createAssignment() {
+    var aName = $("input[name='assignmentName'").val();
+    var due = $("input[name='dueDate'").val();
+    var files = [];
+
+    var rows = $(".file");
+    for (var i = 0; i < rows.length; i++) {
+        var filename = $("input[name='filename-"+i+"']").val();
+        var maxPoints = $("input[name='maxPoints-"+i+"']").val();
+        var partnerable = $("input[name='partnerable-"+i+"']:checked").val();
+        var file = {
+            name: filename,
+            maxPoints: maxPoints,
+            partnerable: partnerable
+        };
+        files.push(file);
+    }
+
+    // Create the assignment object
+    var assignment = {
+        name: aName,
+        due: due,
+        files: files
+    };
+
+    addAssignment(assignment);
+    clearAssignment();
+ };
+
+ /**
+  * Clears all data within the new assignment form
+  */
+function clearAssignment() {
+    $("input[name='assignmentName'").val('');
+    $("input[name='dueDate'").val('');
+
+    var rows = $(".file");
+    for (var i = 0; i < rows.length; i++) {
+        $("input[name='filename-"+i+"']").val('');
+        $("input[name='maxPoints-"+i+"']").val('');
+        $("input[name='partnerable-"+i+"'][value='false']").prop('checked', true);
+    }
+};
+
+/**
+ * Add an assignment to the HTML. (SHOULD USE NODE AND REFRESH WITH NEW ASSIGNMENT)
+ * input: assignment - {name: , due: , files:[file1, file2]}
+ */
+function addAssignment(assignment) {
+    var date = new Date(assignment.due);
+    var html = '<table cellspacing="0" cellpadding="0">'+
+                    '<tr id="'+assignment.name+'" class="fixedHeader">'+
+                        '<th colspan="2">'+
+                            '<a class="underline" ng-href="/edit">'+
+                                assignment.name+
+                            '</a>'+
+                        '</th>'+
+                        '<th class="alignRight">'+
+                            'Due: '+date.toDateString()+date.toTimeString()+
+                        '</th>'+
+                    '</tr>';
+    var moreHtml = "";
+    for (var i = 0; i < assignment.files.length; i++) {
+        var file = assignment.files[i];
+        moreHtml += '<tr ng-repeat="file in assignment.files">'+
+                        '<td>'+
+                            file.name+
+                        '</td>'+
+                        '<td>'+
+                            'Points: '+file.maxPoints+
+                        '</td>'+
+                        '<td>'+
+                            'Partner: '+file.partnerable+
+                        '</td>'+
+                    '</tr>';
+                }
+    var finalHtml = html + moreHtml + '</table>';
+
+    $('#newAssignment').before(finalHtml);
 };
