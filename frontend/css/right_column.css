@@ -20,20 +20,20 @@ td, th {
     width: 400px;
 }
 
+th {
+    border: 2px solid #7d8ca9;
+    border-bottom: 4px solid #7d8ca9;
+}
+
+td:first-child {
+    border-left: 0px;
+    width: 200px;
+}
+
 table {
     border: 2px solid #7d8ca9;
     margin-bottom: 20px;
     margin-top: 42px;
-}
-
-th {
-    border: 3px solid #7d8ca9;
-    border-left: 0px;
-}
-
-td:first-child, th:first-child {
-    border-left: 0px;
-    width: 200px;
 }
 
 input[type=submit] {

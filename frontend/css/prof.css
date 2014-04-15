@@ -1,0 +1,15 @@
+a.underline {
+	text-decoration: underline;
+}
+
+#profMain {
+	margin: 20px;
+}
+
+#profMain table {
+	margin: 10px 0px;
+}
+
+.title {
+	font-size: 20px;
+}
