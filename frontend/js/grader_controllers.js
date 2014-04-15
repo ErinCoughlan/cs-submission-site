@@ -151,6 +151,29 @@
 
     });
 
+    submissionApp.controller('GradePageCtrl', function ($scope, $http, $routeParams) {
+        $scope.isDefined = function (item){
+            return angular.isDefined(item) && (item !== null);
+        };
+
+        $scope.courseid = submissionApp.courseid;
+
+        this.params = $routeParams;
+
+        $http.get('/course/' + submissionApp.courseid + '/assignment/' + this.params.assignmentId + '/student/' + this.params.student + '/file/' + this.params.file + '/grade/info/').success(
+            function (data) {
+                console.log(data);
+                $scope.course = data.course;
+                $scope.file = data.file;
+                $scope.student = data.student;
+                $scope.grader = data.grader;
+            }
+        );
+
+    });
+
+
+
 })();
 
 
