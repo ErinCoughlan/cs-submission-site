@@ -33,7 +33,7 @@
             var fd = new FormData(form);
 
             var studentsText = document.getElementById('student').value;
-            var areGraders   = document.getElementById('grader').value;
+            var areGraders   = document.getElementById('grader').checked;
 
             var dataStr = JSON.stringify({ students: studentsText,
                                           grader: areGraders });

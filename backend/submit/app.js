@@ -558,6 +558,7 @@ app.post('/addstudents', function(req, res) {
   Course.findOne({"name":"CS5"}, function(err, course) {
     studentsText = req.body.students;
     shouldBeGrader = req.body.grader;
+
     var noSpaces = studentsText.replace(/\s/g, '');
     var separatedOnCommas = noSpaces.split(',');
 
@@ -571,22 +572,36 @@ app.post('/addstudents', function(req, res) {
             user.save();
           }
 
-          Student.findOne({"user_id": user._id}, function(err, student) {
-            if(student) {
-              return;
-            }
+          if (shouldBeGrader) {
+            Grader.findOne({"user_id": user._id, "course_id", course._id}, function(err, grader) {
+              if(grader) {
+                return;
+              }
 
-            student = new Student();
-            student.course_id = course._id;
-            student.user_id = user._id;
-            student.name = username;
-            student.save();
-            user.students.push(student._id);
-            user.save();
-            course.save();
+              grader = new Grader();
+              grader.course_id = course._id;
+              grader.user_id = user._id;
+              grader.name = username;
+              grader.save();
+              user.graders.push(student._id);
+              user.save();
 
-          });
-        })
+          } else {
+            Student.findOne({"user_id": user._id, "course_id": course._id}, function(err, student) {
+              if(student) {
+                return;
+              }
+
+              student = new Student();
+              student.course_id = course._id;
+              student.user_id = user._id;
+              student.name = username;
+              student.save();
+              user.students.push(student._id);
+              user.save();
+            });
+          };
+      });
     });
   });
 
