@@ -66,6 +66,6 @@ a.underline {
 	border-bottom: 2px solid #7d8ca9;
 }
 
-.newFile td {
+#addNew td {
 	border-bottom: none;
 }

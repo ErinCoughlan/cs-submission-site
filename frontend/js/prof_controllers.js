@@ -40,7 +40,6 @@
           }
         );
 
-
         $scope.addUsers = function addUsers($event) {
             var form = document.getElementById("form-add-student");
             var fd = new FormData(form);
@@ -91,8 +90,8 @@ function addFile(e) {
                     '</td>'+
                     '<td>'+
                         'Partner: '+
-                        '<input type="radio" name="partnerable-'+index+'" value="yes">Yes '+
-                        '<input type="radio" name="partnerable-'+index+'" checked="true" value="no">No '+
+                        '<input type="radio" name="partnerable-'+index+'" value="true">Yes '+
+                        '<input type="radio" name="partnerable-'+index+'" checked="true" value="false">No '+
                     '</td>'+
                 '</tr>';
 
