@@ -44,8 +44,9 @@
                     </tr>
                 </table>
 
-                <div class="title">Or create a new assignment.</div>
-                <table id="newAssignment" class="newAssignment" cellspacing="0" cellpadding="0">
+                <br><br><br><br>
+                <div id="newAssignment" class="title">Or create a new assignment.</div>
+                <table class="newAssignment" cellspacing="0" cellpadding="0">
                     <tr id="{{assignment.name | letters}}" class="fixedHeader">
                         <th colspan="2">
                             <input type="text" name="assignmentName" placeholder="Assignment Name">
@@ -64,8 +65,8 @@
                         </td>
                         <td>
                             Partner:
-                            <input type="radio" name="partnerable-0" value="yes">Yes
-                            <input type="radio" name="partnerable-0" checked="true" value="no">No
+                            <input type="radio" name="partnerable-0" value="true">Yes
+                            <input type="radio" name="partnerable-0" checked="true" value="false">No
                         </td>
                     </tr>
                     <tr id="addNew">

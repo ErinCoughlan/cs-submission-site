@@ -72,15 +72,23 @@ function addFile(e) {
     for (var i = 0; i < rows.length; i++) {
         var filename = $("input[name='filename-"+i+"']").val();
         var maxPoints = $("input[name='maxPoints-"+i+"']").val();
-        var partnerable = $("input[name='partnerable-"+i+"']").val();
+        var partnerable = $("input[name='partnerable-"+i+"']:checked").val();
         var file = {
-            filename: filename,
+            name: filename,
             maxPoints: maxPoints,
             partnerable: partnerable
         };
         files.push(file);
     }
 
+    // Create the assignment object
+    var assignment = {
+        name: aName,
+        due: due,
+        files: files
+    };
+
+    addAssignment(assignment);
     clearAssignment();
  };
 
@@ -95,6 +103,43 @@ function clearAssignment() {
     for (var i = 0; i < rows.length; i++) {
         $("input[name='filename-"+i+"']").val('');
         $("input[name='maxPoints-"+i+"']").val('');
-        $("input[name='partnerable-"+i+"'][value='no']").prop('checked', true);
+        $("input[name='partnerable-"+i+"'][value='false']").prop('checked', true);
     }
+};
+
+/**
+ * Add an assignment to the HTML. (SHOULD USE NODE AND REFRESH WITH NEW ASSIGNMENT)
+ * input: assignment - {name: , due: , files:[file1, file2]}
+ */
+function addAssignment(assignment) {
+    var date = new Date(assignment.due);
+    var html = '<table cellspacing="0" cellpadding="0">'+
+                    '<tr id="'+assignment.name+'" class="fixedHeader">'+
+                        '<th colspan="2">'+
+                            '<a class="underline" ng-href="/edit">'+
+                                assignment.name+
+                            '</a>'+
+                        '</th>'+
+                        '<th class="alignRight">'+
+                            'Due: '+date.toDateString()+date.toTimeString()+
+                        '</th>'+
+                    '</tr>';
+    var moreHtml = "";
+    for (var i = 0; i < assignment.files.length; i++) {
+        var file = assignment.files[i];
+        moreHtml += '<tr ng-repeat="file in assignment.files">'+
+                        '<td>'+
+                            file.name+
+                        '</td>'+
+                        '<td>'+
+                            'Points: '+file.maxPoints+
+                        '</td>'+
+                        '<td>'+
+                            'Partner: '+file.partnerable+
+                        '</td>'+
+                    '</tr>';
+                }
+    var finalHtml = html + moreHtml + '</table>';
+
+    $('#newAssignment').before(finalHtml);
 };
