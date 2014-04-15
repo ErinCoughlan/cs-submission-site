@@ -573,8 +573,8 @@ app.post('/addstudents', function(req, res) {
           }
 
           if (shouldBeGrader) {
-            Grader.findOne({"user_id": user._id, "course_id", course._id}, function(err, grader) {
-              if(grader) {
+            Grader.findOne({"user_id": user._id, "course_id": course._id}, function(err, grader) {
+              if (grader) {
                 return;
               }
 
@@ -585,7 +585,7 @@ app.post('/addstudents', function(req, res) {
               grader.save();
               user.graders.push(student._id);
               user.save();
-
+            });
           } else {
             Student.findOne({"user_id": user._id, "course_id": course._id}, function(err, student) {
               if(student) {
