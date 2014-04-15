@@ -30,3 +30,7 @@
     });
 
 })();
+
+$(function(){
+  $('#datetimepicker').datetimepicker();
+});

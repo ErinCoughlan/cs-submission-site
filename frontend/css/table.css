@@ -1,50 +1,50 @@
-table.collapseTable {
+#rightCol table.collapseTable {
 	border: none;
 	margin: 0px;
 }
 
-.collapseTable tr {
+#rightCol .collapseTable tr {
 	background: none;
 }
 
-.collapseTable tr:first-child {
+#rightCol .collapseTable tr:first-child {
 	background: rgb(40, 77, 97);
 	cursor: pointer;
 }
 
-.collapseTable td, .collapseTable th {
+#rightCol .collapseTable td, #rightCol .collapseTable th {
 	border: 1px solid #7d8ca9;
 	padding: 10px;
 	text-align: left;
 }
 
-.collapseTable th {
+#rightCol .collapseTable th {
 	border-top: 3px solid #7d8ca9;
 	border-bottom: 3px solid #7d8ca9;
 }
 
-.collapseTable td {
+#rightCol .collapseTable td {
 	border-left: none;
 	border-right: none;
 }
 
-.collapseTable th:first-child {
+#rightCol .collapseTable th:first-child {
 	border-left: 3px solid #7d8ca9;
 }
 
-.collapseTable td:first-child {
+#rightCol .collapseTable td:first-child {
 	border-left: 1px solid #7d8ca9;
 }
 
-.collapseTable th:last-child {
+#rightCol .collapseTable th:last-child {
 	border-right: 3px solid #7d8ca9;
 }
 
-.collapseTable td:last-child {
+#rightCol .collapseTable td:last-child {
 	border-right: 1px solid #7d8ca9;
 	text-align: center;
 }
 
-.fixedHeader th {
+#rightCol .fixedHeader th {
 	text-align: center;
 }

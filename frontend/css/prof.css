@@ -6,10 +6,58 @@ a.underline {
 	margin: 20px;
 }
 
+#profMain tr {
+    font-size: 1.5em;
+    padding-top: .1em;
+    padding-left: .2em;
+}
+
+#profMain tr:nth-child(even) {
+    background: rgb(40, 77, 97);
+}
+
+#profMain td, th {
+    border-left: 2px solid #7d8ca9;
+    font-size: 20px;
+    padding: 10px;
+    text-align: left;
+    width: 400px;
+}
+
+#profMain th {
+    border-left: 0px;
+    border-bottom: 4px solid #7d8ca9;
+    border-top: 2px solid #7d8ca9;
+}
+
+#profMain td:first-child {
+    border-left: 0px;
+    width: 200px;
+}
+
+#profMain th:first-child {
+    border-left: 2px solid #7d8ca9;
+}
+
+#profMain th:last-child {
+    border-right: 2px solid #7d8ca9;
+}
+
+#profMain table {
+    border: 2px solid #7d8ca9;
+    margin-bottom: 20px;
+    margin-top: 42px;
+}
+
 #profMain table {
 	margin: 10px 0px;
+	width: 90%;
 }
 
 .title {
 	font-size: 20px;
+}
+
+.datetimepicker {
+	width: 225px;
 }
