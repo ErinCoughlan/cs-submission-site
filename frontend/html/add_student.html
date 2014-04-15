@@ -27,9 +27,9 @@
                         <div class="formBox">
                             Student Name (username):<br>
                             Seperate names with commas.<br>
-                            <textarea name="student" cols="80" rows="10" placeholder="ecoughlan, pdavis, etc."></textarea><br>
-                            <input type="checkbox" name="grader" value="isGrader">Assign as Grader<br>
-                            <input type="submit" value="Add Users">
+                            <textarea name="student" id="student" cols="80" rows="10" placeholder="ecoughlan, pdavis, etc."></textarea><br>
+                            <input type="checkbox" id="grader" name="grader" >Assign as Grader<br>
+                            <input type="button" value="Add Users" ng-click="addUsers(event)">
                         </div>
                     </form>
                 </div>

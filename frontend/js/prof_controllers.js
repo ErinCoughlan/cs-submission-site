@@ -27,6 +27,31 @@
                 $scope.assignments = data.assignments;
             }
         );
+
+        $scope.addUsers = function addUsers($event) {
+            var form = document.getElementById("form-add-student");
+            var fd = new FormData(form);
+
+            var studentsText = document.getElementById('student').value;
+            var areGraders   = document.getElementById('grader').value;
+
+            var dataStr = JSON.stringify({ students: studentsText,
+                                          grader: areGraders });
+
+            $.ajax({
+                url : "/addStudents",
+                data : dataStr,
+                type : "POST",
+                contentType : "application/json",
+                success : function(m) {
+                    console.log(m);
+                    window.location.href="/prof";
+                },
+                failure : function (m) {
+                    console.log(m);
+                }
+            });
+        };
     });
 
 })();
@@ -40,7 +65,7 @@ function addFile(e) {
     console.log(table);
 
     var index = $('#addNew').index() - 1;
-    
+
     // Make sure this is actual html somehow
     var html = '<tr class="file">'+
                     '<td>'+

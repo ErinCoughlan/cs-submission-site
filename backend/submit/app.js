@@ -121,13 +121,13 @@ app.get('/prof/addStudent', isLoggedIn, function(req, res) {
 
 app.get('/students/:course', isLoggedIn, function(req, res) {
     var courseid = req.params.course;
-    Course.findOne({"name": courseid}, function(err, course) {        
+    Course.findOne({"name": courseid}, function(err, course) {
         // Find all matching students
         if(err) {
             res.send("error getting course");
             return;
         }
-        
+
         // Since MongoDB is really dumb, searches on students also turn up graders, so we
         // force existence of a field students have and graders do not.
         Student.find({"course_id": course._id, "files": {$exists: true}}, function(err, students) {
@@ -157,14 +157,14 @@ app.get('/assignments/:course', isLoggedIn, function(req, res) {
             res.send("Error getting list of assignments.");
             return;
         }
-        
+
         console.log("Course contents: ", course);
         var assignments = course.assignments;
         var data = {
-            'course': course, 
+            'course': course,
             'assignments': assignments
         };
-        
+
         res.json(data);
     });
 });
@@ -174,26 +174,26 @@ app.get('/course/:course/assignment/:assignment', isLoggedIn, function(req, res)
     var userid = req.session.passport.user;
     var coursename = req.params.course;
     var assignmentname = req.params.assignment;
-    
+
     Course.findOne({"name": coursename}, function(err, course) {
         if(err) {
             res.send("Error getting course");
             return;
         }
-        
+
         var assignment;
-        
+
         course.assignments.forEach(function(anAssignment) {
             if(anAssignment.name === assignmentname) {
                 assignment = anAssignment;
             }
         });
-        
+
         if(!assignment) {
             console.log("No matching assignment found");
             return;
         }
-        
+
         Student.findOne({"course_id": course._id}, function(err, student) {
             var combined_files = new Array();
             var index = 0;
@@ -201,7 +201,7 @@ app.get('/course/:course/assignment/:assignment', isLoggedIn, function(req, res)
                 file = student.files[index];
                 if(file) {
                     combined_files.push({
-                        "name": template.name, 
+                        "name": template.name,
                         "maxScore": template.maxScore,
                         "grade": file.grade,
                         "submissions": file.submissions,
@@ -210,24 +210,24 @@ app.get('/course/:course/assignment/:assignment', isLoggedIn, function(req, res)
                     });
                 }  else {
                     combined_files.push({
-                        "name": template.name, 
+                        "name": template.name,
                         "maxScore": template.maxScore
                     });
                 }
 
-                index += 1;                                    
+                index += 1;
             });
 
             console.log(combined_files);
-            
+
             var data = {
                 'students': student,
                 'course': course,
                 'assignment': assignment,
                 'files': combined_files
             };
-            
-            
+
+
             res.json(data);
         });
     });
@@ -239,28 +239,28 @@ app.get('/grader/course/:course/assignment/:assignment', isLoggedIn, function(re
     var userid = req.session.passport.user;
     var coursename = req.params.course;
     var assignmentname = req.params.assignment;
-    
+
     Course.findOne({"name": coursename}, function(err, course) {
         if(err) {
             res.send("Error getting course");
             return;
         }
-        
+
         var assignment;
-        
+
         course.assignments.forEach(function(anAssignment) {
             if(anAssignment.name === assignmentname) {
                 assignment = anAssignment;
             }
         });
-        
+
         if(!assignment) {
             console.log("No matching assignment found");
             return;
         }
-        
-        
- 
+
+
+
         // MongoDB is really, really dumb, so when we search for students we also get graders.
         // So, I force it to exclude graders by requiring a field they shouldn't have.
         Student.find({"course_id": course._id, "files": {$exists:true}}, function(err, students) {
@@ -282,7 +282,7 @@ app.get('/grader/course/:course/assignment/:assignment', isLoggedIn, function(re
                     if(file) {
                         combined_files[index].studentSubmissions.push({
                             "student": student.name,
-                            "name": template.name, 
+                            "name": template.name,
                             "maxScore": template.maxScore,
                             "grade": file.grade,
                             "gradedBy": file.gradedByName,
@@ -293,27 +293,27 @@ app.get('/grader/course/:course/assignment/:assignment', isLoggedIn, function(re
                     }  else {
                         combined_files[index].studentSubmissions.push({
                             "student": student.name,
-                            "name": template.name, 
+                            "name": template.name,
                             "maxScore": template.maxScore
                         });
                     }
 
-                    index += 1;                                    
+                    index += 1;
                 });
 
-               
+
             });
 
             console.log("Students: " + students);
-            
+
             var data = {
                 'students': students,
                 'course': course,
                 'assignment': assignment,
                 'files': combined_files
             };
-            
-            
+
+
             res.json(data);
         });
     });
@@ -357,18 +357,18 @@ app.get('/course/:course/assignment/:assignment/file/:file/submit/', isLoggedIn,
                 console.log("Failed to get assignment");
                 return;
             }
-            
+
             // Get the relevant file
             // TODO catch edge case if assignment changes while this might be being used.
             // Generally, assignments won't be being modified when we try to grab files,
             // so the new-file-creation for all students should be safe usually.
             console.log(student._id, assignment._id);
-            
+
             var file = retrievedFile;
-                
+
             // Get the relevant submission (the last added, i.e. most recently submitted)
             var submission = file.submissions[file.submissions.length - 1];
-            
+
             console.log("location", submission);
             var readStream = fs.createReadStream(
                 submission.document);
@@ -523,7 +523,7 @@ app.post('/signup', passport.authenticate('local-signup', {
 }));
 app.get('/signup', function(req, res) {
     // render the page and pass in any flash data if it exists
-    res.render('signup', { message: req.flash('signupMessage') });
+    res.render('signup', { message: req.flash('Message') });
 });
 
 // copy a file
@@ -552,6 +552,46 @@ function copyFile(source, target, cb) {
         }
     }
 }
+
+app.post('/addstudents', function(req, res) {
+  //TOOD un-hardcode
+  Course.findOne({"name":"CS5"}, function(err, course) {
+    studentsText = req.body.students;
+    shouldBeGrader = req.body.grader;
+    var noSpaces = studentsText.replace(/\s/g, '');
+    var separatedOnCommas = noSpaces.split(',');
+
+    separatedOnCommas.forEach(function(username) {
+        User.findOne({"local.username": username}, function(err, user) {
+          if (!user) {
+            user = new User();
+            user.local.username = username;
+            user.local.password = user.generateHash("asdf");
+            user.local.email    = "placeholder@cs.hmc.edu";
+            user.save();
+          }
+
+          Student.findOne({"user_id": user._id}, function(err, student) {
+            if(student) {
+              return;
+            }
+
+            student = new Student();
+            student.course_id = course._id;
+            student.user_id = user._id;
+            student.name = username;
+            student.save();
+            user.students.push(student._id);
+            user.save();
+            course.save();
+
+          });
+        })
+    });
+  });
+
+  res.redirect('/prof');
+});
 
 // development only
 if ('development' == app.get('env')) {
