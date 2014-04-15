@@ -605,7 +605,7 @@ app.post('/addstudents', function(req, res) {
     });
   });
 
-  res.redirect('/prof');
+  res.redirect('/prof/addStudent');
 });
 
 // development only

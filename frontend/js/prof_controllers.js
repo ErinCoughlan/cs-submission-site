@@ -45,7 +45,7 @@
                 contentType : "application/json",
                 success : function(m) {
                     console.log(m);
-                    window.location.href="/prof";
+                    window.location.href="/prof/addStudent";
                 },
                 failure : function (m) {
                     console.log(m);
