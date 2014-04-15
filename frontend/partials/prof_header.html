@@ -2,7 +2,7 @@
     <div id="navbar">
         <ul>
             <li class="lfloat disabled">
-                <a ng-hred="prof">
+                <a ng-href="/prof">
                     <div id="title">HMC CS
                         <img class="alien" src="/img/alien.png">
                     </div>
@@ -10,10 +10,10 @@
             </li>
              <!-- Disabled only if one course; otherwise show as dropdown -->
             <li class="lfloat disabled">{{course.name}}</li>
-            <li class="lfloat"><a ng-href="grader/course/{{course.name}}">Grade</a></li>
+            <li class="lfloat"><a ng-href="/grader/course/{{course.name}}">Grade</a></li>
             <li class="lfoat dropdown">Manage
                 <ul class="dropdown-menu">
-                    <li class="submenu"><a ng-href="prof/addStudent">Add/Remove Students</a></li>
+                    <li class="submenu"><a ng-href="/prof/addStudent">Add/Remove Students</a></li>
                     <li class="submenu"><a ng-href="#">Gradebook</a></li>
                 </ul>
             </li>
