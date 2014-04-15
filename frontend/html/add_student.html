@@ -25,9 +25,9 @@
                     <hr class="iRule">
                     <form id="form-add-student" class="center" name="form-add-student" enctype="multipart/form-data">
                         <div class="formBox">
-                            Student Names: (ex: ecoughlan)<br>
+                            Student Name (username):<br>
                             Seperate names with commas.<br>
-                            <textarea name="student" cols="80" rows="10"></textarea><br>
+                            <textarea name="student" cols="80" rows="10" placeholder="ecoughlan, pdavis"></textarea><br>
                             <input type="checkbox" name="grader" value="isGrader">Assign as Grader<br>
                             <input type="submit" value="Add Users">
                         </div>
@@ -42,7 +42,27 @@
                     <form id="form-remove-student" class="center" name="form-remove-student" enctype="multipart/form-data">
                         <div class="formBox">
                             Current Students:<br>
+                            <table cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td><input type="checkbox" name="{{student.name}}" value="removeStudent"></td>
+                                    <td>ecoughlan</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" name="{{student.name}}" value="removeStudent"></td>
+                                    <td>pdavis</td>
+                                </tr>
+                            </table>
                             Current Graders:<br>
+                            <table cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td><input type="checkbox" name="{{student.name}}" value="removeGrader"></td>
+                                    <td>dodds</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" name="{{student.name}}" value="removeGrader"></td>
+                                    <td>jeb</td>
+                                </tr>
+                            </table>
                             <input type="submit" value="Remove Users">
                         </div>
                     </form>
