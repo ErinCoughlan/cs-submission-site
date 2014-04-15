@@ -23,7 +23,7 @@
                 <table ng-repeat="assignment in assignments" cellspacing="0" cellpadding="0">
                     <tr id="{{assignment.name | letters}}" class="fixedHeader">
                         <th colspan="2">
-                            <a class="underline" ng-href="/edit">
+                            <a class="underline">
                                 {{assignment.name}}
                             </a>
                         </th>
@@ -60,7 +60,7 @@
                         </td>
                         <td>
                             Points:
-                            <input type="number" class="score" name="maxPoints-0" placeholder="Points">
+                            <input type="number" class="score" name="maxPoints-0">
                         </td>
                         <td>
                             Partner:
