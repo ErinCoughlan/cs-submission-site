@@ -28,6 +28,13 @@
             }
         );
 
+        // get the list of students
+        $http.get('/students/' + $scope.courseid).success(
+            function(data) {
+                $scope.students = data.students;
+            }
+        );
+
         $scope.addUsers = function addUsers($event) {
             var form = document.getElementById("form-add-student");
             var fd = new FormData(form);
