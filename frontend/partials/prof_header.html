@@ -1,20 +1,21 @@
 <div id="header">
     <div id="navbar">
         <ul>
-            <li class="disabled">
+            <li class="lfloat disabled">
                 <div id="title">HMC CS
                     <img class="alien" src="/img/alien.png">
                 </div>
             </li>
-            <!-- Disabled only if one course; otherwise show as dropdown -->
-            <li class="disabled">{{course.name}}</li>
-            <li><a ng-href="grader/course/{{course.name}}">Grade</a></li>
-            <li class="dropdown"><a ng-href="#">Manage</a>
+             <!-- Disabled only if one course; otherwise show as dropdown -->
+            <li class="lfloat disabled">{{course.name}}</li>
+            <li class="lfloat"><a ng-href="grader/course/{{course.name}}">Grade</a></li>
+            <li class="lfoat dropdown"><a ng-href="#">Manage</a>
                 <ul class="dropdown-menu">
                     <li class="submenu"><a ng-href="#">Add/Remove Students</a></li>
                     <li class="submenu"><a ng-href="#">Gradebook</a></li>
                 </ul>
             </li>
+            
             <li class="rfloat"><a ng-href="logout">logout</a></li>
             <li class="rfloat"><a ng-href="settings">settings<a></li>
         </ul>
