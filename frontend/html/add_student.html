@@ -1,0 +1,53 @@
+<!-- Prof page - Spring 2014 - Erin Coughlan & Philip Davis & Luke Sedney -->
+<html lang="en" id="submission-prof" ng-app="submissionApp">
+    <head>
+        <title> CS Submissions </title>
+        <link rel="stylesheet" type="text/css" href="/css/global.css">
+        <link rel="stylesheet" type="text/css" href="/css/layout.css">
+        <link rel="stylesheet" type="text/css" href="/css/header.css">
+        <link rel="stylesheet" type="text/css" href="/css/loader.css">
+        <link rel="stylesheet" type="text/css" href="/css/form.css">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-route.js"></script>
+        <script src="/js/app.js"></script>
+        <script src="/js/prof_controllers.js"></script>
+        <script src="/js/filters.js"></script>
+    </head>
+    <body ng-controller="ProfCtrl">
+        <ng-include src=" '/partials/prof_header.html' "></ng-include>
+        <div id="contentArea">
+            <div id="addMain">
+                <div id="leftColHalf">
+                    <div class="addHeader">
+                        Add Students
+                    </div>
+                    <hr class="iRule">
+                    <form id="form-add-student" class="center" name="form-add-student" enctype="multipart/form-data">
+                        <div class="formBox">
+                            Student Names: (ex: ecoughlan)<br>
+                            Seperate names with commas.<br>
+                            <textarea name="student" cols="80" rows="10"></textarea><br>
+                            <input type="checkbox" name="grader" value="isGrader">Assign as Grader<br>
+                            <input type="submit" value="Add Users">
+                        </div>
+                    </form>
+                </div>
+
+                <div id="rightColHalf">
+                    <div class="addHeader">
+                        Remove Students
+                    </div>
+                    <hr class="iRule">
+                    <form id="form-remove-student" class="center" name="form-remove-student" enctype="multipart/form-data">
+                        <div class="formBox">
+                            Current Students:<br>
+                            Current Graders:<br>
+                            <input type="submit" value="Remove Users">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

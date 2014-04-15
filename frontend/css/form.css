@@ -1,0 +1,31 @@
+#gradeMain, #addMain {
+	font-size: 2em;
+}
+
+#score {
+	width: 50px;
+}
+
+#submit {
+	display: block;
+	margin: 0px auto;
+}
+
+.formBox {
+	margin: 10px;
+}
+
+.formGroup {
+	height: 350px;
+}
+
+.iRule {
+	background-color: #7d8ca9; /* For Mozilla and Opera */
+	border-color: #7d8ca9;
+	color: #7d8ca9; /* For IE */
+	height: 1px;
+}
+
+.addHeader {
+	text-align: center;
+}
