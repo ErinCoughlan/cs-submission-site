@@ -115,6 +115,10 @@ app.get('/prof', isLoggedIn, function(req, res) {
     res.render('prof');
 });
 
+app.get('/prof/addStudent', isLoggedIn, function(req, res) {
+    res.render('add_student');
+});
+
 app.get('/students/:course', isLoggedIn, function(req, res) {
     var courseid = req.params.course;
     Course.findOne({"name": courseid}, function(err, course) {        

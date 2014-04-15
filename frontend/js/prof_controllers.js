@@ -29,24 +29,4 @@
         );
     });
 
-    submissionApp.controller('ProfAssignmentCtrl', function ($scope, $http, $routeParams) {
-        $scope.isDefined = function (item){
-            return angular.isDefined(item) && (item !== null);
-        };
-
-        $scope.courseid = submissionApp.courseid;
-
-        this.params = $routeParams;
-
-        // get the list of files for the assignment
-        $http.get('/grader/course/' + submissionApp.courseid + '/assignment/' + this.params.assignmentId).success(
-            function (data) {
-                $scope.course = data.course;
-                $scope.assignment = data.assignment;
-                $scope.files = data.files;
-                $scope.students = data.students;
-            }
-        );
-    });
-
 })();
