@@ -122,19 +122,19 @@
         };
 
         $scope.courseid = submissionApp.courseid;
+        $scope.assignment = JSON.stringify(assignment);
+        $scope.student = JSON.stringify(student);
+        $scope.urlfile = JSON.stringify(file);
 
         this.params = $routeParams;
 
-        $http.get('/course/' + submissionApp.courseid + '/assignment/' + assignment +
-         '/student/' + student + '/file/' + file + '/grade/info/').success(
+        $http.get('/course/' + submissionApp.courseid + '/assignment/' + assignment  + '/student/' + student  + '/file/' + file  + '/grade/info/').success(
             function (data) {
                 $scope.course = data.course;
                 $scope.file = data.file;
                 $scope.student = data.student;
                 $scope.grader = data.grader;
-            }
-        );
-
+            });
     });
 
 
