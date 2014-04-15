@@ -35,20 +35,20 @@
 /**
  * Adds a row to the table so that another file can be added
  */
-function addFile (e) {
+function addFile(e) {
     var table = $(e.target).parents('table');
     console.log(table);
 
-    var index = $('#addNew').index();
+    var index = $('#addNew').index() - 1;
     
     // Make sure this is actual html somehow
-    var html = '<tr>'+
+    var html = '<tr class="file">'+
                     '<td>'+
-                        '<input type="text" name="fileName-'+index+'" placeholder="File Name">'+
+                        '<input type="text" name="filename-'+index+'" placeholder="File Name">'+
                     '</td>'+
                     '<td>'+
                         'Points: '+
-                        '<input type="number" class="score" name="fileMaxPoints-'+index+'" placeholder="Points">'+
+                        '<input type="number" class="score" name="maxPoints-'+index+'" placeholder="Points">'+
                     '</td>'+
                     '<td>'+
                         'Partner: '+
@@ -58,4 +58,43 @@ function addFile (e) {
                 '</tr>';
 
     $('#addNew').before(html);
+};
+
+/**
+ * Create a new assignment (NO ACTUAL SUBMIT FOR NOW)
+ */
+ function createAssignment() {
+    var aName = $("input[name='assignmentName'").val();
+    var due = $("input[name='dueDate'").val();
+    var files = [];
+
+    var rows = $(".file");
+    for (var i = 0; i < rows.length; i++) {
+        var filename = $("input[name='filename-"+i+"']").val();
+        var maxPoints = $("input[name='maxPoints-"+i+"']").val();
+        var partnerable = $("input[name='partnerable-"+i+"']").val();
+        var file = {
+            filename: filename,
+            maxPoints: maxPoints,
+            partnerable: partnerable
+        };
+        files.push(file);
+    }
+
+    clearAssignment();
+ };
+
+ /**
+  * Clears all data within the new assignment form
+  */
+function clearAssignment() {
+    $("input[name='assignmentName'").val('');
+    $("input[name='dueDate'").val('');
+
+    var rows = $(".file");
+    for (var i = 0; i < rows.length; i++) {
+        $("input[name='filename-"+i+"']").val('');
+        $("input[name='maxPoints-"+i+"']").val('');
+        $("input[name='partnerable-"+i+"'][value='no']").prop('checked', true);
+    }
 };
