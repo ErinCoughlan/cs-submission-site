@@ -28,6 +28,19 @@
             }
         );
 
+        $http.get('/students/'+submissionApp.courseid).success(
+          function (data) {
+            $scope.students = data.students;
+          }
+        );
+
+        $http.get('/graders/'+submissionApp.courseid).success(
+          function (data) {
+            $scope.graders = data.graders;
+          }
+        );
+
+
         $scope.addUsers = function addUsers($event) {
             var form = document.getElementById("form-add-student");
             var fd = new FormData(form);
@@ -37,6 +50,7 @@
 
             var dataStr = JSON.stringify({ students: studentsText,
                                           grader: areGraders });
+
 
             $.ajax({
                 url : "/addStudents",

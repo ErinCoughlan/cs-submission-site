@@ -30,6 +30,7 @@ mongoose.connect(configDB.url);
 var passport = require('passport');
 
 var User       = require('./models/user.js');
+var Grader     = require('./models/grader.js')
 var Student    = require('./models/student.js');
 var Course     = require('./models/course.js');
 var Assignment = require('./models/assignment.js');
@@ -139,6 +140,30 @@ app.get('/students/:course', isLoggedIn, function(req, res) {
 
             console.log("Students: " + students);
             var data = { 'students' : students };
+            res.json(data);
+        });
+    });
+});
+
+app.get('/graders/:course', isLoggedIn, function(req, res) {
+    var courseid = req.params.course;
+    Course.findOne({"name": courseid}, function(err, course) {
+        // Find all matching students
+        if(err) {
+            res.send("error getting course");
+            return;
+        }
+
+        // Since MongoDB is really dumb, searches on students also turn up graders, so we
+        // force nonexistence of a field students have and graders do not.
+        Grader.find({"course_id": course._id, "files": {$exists: false}}, function(err, graders) {
+            if(err) {
+                res.send("error getting students");
+                return;
+            }
+            console.log(graders);
+            // TODO unhardcode
+            var data = { 'graders' : graders };
             res.json(data);
         });
     });

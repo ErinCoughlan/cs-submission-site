@@ -43,25 +43,21 @@
                         <div class="formBox">
                             Current Students:<br>
                             <table cellspacing="0" cellpadding="0">
+                              <tbody ng-repeat="student in students">
                                 <tr>
                                     <td><input type="checkbox" name="{{student.name}}" value="removeStudent"></td>
-                                    <td>ecoughlan</td>
+                                    <td>{{student.name}}</td>
                                 </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="{{student.name}}" value="removeStudent"></td>
-                                    <td>pdavis</td>
-                                </tr>
+                              </tbody>
                             </table>
                             Current Graders:<br>
                             <table cellspacing="0" cellpadding="0">
+                              <tbody ng-repeat="grader in graders">
                                 <tr>
-                                    <td><input type="checkbox" name="{{student.name}}" value="removeGrader"></td>
-                                    <td>dodds</td>
+                                    <td><input type="checkbox" name="{{grader.name}}" value="removeGrader"></td>
+                                    <td>{{grader.name}}</td>
                                 </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="{{student.name}}" value="removeGrader"></td>
-                                    <td>jeb</td>
-                                </tr>
+                              </tbody>
                             </table>
                             <input type="submit" value="Remove Users">
                         </div>
