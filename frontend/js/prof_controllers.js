@@ -65,6 +65,54 @@
                 }
             });
         };
+
+
+        $scope.removeUsers = function addUsers($event) {
+            var form = document.getElementById("form-add-student");
+            var fd = new FormData(form);
+
+            var studentRemoves = new Array();
+
+            $scope.students.forEach(function(specificStudent) {
+              var foo= specificStudent.name + "Checked";
+              var toPush = {
+                name: specificStudent.name,
+                toRemove: document.getElementById(specificStudent.name + "Check").checked
+              }
+
+              studentRemoves.push(toPush);
+            });
+
+            var graderRemoves = new Array();
+
+            $scope.graders.forEach(function(specificGrader) {
+              var toPush = {
+                name: specificGrader.name,
+                toRemove: document.getElementById(specificGrader.name + "Check").checked
+              }
+              graderRemoves.push(toPush);
+            });
+
+
+            var dataStr = JSON.stringify({ students: studentRemoves,
+                                              grader: graderRemoves });
+
+
+            $.ajax({
+                url : "/removeStudents",
+                data : dataStr,
+                type : "POST",
+                contentType : "application/json",
+                success : function(m) {
+                    console.log(m);
+                    window.location.href="/prof/addStudent";
+                },
+                failure : function (m) {
+                    console.log(m);
+                }
+            });
+        };
+
     });
 
 })();

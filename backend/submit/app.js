@@ -608,7 +608,7 @@ app.post('/addstudents', function(req, res) {
               grader.user_id = user._id;
               grader.name = username;
               grader.save();
-              user.graders.push(student._id);
+              user.graders.push(grader._id);
               user.save();
             });
           } else {
@@ -628,6 +628,55 @@ app.post('/addstudents', function(req, res) {
           };
       });
     });
+  });
+
+  res.redirect('/prof/addStudent');
+});
+
+app.post('/removestudents', function(req, res) {
+  //TOOD un-hardcode
+  Course.findOne({"name":"CS5"}, function(err, course) {
+    students = req.body.students;
+    graders = req.body.grader;
+
+    students.forEach(function(student) {
+      if(student.toRemove) {
+        User.findOne({"local.username": student.name}, function(err, user) {
+          var index = 0;
+          user.students.forEach(function(aStudent) {
+            if(student._id === aStudent) {
+              user.students.splice(index, 1);
+            }
+
+            index += 1;
+          });
+
+          Student.findOne({"course_id": course._id, "name": student.name}, function(err, aStudent){
+            aStudent.remove();
+          });
+        })
+      }
+    });
+
+    graders.forEach(function(grader) {
+      if(grader.toRemove) {
+        User.findOne({"local.username": grader.name}, function(err, user) {
+          var index = 0;
+          user.students.forEach(function(aGrader) {
+            if(grader._id === aGrader) {
+              user.graders.splice(index, 1);
+            }
+
+            index += 1;
+          });
+
+          Grader.findOne({"course_id": course._id, "name": grader.name}, function(err, aGrader){
+            aGrader.remove();
+          });
+        })
+      }
+    });
+
   });
 
   res.redirect('/prof/addStudent');

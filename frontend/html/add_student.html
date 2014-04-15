@@ -45,7 +45,7 @@
                             <table cellspacing="0" cellpadding="0">
 
                                 <tr ng-repeat="student in students">
-                                    <td><input type="checkbox" name="{{student.name}}" value="removeStudent"></td>
+                                    <td><input type="checkbox" name="{{student.name}}" id="{{student.name}}Check" value="removeStudent"></td>
                                     <td>{{student.name}}</td>
                                 </tr>
                             </table>
@@ -53,12 +53,12 @@
                             <table cellspacing="0" cellpadding="0">
                               <tbody ng-repeat="grader in graders">
                                 <tr>
-                                    <td><input type="checkbox" name="{{grader.name}}" value="removeGrader"></td>
+                                    <td><input type="checkbox" name="{{grader.name}}" id="{{grader.name}}Check" value="removeGrader"></td>
                                     <td>{{grader.name}}</td>
                                 </tr>
                               </tbody>
                             </table>
-                            <input type="submit" value="Remove Users">
+                            <input type="button" value="Remove Users" ng-click="removeUsers(event)">
                         </div>
                     </form>
                 </div>
