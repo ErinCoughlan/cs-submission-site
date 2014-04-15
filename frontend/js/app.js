@@ -4,7 +4,7 @@
 // for the benefit of JSLint:
 /*global angular*/
 
-var submissionApp = angular.module('submissionApp', ['ngRoute']);
+var submissionApp = angular.module('submissionApp', ['ngRoute', 'submissionFilters']);
 
 (function(){
   "use strict";
@@ -22,6 +22,15 @@ var submissionApp = angular.module('submissionApp', ['ngRoute']);
     submissionApp.config(function($routeProvider, $locationProvider) {
         $routeProvider.when('/grader/assignments/:assignmentId', {
             templateUrl: '/partials/grader_assignment.html',
+            controller: 'GraderAssignmentCtrl',
+            controllerAs: 'assignment'
+        });
+    });
+
+    // define routes
+    submissionApp.config(function($routeProvider, $locationProvider) {
+        $routeProvider.when('/grader/students/:studentId', {
+            templateUrl: '/partials/grader_student.html',
             controller: 'GraderAssignmentCtrl',
             controllerAs: 'assignment'
         });

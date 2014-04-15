@@ -1,22 +1,18 @@
-<div ng-cloak ng-show="!files.length>0">
+<div ng-cloak ng-show="!assignments.length>0">
     <div id="rightSpinner" class="spinner"></div>
 </div>
-<div ng-cloak ng-show="files.length>0">
-    <table ng-repeat="file in files" class="collapseTable" cellspacing="0" cellpadding="0">
-        <tr id="{{file.name | letters}}" class="fixedHeader" onClick="toggleRow(this)">
+<div ng-cloak ng-show="assignments.length>0">
+    <table ng-repeat="assignment in assignments" class="collapseTable" cellspacing="0" cellpadding="0">
+        <tr id="{{assignment.name | letters}}" class="fixedHeader" onClick="toggleRow(this)">
+            <th></th>
             <th>
-                {{file.numGraded}} / {{course.numStudents}}
+                {{assignment.name}}
             </th>
-            <th>
-                {{file.name}}
-            </th>
-            <th>
-                <input type="button" id="gradeUnsubmitted_{{file.name}}" value="Grade Unsubmitted" onclick="gradeUnsubmitted(event)">
-            </th>
+            <th></th>
         </tr>
-        <tr ng-repeat="student in file.studentSubmissions" class="{{file.name | letters}}">
+        <tr ng-repeat="file in assignment.files" class="{{assignment.name | letters}}">
             <td colspan="2">
-                {{student.student}}
+                {{file.name}}
             </td>
             <td class="lastCol">
                 <div ng-if="!isDefined(student.grade)">

@@ -1,18 +1,22 @@
-#rightCol .colHeader {
-    font-size: 2em;
+a.underline {
+	text-decoration: underline;
 }
 
-#rightCol tr {
+#profMain {
+	margin: 20px;
+}
+
+#profMain tr {
     font-size: 1.5em;
     padding-top: .1em;
     padding-left: .2em;
 }
 
-#rightCol tr:nth-child(even) {
+#profMain tr:nth-child(even) {
     background: rgb(40, 77, 97);
 }
 
-#rightCol td, th {
+#profMain td, th {
     border-left: 2px solid #7d8ca9;
     font-size: 20px;
     padding: 10px;
@@ -20,40 +24,48 @@
     width: 400px;
 }
 
-#rightCol th {
+#profMain th {
     border-left: 0px;
     border-bottom: 4px solid #7d8ca9;
     border-top: 2px solid #7d8ca9;
 }
 
-#rightCol td:first-child {
+#profMain td:first-child {
     border-left: 0px;
     width: 200px;
 }
 
-#rightCol th:first-child {
+#profMain th:first-child {
     border-left: 2px solid #7d8ca9;
 }
 
-#rightCol th:last-child {
+#profMain th:last-child {
     border-right: 2px solid #7d8ca9;
 }
 
-#rightCol table {
+#profMain table {
     border: 2px solid #7d8ca9;
     margin-bottom: 20px;
     margin-top: 42px;
 }
 
-#rightCol input[type=submit] {
-    display: block;
+#profMain table {
+	margin: 10px 0px;
+	width: 90%;
 }
 
-.lastCol {
-    width: 100px;
+.title {
+	font-size: 20px;
 }
 
-.download-link{
-    color: inherit;
-    text-decoration: underline;
+.datetimepicker {
+	width: 225px;
+}
+
+.newAssignment td {
+	border-bottom: 2px solid #7d8ca9;
+}
+
+.newFile td {
+	border-bottom: none;
 }

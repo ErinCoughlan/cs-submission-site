@@ -111,6 +111,14 @@ app.get('/grader/course/:course', isLoggedIn, function(req, res) {
     res.render('grader');
 });
 
+app.get('/prof', isLoggedIn, function(req, res) {
+    res.render('prof');
+});
+
+app.get('/prof/addStudent', isLoggedIn, function(req, res) {
+    res.render('add_student');
+});
+
 app.get('/students/:course', isLoggedIn, function(req, res) {
     var courseid = req.params.course;
     Course.findOne({"name": courseid}, function(err, course) {        
@@ -188,8 +196,6 @@ app.get('/course/:course/assignment/:assignment', isLoggedIn, function(req, res)
             console.log("No matching assignment found");
             return;
         }
-        
-        
         
         Student.findOne({"course_id": course._id}, function(err, student) {
             var combined_files = new Array();

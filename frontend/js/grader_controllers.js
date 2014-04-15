@@ -21,9 +21,8 @@
         $scope.courseid = submissionApp.courseid;
 
         // get the list of assignments
-        $http.get('/assignments/'+submissionApp.courseid).success(
+        $http.get('/assignments/'+ $scope.courseid).success(
             function (data) {
-                console.log(data);
                 $scope.course = data.course;
                 $scope.assignments = data.assignments;
             }
@@ -108,47 +107,12 @@
         // get the list of files for the assignment
         $http.get('/grader/course/' + submissionApp.courseid + '/assignment/' + this.params.assignmentId).success(
             function (data) {
-                console.log(data);
                 $scope.course = data.course;
                 $scope.assignment = data.assignment;
                 $scope.files = data.files;
                 $scope.students = data.students;
             }
         );
-
-       // submit files and comments
-        $scope.submit = function submit($event) {
-            var assignmentid = $scope.assignment._id;
-            console.log($scope, $scope.assignment, $scope.assignment.files);
-            var fd = new FormData();
-            var comments = {};
-            $scope.files.forEach(function(file){
-                console.log("file", file);
-                if(file.file_to_submit){
-                    console.log("to submit", file.file_to_submit);
-                    fd.append(file.name, file.file_to_submit);
-                }
-                if(file.comment_to_submit){
-                    comments[file.name] = file.comment_to_submit;
-                }
-            });
-            fd.append("comments", JSON.stringify(comments));
-
-            $http.post('/course/'+$scope.courseid+'/assignment/'+assignmentid+'/', fd, {
-                transformRequest: angular.identity,
-                headers: {'Content-Type': undefined}
-            })
-            .success(function(m){
-                console.log(m);
-
-                // TODO: only refresh the right column (table)
-                location.reload();
-            })
-            .error(function(m){
-                console.log(m);
-            });
-        };
-
     });
 
     submissionApp.controller('GradePageCtrl', function ($scope, $http, $routeParams) {
@@ -176,21 +140,32 @@
 
 })();
 
+/**
+ * Helper which calls toggle with the correct parent
+ */
+function toggleRow(e) {
+    // Convert to jquery object so methods will work
+    var row = document.getElementById(e.id);
+    toggleRowChildren($(row), 'fixedHeader');
+};
 
-/** Set up toggling rows for grader view */
-$(document).ready(function() {
-    $('tr.fixedHeader').click(function () {
-        toggleRowChildren($(this), 'fixedHeader');
+/**
+ * Toggles all of the rows under a given header.
+ */
+function toggleRowChildren(parentRowElement, parentClass) {
+    console.log(parentRowElement);
+    // escape periods because jquery thinks they are selectors
+    var childClass = parentRowElement.attr('id');
+    $('tr.'+childClass, parentRowElement.parent()).toggle();
+    $('tr.'+childClass).each(function(){
+        if ($(this).hasClass(parentClass) && !$(this).hasClass('collapsed')) {
+            toggleRowChildren($(this), parentClass);
+        }
     });
+    parentRowElement.toggleClass('collapsed');
+};
 
-    function toggleRowChildren(parentRowElement, parentClass) {
-        var childClass = parentRowElement.attr('id');
-        $('tr.'+childClass, parentRowElement.parent()).toggle();
-        $('tr.'+childClass).each(function(){
-            if ($(this).hasClass(parentClass) && !$(this).hasClass('collapsed')) {
-                toggleRowChildren($(this), parentClass);
-            }
-        });
-        parentRowElement.toggleClass('collapsed');
-    }
-});
+function gradeUnsubmitted(e) {
+    e.stopPropagation();
+    var grade = parseInt(prompt("What grade would you like to give all unsubmitted assignments?",0));
+};

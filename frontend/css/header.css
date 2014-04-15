@@ -5,9 +5,9 @@
 
 #header .alien {
     display: inline-block;
-    height: 80%;
-    margin: 0px 20px;
-    z-index: -1;
+    height: 60px;
+    padding: 0px 20px;
+    vertical-align: middle;
 }
 
 #navbar {
@@ -17,16 +17,19 @@
 }
 
 #navbar li {
-    -moz-border-radius:10px;
-    -webkit-border-radius: 10px;
     background: #283B61;
-    border: 2px solid #7d8ca9;
+    border-right: 2px solid #7d8ca9;
     display: inline-block;
     font-weight: bold;
-    height: 80%;
+    height: 100px;
     line-height: 100px;
-    margin: 10px 3px;
-    padding: 0 5px;
+    padding: 0px 5px;
+    position: relative;
+}
+
+#navbar li.rfloat {
+    border-left: 2px solid #7d8ca9;
+    border-right: 0px;
 }
 
 #navbar li:hover {
@@ -43,3 +46,30 @@
     color: #dbc9a7;
 }
 
+#navbar ul.dropdown-menu {
+    position: absolute;
+    top: 100px;
+    left: 0;
+    width: auto;
+}
+
+#navbar li.submenu {
+    border: 2px solid #7d8ca9;
+    border-top: none;
+    display: none;
+    font-size: 24px;
+    height: 30px;
+    line-height: 30px;
+    margin: 0px -2px; /* To align with border of parent */
+    visibility: hidden;
+    white-space: nowrap;
+}
+
+#navbar li.submenu:first-child {
+    border-top: 2px solid #7d8ca9;
+}
+
+#navbar li.dropdown:hover li.submenu {
+    display: block;
+    visibility: visible;
+}
