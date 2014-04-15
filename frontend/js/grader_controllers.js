@@ -121,6 +121,9 @@
             return angular.isDefined(item) && (item !== null);
         };
 
+        //TODO make this work so it can be uncommented.
+
+        /*
         $scope.courseid = submissionApp.courseid;
         $scope.assignment = JSON.stringify(assignment);
         $scope.student = JSON.stringify(student);
@@ -134,7 +137,7 @@
                 $scope.file = data.file;
                 $scope.student = data.student;
                 $scope.grader = data.grader;
-            });
+            });*/
     });
 
 
