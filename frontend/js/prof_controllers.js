@@ -32,5 +32,5 @@
 })();
 
 $(function(){
-  $('#datetimepicker').datetimepicker();
+  $('#datetimepicker').datepicker();
 });

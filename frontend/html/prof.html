@@ -7,9 +7,7 @@
         <link rel="stylesheet" type="text/css" href="/css/header.css">
         <link rel="stylesheet" type="text/css" href="/css/loader.css">
         <link rel="stylesheet" type="text/css" href="/css/prof.css">
-        <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/ui-lightness/jquery-ui.css"/ >
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-route.js"></script>
         <script src="/js/app.js"></script>
@@ -52,7 +50,7 @@
                             <input type="text" name="assignmentName" placeholder="Assignment Name">
                         </th>
                         <th class="alignRight">
-                            Due: <input type="text" id="datetimepicker">
+                            Due: <input type="datetime-local" name="dueDate">
                         </th>
                     </tr>
                     <tr ng-repeat="file in assignment.files">
