@@ -1,4 +1,3 @@
-
 /*global require, __dirname, console, process */
 
 /**
@@ -31,13 +30,13 @@ mongoose.connect(configDB.url);
 // Login configuration
 var passport = require("passport");
 
-var User       = require("./models/user.js");
-var Grader     = require("./models/grader.js");
-var Student    = require("./models/student.js");
-var Course     = require("./models/course.js");
+var User = require("./models/user.js");
+var Grader = require("./models/grader.js");
+var Student = require("./models/student.js");
+var Course = require("./models/course.js");
 var Assignment = require("./models/assignment.js");
 var Submission = require("./models/submission.js");
-var File       = require("./models/file.js");
+var File = require("./models/file.js");
 var FileTemplate = require("./models/fileTemplate.js");
 
 // Configuration to handle the removal of req.flash
@@ -59,25 +58,27 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.cookieParser("your secret here"));
-app.use(express.session({ secret: "more secrets" }));
+app.use(express.session({
+    secret: "more secrets"
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(app.router);
-app.use(express.json());       // to support JSON-encoded bodies
+app.use(express.json()); // to support JSON-encoded bodies
 app.use(express.urlencoded()); // to support URL-encoded bodies
 
 //routes
 var routes = require("./routes/routes")(app, passport);
 
-app.get("/", function(req, res){
+app.get("/", function(req, res) {
     res.render("index");
 });
 
 // create file documents from fileTemplates. hardcoded to testuser.
 // running this will create duplicates.
-app.get("/filesfromtemplates", function(req, res){
-    FileTemplate.find({}, function(err, templates){
-        templates.forEach(function(template){
+app.get("/filesfromtemplates", function(req, res) {
+    FileTemplate.find({}, function(err, templates) {
+        templates.forEach(function(template) {
             var file = {
                 "assignment": template.assignment,
                 "template": template._id,
@@ -99,10 +100,12 @@ app.get("/filesfromtemplates", function(req, res){
 });
 
 app.post("/login",
-         passport.authenticate("local-login", { successRedirect: "/cs5",
-                                               failureRedirect: "/",
-                                               failureFlash: true })
-        );
+    passport.authenticate("local-login", {
+        successRedirect: "/cs5",
+        failureRedirect: "/",
+        failureFlash: true
+    })
+);
 
 app.get("/logout", function(req, res) {
     req.logout();
@@ -124,24 +127,33 @@ app.get("/prof/addStudent", isLoggedIn, function(req, res) {
 
 app.get("/students/:course", isLoggedIn, function(req, res) {
     var courseid = req.params.course;
-    Course.findOne({"name": courseid}, function(err, course) {
+    Course.findOne({
+        "name": courseid
+    }, function(err, course) {
         // Find all matching students
-        if(err) {
+        if (err) {
             res.send("error getting course");
             return;
         }
 
         // Since MongoDB is really dumb, searches on students also turn up graders, so we
         // force existence of a field students have and graders do not.
-        Student.find({"course_id": course._id, "files": {$exists: true}}, function(err, students) {
-            if(err) {
+        Student.find({
+            "course_id": course._id,
+            "files": {
+                $exists: true
+            }
+        }, function(err, students) {
+            if (err) {
                 res.send("error getting students");
                 return;
             }
             // TODO unhardcode
 
             console.log("Students: " + students);
-            var data = { "students" : students };
+            var data = {
+                "students": students
+            };
             res.json(data);
         });
     });
@@ -149,23 +161,32 @@ app.get("/students/:course", isLoggedIn, function(req, res) {
 
 app.get("/graders/:course", isLoggedIn, function(req, res) {
     var courseid = req.params.course;
-    Course.findOne({"name": courseid}, function(err, course) {
+    Course.findOne({
+        "name": courseid
+    }, function(err, course) {
         // Find all matching students
-        if(err) {
+        if (err) {
             res.send("error getting course");
             return;
         }
 
         // Since MongoDB is really dumb, searches on students also turn up graders, so we
         // force nonexistence of a field students have and graders do not.
-        Grader.find({"course_id": course._id, "files": {$exists: false}}, function(err, graders) {
-            if(err) {
+        Grader.find({
+            "course_id": course._id,
+            "files": {
+                $exists: false
+            }
+        }, function(err, graders) {
+            if (err) {
                 res.send("error getting students");
                 return;
             }
             console.log(graders);
             // TODO unhardcode
-            var data = { "graders" : graders };
+            var data = {
+                "graders": graders
+            };
             res.json(data);
         });
     });
@@ -178,9 +199,11 @@ app.get("/assignments/:course", isLoggedIn, function(req, res) {
     var courseid = req.params.course;
     console.log("got request for course", req.params, "from", req.session);
 
-    Course.findOne({"name": courseid}, function (err, course) {
+    Course.findOne({
+        "name": courseid
+    }, function(err, course) {
         console.log("sending", courseid);
-        if(err) {
+        if (err) {
             res.send("Error getting list of assignments.");
             return;
         }
@@ -202,8 +225,10 @@ app.get("/course/:course/assignment/:assignment", isLoggedIn, function(req, res)
     var coursename = req.params.course;
     var assignmentname = req.params.assignment;
 
-    Course.findOne({"name": coursename}, function(err, course) {
-        if(err) {
+    Course.findOne({
+        "name": coursename
+    }, function(err, course) {
+        if (err) {
             res.send("Error getting course");
             return;
         }
@@ -211,22 +236,24 @@ app.get("/course/:course/assignment/:assignment", isLoggedIn, function(req, res)
         var assignment;
 
         course.assignments.forEach(function(anAssignment) {
-            if(anAssignment.name === assignmentname) {
+            if (anAssignment.name === assignmentname) {
                 assignment = anAssignment;
             }
         });
 
-        if(!assignment) {
+        if (!assignment) {
             console.log("No matching assignment found");
             return;
         }
 
-        Student.findOne({"course_id": course._id}, function(err, student) {
+        Student.findOne({
+            "course_id": course._id
+        }, function(err, student) {
             var combined_files = [];
             var index = 0;
             assignment.files.forEach(function(template) {
                 var file = student.files[index];
-                if(file) {
+                if (file) {
                     combined_files.push({
                         "name": template.name,
                         "maxScore": template.maxScore,
@@ -235,7 +262,7 @@ app.get("/course/:course/assignment/:assignment", isLoggedIn, function(req, res)
                         "studentComments": file.studentComments,
                         "graderComments": file.graderComments
                     });
-                }  else {
+                } else {
                     combined_files.push({
                         "name": template.name,
                         "maxScore": template.maxScore
@@ -267,8 +294,10 @@ app.get("/grader/course/:course/assignment/:assignment", isLoggedIn, function(re
     var coursename = req.params.course;
     var assignmentname = req.params.assignment;
 
-    Course.findOne({"name": coursename}, function(err, course) {
-        if(err) {
+    Course.findOne({
+        "name": coursename
+    }, function(err, course) {
+        if (err) {
             res.send("Error getting course");
             return;
         }
@@ -276,12 +305,12 @@ app.get("/grader/course/:course/assignment/:assignment", isLoggedIn, function(re
         var assignment;
 
         course.assignments.forEach(function(anAssignment) {
-            if(anAssignment.name === assignmentname) {
+            if (anAssignment.name === assignmentname) {
                 assignment = anAssignment;
             }
         });
 
-        if(!assignment) {
+        if (!assignment) {
             console.log("No matching assignment found");
             return;
         }
@@ -290,15 +319,23 @@ app.get("/grader/course/:course/assignment/:assignment", isLoggedIn, function(re
 
         // MongoDB is really, really dumb, so when we search for students we also get graders.
         // So, I force it to exclude graders by requiring a field they shouldn"t have.
-        Student.find({"course_id": course._id, "files": {$exists:true}}, function(err, students) {
+        Student.find({
+            "course_id": course._id,
+            "files": {
+                $exists: true
+            }
+        }, function(err, students) {
             var combined_files = [];
             assignment.files.forEach(function(foo) {
-                combined_files.push({"name": foo.name, "studentSubmissions": []});
+                combined_files.push({
+                    "name": foo.name,
+                    "studentSubmissions": []
+                });
             });
             console.log(students);
 
             students.forEach(function(student) {
-                if(student.gradedFiles) {
+                if (student.gradedFiles) {
                     return;
                 }
                 console.log("student:", student);
@@ -306,7 +343,7 @@ app.get("/grader/course/:course/assignment/:assignment", isLoggedIn, function(re
                 var index = 0;
                 assignment.files.forEach(function(template) {
                     var file = student.files[index];
-                    if(file) {
+                    if (file) {
                         combined_files[index].studentSubmissions.push({
                             "student": student.name,
                             "name": template.name,
@@ -317,7 +354,7 @@ app.get("/grader/course/:course/assignment/:assignment", isLoggedIn, function(re
                             "studentComments": file.studentComments,
                             "graderComments": file.graderComments
                         });
-                    }  else {
+                    } else {
                         combined_files[index].studentSubmissions.push({
                             "student": student.name,
                             "name": template.name,
@@ -348,12 +385,14 @@ app.get("/grader/course/:course/assignment/:assignment", isLoggedIn, function(re
 
 // export gradebook for a course as csv.
 app.get("/course/:course/export", isLoggedIn, function(req, res) {
-    var coursename     = req.params.course;
+    var coursename = req.params.course;
     console.log("coursename", coursename);
 
     // get the course
-    Course.findOne({"name":coursename}, function(err, retrievedCourse) {
-        if(err) {
+    Course.findOne({
+        "name": coursename
+    }, function(err, retrievedCourse) {
+        if (err) {
             res.send("Error getting course");
             return;
         }
@@ -363,11 +402,11 @@ app.get("/course/:course/export", isLoggedIn, function(req, res) {
         var assignments_row = ["Assignment"];
         var files_row = ["File"];
         var max_row = ["Max Points"];
-        retrievedCourse.assignments.forEach(function(assignment){
+        retrievedCourse.assignments.forEach(function(assignment) {
             assignments_row.push(assignment.name);
             files_row.push("");
             max_row.push(assignment.point);
-            assignment.files.forEach(function(file){
+            assignment.files.forEach(function(file) {
                 assignments_row.push("");
                 files_row.push(file.name);
                 max_row.push(file.maxScore);
@@ -375,26 +414,28 @@ app.get("/course/:course/export", isLoggedIn, function(req, res) {
         });
         var data = [title_row, assignments_row, files_row, max_row];
         // now make the body of the table
-        Student.find({"course_id":retrievedCourse._id}, function(err, students){
+        Student.find({
+            "course_id": retrievedCourse._id
+        }, function(err, students) {
             // make a row of grades for each student
-            students.forEach(function(student){
+            students.forEach(function(student) {
                 var student_row = [student.name];
-                retrievedCourse.assignments.forEach(function(assignment, aix){
+                retrievedCourse.assignments.forEach(function(assignment, aix) {
                     // make a sub-row for each assignment
                     var assignment_total = 0;
                     var assignment_row = [];
-                    assignment.files.forEach(function(file, fix){
+                    assignment.files.forEach(function(file, fix) {
                         // use the array indices to find the right file.
                         // would be better to use template id for this, but the per-user file info currently gives us that it is the nth assignment and template.
-                        var file_info = _.find(student.files, function(student_file){
-                            var right_assignment = (student_file.assignment === aix+1);
-                            var right_template = (student_file.template === fix+1);
+                        var file_info = _.find(student.files, function(student_file) {
+                            var right_assignment = (student_file.assignment === aix + 1);
+                            var right_template = (student_file.template === fix + 1);
                             return right_assignment && right_template;
                         });
-                        if(file_info && _.isNumber(file_info.grade)){
+                        if (file_info && _.isNumber(file_info.grade)) {
                             assignment_total += file_info.grade;
                             assignment_row.push(file_info.grade);
-                        }else{
+                        } else {
                             assignment_row.push("none");
                         }
                     });
@@ -413,14 +454,16 @@ app.get("/course/:course/export", isLoggedIn, function(req, res) {
 
 // json route for downloading submissions
 app.get("/course/:course/assignment/:assignment/file/:file/submit/", isLoggedIn, function(req, res) {
-    var userid         = req.session.passport.user;
-    var coursename     = req.params.course;
+    var userid = req.session.passport.user;
+    var coursename = req.params.course;
     var assignmentname = req.params.assignment;
-    var filename       = req.params.file;
+    var filename = req.params.file;
 
     // get the course
-    Course.findOne({"name":coursename}, function(err, retrievedCourse) {
-        if(err) {
+    Course.findOne({
+        "name": coursename
+    }, function(err, retrievedCourse) {
+        if (err) {
             res.send("Error getting course");
             return;
         }
@@ -428,8 +471,11 @@ app.get("/course/:course/assignment/:assignment/file/:file/submit/", isLoggedIn,
         var course = retrievedCourse;
 
         // Get the current user"s student object for the current course
-        Student.findOne({"user_id":userid, "course_id":course._id}, function(err, retrievedStudent) {
-            if(err) {
+        Student.findOne({
+            "user_id": userid,
+            "course_id": course._id
+        }, function(err, retrievedStudent) {
+            if (err) {
                 res.send("Error getting student");
                 return;
             }
@@ -439,12 +485,12 @@ app.get("/course/:course/assignment/:assignment/file/:file/submit/", isLoggedIn,
             // get the correct assignment
             var assignment;
             course.assignments.forEach(function(anAssignment) {
-                if(anAssignment.name === asignmentname) {
+                if (anAssignment.name === asignmentname) {
                     assignment = anAssignment;
                 }
             });
 
-            if(!assignment) {
+            if (!assignment) {
                 console.log("Failed to get assignment");
                 return;
             }
@@ -463,16 +509,18 @@ app.get("/course/:course/assignment/:assignment/file/:file/submit/", isLoggedIn,
             console.log("location", submission);
             var readStream = fs.createReadStream(
                 submission.document);
+            // set the actual file name and extension. can't do that now because the database doesn't work.
+            res.setHeader("Content-disposition", "attachment; filename=fakename.fakeext");
             readStream.pipe(res);
         });
     });
 });
 
 // recieve file uploads
-app.post("/course/:course/assignment/:assignment/", isLoggedIn, function(req,res) {
+app.post("/course/:course/assignment/:assignment/", isLoggedIn, function(req, res) {
     console.log(req.files);
     console.log(req.body);
-    var coursename     = req.params.course;
+    var coursename = req.params.course;
     var assignmentid = req.params.assignment;
     var userid = req.session.passport.user;
     var submission = new Submission();
@@ -487,21 +535,23 @@ app.post("/course/:course/assignment/:assignment/", isLoggedIn, function(req,res
             console.log("fileid", filename);
             // TODO: copy the file to a better location
             var new_file = path.join(__dirname, "files", (new Date()).getTime().toString());
-            copyFile(file.path, new_file, function(err){
+            copyFile(file.path, new_file, function(err) {
                 // make a submission schema
                 var submission = new Submission({
                     "document": new_file,
-                    "date":new Date().toJSON()
+                    "date": new Date().toJSON()
                 });
                 console.log(submission);
                 // save to mongo
-                submission.save(function (err) {
+                submission.save(function(err) {
                     console.log(err);
                     console.log(new_file, submission);
 
                     // Get the current course
-                    Course.findOne({"name":coursename}, function(err, retrievedCourse) {
-                        if(err) {
+                    Course.findOne({
+                        "name": coursename
+                    }, function(err, retrievedCourse) {
+                        if (err) {
                             res.send("Error getting course");
                             return;
                         }
@@ -511,8 +561,11 @@ app.post("/course/:course/assignment/:assignment/", isLoggedIn, function(req,res
 
 
                         // Get the current user"s student object for this course
-                        Student.findOne({"user_id":userid, "course_id":course._id}, function(err, retrievedStudent) {
-                            if(err) {
+                        Student.findOne({
+                            "user_id": userid,
+                            "course_id": course._id
+                        }, function(err, retrievedStudent) {
+                            if (err) {
                                 res.send("Error getting student");
                                 return;
                             }
@@ -521,35 +574,41 @@ app.post("/course/:course/assignment/:assignment/", isLoggedIn, function(req,res
                             console.log(student._id);
 
                             // get the correct assignment
-                            Assignment.findOne({"_id": assignmentid},
-                                               function(err, retrievedAssignment) {
-                                                   if(err) {
-                                                       res.send("Error getting assignment");
-                                                       return;
-                                                   }
+                            Assignment.findOne({
+                                    "_id": assignmentid
+                                },
+                                function(err, retrievedAssignment) {
+                                    if (err) {
+                                        res.send("Error getting assignment");
+                                        return;
+                                    }
 
-                                                   var assignment = retrievedAssignment;
-                                                   res.send(assignment);
+                                    var assignment = retrievedAssignment;
+                                    res.send(assignment);
 
-                                                   // Get the correct file for this assignment
-                                                   // TODO catch edge case if assignment changes while this might be being used.
-                                                   // Generally, assignments won"t be being modified when we try to grab files,
-                                                   // so the new-file-creation for all students should be safe usually.
-                                                   File.findOne({"assignment": assignment._id, "name": filename, "owner": student._id}, function(err, retrievedFile) {
-                                                       if(err) {
-                                                           res.send("Error getting file");
-                                                           return;
-                                                       }
+                                    // Get the correct file for this assignment
+                                    // TODO catch edge case if assignment changes while this might be being used.
+                                    // Generally, assignments won"t be being modified when we try to grab files,
+                                    // so the new-file-creation for all students should be safe usually.
+                                    File.findOne({
+                                        "assignment": assignment._id,
+                                        "name": filename,
+                                        "owner": student._id
+                                    }, function(err, retrievedFile) {
+                                        if (err) {
+                                            res.send("Error getting file");
+                                            return;
+                                        }
 
-                                                       retrievedFile.submissions.push(submission._id);
-                                                       var comment = JSON.parse(fields.comments[0])[key];
-                                                       console.log("comment", comment);
-                                                       retrievedFile.studentComments = comment;
-                                                       console.log("about to save file");
-                                                       retrievedFile.save();
+                                        retrievedFile.submissions.push(submission._id);
+                                        var comment = JSON.parse(fields.comments[0])[key];
+                                        console.log("comment", comment);
+                                        retrievedFile.studentComments = comment;
+                                        console.log("about to save file");
+                                        retrievedFile.save();
 
-                                                   });
-                                               });
+                                    });
+                                });
                         });
                     });
                 });
@@ -574,12 +633,12 @@ function isLoggedIn(req, res, next) {
 // Make this whole mechanism less sketch
 app.post("/changemail", function(req, res) {
     console.log("Changing your email");
-    if(req.isAuthenticated()) {
+    if (req.isAuthenticated()) {
         var user = req.user;
         user.local.email = req.body.email;
         console.log(user);
         user.save(function(err) {
-            if(err) {
+            if (err) {
                 console.log("Error saving user email");
                 throw err;
             }
@@ -595,7 +654,7 @@ app.post("/changepw", isLoggedIn, function(req, res) {
     console.log(pw);
     user.local.password = user.generateHash(pw);
     user.save(function(err) {
-        if(err) {
+        if (err) {
             console.log("Error saving user password");
             throw err;
         }
@@ -608,13 +667,15 @@ app.get("/settings", isLoggedIn, function(req, res) {
 });
 
 app.post("/signup", passport.authenticate("local-signup", {
-    successRedirect : "/", // redirect to the secure profile section
-    failureRedirect : "/signup", // redirect back to the signup page if there is an error
-    failureFlash : true // allow flash messages
+    successRedirect: "/", // redirect to the secure profile section
+    failureRedirect: "/signup", // redirect back to the signup page if there is an error
+    failureFlash: true // allow flash messages
 }));
 app.get("/signup", function(req, res) {
     // render the page and pass in any flash data if it exists
-    res.render("signup", { message: req.flash("Message") });
+    res.render("signup", {
+        message: req.flash("Message")
+    });
 });
 
 // copy a file
@@ -636,7 +697,7 @@ function copyFile(source, target, cb) {
 
     function done(err) {
         if (!cbCalled) {
-            if(cb){
+            if (cb) {
                 cb(err);
             }
             cbCalled = true;
@@ -645,107 +706,129 @@ function copyFile(source, target, cb) {
 }
 
 app.post("/addstudents", function(req, res) {
-  //TOOD un-hardcode
-  Course.findOne({"name":"CS5"}, function(err, course) {
-    var studentsText = req.body.students;
-    var shouldBeGrader = req.body.grader;
+    //TOOD un-hardcode
+    Course.findOne({
+        "name": "CS5"
+    }, function(err, course) {
+        var studentsText = req.body.students;
+        var shouldBeGrader = req.body.grader;
 
-    var noSpaces = studentsText.replace(/\s/g, "");
-    var separatedOnCommas = noSpaces.split(",");
+        var noSpaces = studentsText.replace(/\s/g, "");
+        var separatedOnCommas = noSpaces.split(",");
 
-    separatedOnCommas.forEach(function(username) {
-        User.findOne({"local.username": username}, function(err, user) {
-          if (!user) {
-            user = new User();
-            user.local.username = username;
-            user.local.password = user.generateHash("asdf");
-            user.local.email    = "placeholder@cs.hmc.edu";
-            user.save();
-          }
+        separatedOnCommas.forEach(function(username) {
+            User.findOne({
+                "local.username": username
+            }, function(err, user) {
+                if (!user) {
+                    user = new User();
+                    user.local.username = username;
+                    user.local.password = user.generateHash("asdf");
+                    user.local.email = "placeholder@cs.hmc.edu";
+                    user.save();
+                }
 
-          if (shouldBeGrader) {
-            Grader.findOne({"user_id": user._id, "course_id": course._id}, function(err, grader) {
-              if (grader) {
-                return;
-              }
+                if (shouldBeGrader) {
+                    Grader.findOne({
+                        "user_id": user._id,
+                        "course_id": course._id
+                    }, function(err, grader) {
+                        if (grader) {
+                            return;
+                        }
 
-              grader = new Grader();
-              grader.course_id = course._id;
-              grader.user_id = user._id;
-              grader.name = username;
-              grader.save();
-              user.graders.push(grader._id);
-              user.save();
+                        grader = new Grader();
+                        grader.course_id = course._id;
+                        grader.user_id = user._id;
+                        grader.name = username;
+                        grader.save();
+                        user.graders.push(grader._id);
+                        user.save();
+                    });
+                } else {
+                    Student.findOne({
+                        "user_id": user._id,
+                        "course_id": course._id
+                    }, function(err, student) {
+                        if (student) {
+                            return;
+                        }
+
+                        student = new Student();
+                        student.course_id = course._id;
+                        student.user_id = user._id;
+                        student.name = username;
+                        student.save();
+                        user.students.push(student._id);
+                        user.save();
+                    });
+                }
             });
-          } else {
-            Student.findOne({"user_id": user._id, "course_id": course._id}, function(err, student) {
-              if(student) {
-                return;
-              }
-
-              student = new Student();
-              student.course_id = course._id;
-              student.user_id = user._id;
-              student.name = username;
-              student.save();
-              user.students.push(student._id);
-              user.save();
-            });
-          }
-      });
+        });
     });
-  });
 
-  res.redirect("/prof/addStudent");
+    res.redirect("/prof/addStudent");
 });
 
 app.post("/removestudents", function(req, res) {
-  //TOOD un-hardcode
-  Course.findOne({"name":"CS5"}, function(err, course) {
-    var students = req.body.students;
-    var graders = req.body.grader;
+    //TOOD un-hardcode
+    Course.findOne({
+        "name": "CS5"
+    }, function(err, course) {
+        var students = req.body.students;
+        var graders = req.body.grader;
 
-    students.forEach(function(student) {
-      if(student.toRemove) {
-        User.findOne({"local.username": student.name}, function(err, user) {
-          var index = 0;
-          user.students.forEach(function(aStudent) {
-            if(student._id === aStudent) {
-              user.students.splice(index, 1);
+        students.forEach(function(student) {
+            if (student.toRemove) {
+                User.findOne({
+                    "local.username": student.name
+                }, function(err, user) {
+                    var index = 0;
+                    user.students.forEach(function(aStudent) {
+                        if (student._id === aStudent) {
+                            user.students.splice(index, 1);
+                        }
+
+                        index += 1;
+                    });
+
+                    Student.findOne({
+                        "course_id": course._id,
+                        "name": student.name
+                    }, function(err, aStudent) {
+                        aStudent.remove();
+                    });
+                });
             }
-
-            index += 1;
-          });
-
-          Student.findOne({"course_id": course._id, "name": student.name}, function(err, aStudent){
-            aStudent.remove();
-          });
         });
-      }
+
+        graders.forEach(function(grader) {
+            if (grader.toRemove) {
+                User.findOne({
+                    "local.username": grader.name
+                }, function(err, user) {
+                    var index = 0;
+                    user.students.forEach(function(aGrader) {
+                        if (grader._id === aGrader) {
+                            user.graders.splice(index, 1);
+                        }
+
+                        index += 1;
+                    });
+
+                    Grader.findOne({
+                        "course_id": course._id,
+                        "name": grader.name
+                    }, function(err, aGrader) {
+                        aGrader.remove();
+                    });
+                });
+            }
+        });
+
     });
 
-    graders.forEach(function(grader) {
-      if(grader.toRemove) {
-        User.findOne({"local.username": grader.name}, function(err, user) {
-          var index = 0;
-          user.students.forEach(function(aGrader) {
-            if(grader._id === aGrader) {
-              user.graders.splice(index, 1);
-            }
-
-            index += 1;
-          });
-
-          Grader.findOne({"course_id": course._id, "name": grader.name}, function(err, aGrader){
-            aGrader.remove();
-          });
-        });
-      }
-    });
-
-  });
-
-  res.redirect("/prof/addStudent");
+    res.redirect("/prof/addStudent");
 });
 
 // development only
