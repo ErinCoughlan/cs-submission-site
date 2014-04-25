@@ -12,6 +12,10 @@ module.exports = function(app, passport) {
         res.render('student');
     });
 
+    app.get("/grader/course/:course", isLoggedIn, function(req, res) {
+        res.render("grader");
+    });
+    
 
     // TODO validate that it's a grutor for the class
     app.post("/course/:course/assignment/:assignment/student/:student/file/:file/grade", isLoggedIn, function(req, res) {

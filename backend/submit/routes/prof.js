@@ -5,6 +5,15 @@ var User       = require('../models/user');
 var Professor  = require('../models/professor');
 
 module.exports = function(app, passport){
+    app.get("/prof", isLoggedIn, function(req, res) {
+        res.render("prof");
+    });
+    
+    app.get("/prof/addStudent", isLoggedIn, function(req, res) {
+        res.render("add_student");
+    });
+    
+
     app.post("/addstudents/course/:course", function(req, res) {
         var coursename = req.params.course;
         
