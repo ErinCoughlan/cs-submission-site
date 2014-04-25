@@ -10,6 +10,17 @@
     vertical-align: middle;
 }
 
+#loginTitle {
+    font-size: 50px;
+}
+
+#header .alienMain {
+    display: inline-block;
+    height: 80px;
+    padding: 0px 20px;
+    vertical-align: middle;
+}
+
 #navbar {
     display: inline-block;
     width: inherit;

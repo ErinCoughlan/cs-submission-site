@@ -17,11 +17,11 @@
             <td class="lastCol">
                 <div ng-if="!isDefined(student.grade)">
                     <a ng-href="/grade">
-                        <input type="button" id="grade_{{file.name}}_{{student.student}}" value="Grade Problem">
+                        <input class="gradeButton" type="button" id="grade_{{file.name}}_{{student.student}}" value="Grade Problem">
                     </a>
                 </div>
                 <div ng-if="isDefined(student.grade)">
-                    <input type="button" id="grade_{{file.name}}_{{student.student}}" value="Graded by {{student.gradedBy}}" onclick="window.location='/grade'">
+                    <input class="gradeButton" type="button" id="grade_{{file.name}}_{{student.student}}" value="Graded by {{student.gradedBy}}" onclick="window.location='/grade'">
                 </div>
             </td>
         </tr>
