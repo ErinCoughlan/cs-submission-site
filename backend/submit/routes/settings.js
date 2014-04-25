@@ -17,7 +17,7 @@ module.exports = function(app, passport) {
                 }
             });
         }
-        res.redirect('/cs5');
+        res.redirect('/home');
     });
     
     app.post('/changepw', isLoggedIn, function(req, res) {
@@ -32,7 +32,7 @@ module.exports = function(app, passport) {
             throw err;
         }
         });
-        res.redirect('/cs5');
+        res.redirect('/home');
     });
 };
 

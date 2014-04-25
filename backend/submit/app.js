@@ -102,7 +102,7 @@ app.get("/filesfromtemplates", function(req, res) {
 
 app.post("/login",
     passport.authenticate("local-login", {
-        successRedirect: "/cs5",
+        successRedirect: "/home",
         failureRedirect: "/",
         failureFlash: true
     })

@@ -11,7 +11,7 @@ var path = require("path");
 var fs = require("fs");
 
 module.exports = function(app, passport){
-    app.get('/cs5', isLoggedIn, function(req, res) {
+    app.get('/home', isLoggedIn, function(req, res) {
         res.render('student');
     });
 

@@ -10,12 +10,6 @@ var Helpers = require('../helpers');
 
 // TODO: All these functions should make sure the current user is a grutor
 module.exports = function(app, passport) {
-    // TODO: unhardcode default page 
-    // TODO: why is this in grader routes anyway??
-    app.get('/cs5', isLoggedIn, function(req, res) {
-        res.render('student');
-    });
-
     app.get("/grader/course/:course", isLoggedIn, function(req, res) {
         res.render("grader");
     });

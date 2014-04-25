@@ -62,7 +62,7 @@ module.exports = function(app, passport){
             });
         });
         
-        res.redirect("/cs5");
+        res.redirect("/home");
     });
 
 
