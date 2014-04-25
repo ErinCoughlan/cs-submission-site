@@ -18,7 +18,7 @@ var userSchema = mongoose.Schema({
     students: [ ObjectId ],
     
     graders: [ ObjectId ]
-}, {collection: 'submit'});
+});
 
 
 // methods ======================

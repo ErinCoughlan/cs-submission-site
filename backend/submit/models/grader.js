@@ -5,10 +5,10 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 
 var graderSchema = mongoose.Schema({
     name: String,
-    user_id: ObjectId,
+    user_id: ,
     course_id: ObjectId,
     gradedFiles: [ ObjectId ]
-}, {collection: 'submit'});
+});
 
 
 // create the model expose it to our app
