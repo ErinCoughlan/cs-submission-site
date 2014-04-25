@@ -165,6 +165,45 @@
             });
         };
 
+        /**
+         * Create a new assignment (NO ACTUAL SUBMIT FOR NOW)
+         */
+         $scope.createAssignment = function createAssignment() {
+            var aName = $("input[name='assignmentName'").val();
+            var due = $("input[name='dueDate'").val();
+            var files = [];
+
+            var rows = $(".file");
+            for (var i = 0; i < rows.length; i++) {
+                var filename = $("input[name='filename-"+i+"']").val();
+                var maxPoints = $("input[name='maxPoints-"+i+"']").val();
+                var partnerable = $("input[name='partnerable-"+i+"']:checked").val();
+                var file = {
+                    name: filename,
+                    maxPoints: maxPoints,
+                    partnerable: partnerable
+                };
+                files.push(file);
+            }
+
+            // Create the assignment object
+            var assignment = {
+                name: aName,
+                due: due,
+                files: files
+            };
+
+            console.log("about to create new assignment");
+            $.ajax({
+                type: "POST",
+                url: "/course/"+courseId+"/addAssignment",
+                data: assignment
+            });
+
+            //addAssignment(assignment);
+            clearAssignment();
+         }
+
     });
 
 })();
@@ -197,38 +236,6 @@ function addFile(e) {
 
     $('#addNew').before(html);
 }
-
-/**
- * Create a new assignment (NO ACTUAL SUBMIT FOR NOW)
- */
- function createAssignment() {
-    var aName = $("input[name='assignmentName'").val();
-    var due = $("input[name='dueDate'").val();
-    var files = [];
-
-    var rows = $(".file");
-    for (var i = 0; i < rows.length; i++) {
-        var filename = $("input[name='filename-"+i+"']").val();
-        var maxPoints = $("input[name='maxPoints-"+i+"']").val();
-        var partnerable = $("input[name='partnerable-"+i+"']:checked").val();
-        var file = {
-            name: filename,
-            maxPoints: maxPoints,
-            partnerable: partnerable
-        };
-        files.push(file);
-    }
-
-    // Create the assignment object
-    var assignment = {
-        name: aName,
-        due: due,
-        files: files
-    };
-
-    addAssignment(assignment);
-    clearAssignment();
- }
 
  /**
   * Clears all data within the new assignment form
