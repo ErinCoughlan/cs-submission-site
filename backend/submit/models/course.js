@@ -6,6 +6,7 @@ var fileTemplate = require('./fileTemplate.js');
 // ObjectId allows us to reference other objects
 var ObjectId = mongoose.Schema.Types.ObjectId;
 //var ObjIdTy = mongoose.Types.ObjectId;
+
 var courseSchema = mongoose.Schema({
     name: String,
     current_assignment: Number, // Index into assignments
