@@ -2,12 +2,25 @@
     <div id="navbar">
         <ul>
             <li class="lfloat disabled">
-                <div id="title">HMC CS
-                    <img class="alien" src="/img/alien.png">
-                </div>
+                <a ng-href="/cs5">
+                    <div id="title">HMC CS
+                        <img class="alien" src="/img/alien.png">
+                    </div>
+                </a>
             </li>
             <!-- Disabled only if one course; otherwise show as dropdown -->
-            <li class="lfloat disabled">{{course.name}}</li>
+            <li ng-cloak ng-show="!courses.length>0" class="lfloat disabled">{{course.name}}2</li>
+            <li ng-cloak ng-show="courses.length>0" class="lfloat dropdown">{{course.name}}
+                <img class="center-vert" src="/img/dropdown_arrow.png">
+                <ul class="dropdown-menu">
+                    <li ng-repeat="altCourse in courses" class="submenu">
+                        <a ng-href="/cs5">
+                            {{altCourse.name}}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            
             <li class="rfloat"><a ng-href="/logout">logout</a></li>
             <li class="rfloat"><a ng-href="/settings">settings<a></li>
         </ul>

@@ -25,6 +25,31 @@
             function (data) {
                 $scope.course = data.course;
                 $scope.assignments = data.assignments;
+
+                // Something is async, so these are nested
+                
+                // get the list of all courses (eventually for the given user)
+                // this allows users to switch between courses they belong to
+                $http.get('/courses').success(
+                    function (data) {
+                        // Remove the current course and sort the rest
+                        var index = data.courses.map(function(e) { return e['name']; }).indexOf($scope.course.name);
+                        if (index > -1) {
+                            data.courses.splice(index, 1);
+                        }
+                        data.courses.sort(function(a,b) {
+                            if (a['name'] === b['name']) {
+                                return 0;
+                            } else if (a['name'] > b['name']) {
+                                return 1;
+                            } else {
+                                return -1;
+                            }
+                        });
+
+                        $scope.courses = data.courses;
+                    }
+                );
             }
         );
 
