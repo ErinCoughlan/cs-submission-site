@@ -152,7 +152,6 @@ module.exports = function(app, passport){
         var name = req.body.name;
         var due = req.body.due;
         var files = req.body.files;
-        console.log(files);
 
         var totalPoints = 0;
 
@@ -174,7 +173,7 @@ module.exports = function(app, passport){
 
             assignment = new Assignment();
             assignment.name = name;
-            assignment.due = Date(due);
+            assignment.due = due;
             assignment.point = Number(totalPoints);
             assignment.files = templates;
             assignment.save();

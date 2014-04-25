@@ -173,8 +173,6 @@
             var due = $("input[name='dueDate'").val();
             var files = [];
 
-            console.log("due date: ")
-
             var rows = $(".file");
             for (var i = 0; i < rows.length; i++) {
                 var filename = $("input[name='filename-"+i+"']").val();
@@ -204,9 +202,6 @@
                     location.reload();
                 }
             });
-
-            //addAssignment(assignment);
-            //clearAssignment();
          }
 
     });
@@ -242,57 +237,6 @@ function addFile(e) {
     $('#addNew').before(html);
 }
 
- /**
-  * Clears all data within the new assignment form
-  */
-function clearAssignment() {
-    $("input[name='assignmentName'").val('');
-    $("input[name='dueDate'").val('');
-
-    var rows = $(".file");
-    for (var i = 0; i < rows.length; i++) {
-        $("input[name='filename-"+i+"']").val('');
-        $("input[name='maxPoints-"+i+"']").val('');
-        $("input[name='partnerable-"+i+"'][value='false']").prop('checked', true);
-    }
-}
-
-/**
- * Add an assignment to the HTML. (SHOULD USE NODE AND REFRESH WITH NEW ASSIGNMENT)
- * input: assignment - {name: , due: , files:[file1, file2]}
- */
-function addAssignment(assignment) {
-    var date = new Date(assignment.due);
-    var html = '<table cellspacing="0" cellpadding="0">'+
-                    '<tr id="'+assignment.name+'" class="fixedHeader">'+
-                        '<th colspan="2">'+
-                            '<a class="underline" ng-href="/edit">'+
-                                assignment.name+
-                            '</a>'+
-                        '</th>'+
-                        '<th class="alignRight">'+
-                            'Due: '+date.toDateString()+date.toTimeString()+
-                        '</th>'+
-                    '</tr>';
-    var moreHtml = "";
-    for (var i = 0; i < assignment.files.length; i++) {
-        var file = assignment.files[i];
-        moreHtml += '<tr ng-repeat="file in assignment.files">'+
-                        '<td>'+
-                            file.name+
-                        '</td>'+
-                        '<td>'+
-                            'Points: '+file.maxPoints+
-                        '</td>'+
-                        '<td>'+
-                            'Partner: '+file.partnerable+
-                        '</td>'+
-                    '</tr>';
-                }
-    var finalHtml = html + moreHtml + '</table>';
-
-    $('#newAssignment').before(finalHtml);
-}
 
 /**
  * Make an assignment editable. This means that we show input elements instead of
@@ -303,6 +247,7 @@ function makeEditable(e) {
     var table = $(e).parents("table");
     table.addClass("editable");
 }
+
 
 /**
  * Save the assignment and make it appear solid.
