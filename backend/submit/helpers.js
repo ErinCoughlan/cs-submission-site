@@ -14,7 +14,7 @@ var assignWName =  function assignmentWithName(name, assignments) {
 // assignmentName
 // TODO: There is probably a way around that issue that makes this less ugly.
 var fileInAssignWName = function fileInAssignmentWithName(assignments, assignmentName, files, fileName) {
-    files.foreEach(function(aFile) {
+    files.forEach(function(aFile) {
         if(assignments[aFile.assignment].name === assignmentName &&
            files[aFile.template].name === fileName) {
             return file;
