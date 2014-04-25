@@ -305,3 +305,10 @@ function makeEditable(e) {
     var table = $(row).parents("table");
     table.addClass("editable");
 }
+
+/**
+ * Save the assignment and make it appear solid.
+ */
+function saveAssignment() {
+    location.reload();
+}
