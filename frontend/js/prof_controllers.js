@@ -166,12 +166,14 @@
         };
 
         /**
-         * Create a new assignment (NO ACTUAL SUBMIT FOR NOW)
+         * Create a new assignment
          */
          $scope.createAssignment = function createAssignment() {
             var aName = $("input[name='assignmentName'").val();
             var due = $("input[name='dueDate'").val();
             var files = [];
+
+            console.log("due date: ")
 
             var rows = $(".file");
             for (var i = 0; i < rows.length; i++) {
@@ -192,12 +194,15 @@
                 due: due,
                 files: files
             };
-
+            
             console.log("about to create new assignment");
             $.ajax({
                 type: "POST",
                 url: "/course/"+courseId+"/addAssignment",
-                data: assignment
+                data: assignment,
+                success: function(data) {
+                    location.reload();
+                }
             });
 
             //addAssignment(assignment);
