@@ -2,7 +2,7 @@ module.exports = function(app, passport) {
     app.get('/settings', isLoggedIn, function(req, res) {
         res.render('settings');
     });
-    
+
     // Make this whole mechanism less sketch
     app.post('/changemail', function(req, res) {
         console.log("Changing your email");
@@ -19,7 +19,7 @@ module.exports = function(app, passport) {
         }
         res.redirect('/home');
     });
-    
+
     app.post('/changepw', isLoggedIn, function(req, res) {
         user = req.user;
         // TODO HOLY SHIT WE ARE POSTING PLAINTEXT PASSWORDS FIXME

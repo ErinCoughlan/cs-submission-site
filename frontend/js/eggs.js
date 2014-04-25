@@ -17,9 +17,9 @@ function createAlien() {
 
 	var src = document.getElementById('alienHome');
 	src.appendChild(alien);
-};
+}
 
 /** Returns a random integer between start and end */
 function randInt(start, end) {
 	return Math.floor(Math.random() * (1 + end - start)) + start;
-};
+}

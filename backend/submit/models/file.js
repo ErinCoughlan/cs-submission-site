@@ -19,4 +19,3 @@ var fileSchema = mongoose.Schema({
 
 // create the model expose it to our app
 module.exports = mongoose.model('File', fileSchema);
-
