@@ -13,11 +13,13 @@
             <li ng-cloak ng-show="altCourses.length>0" class="lfloat dropdown">{{course.name}}
                 <img class="center-vert" src="/img/dropdown_arrow.png">
                 <ul class="dropdown-menu">
-                    <li ng-repeat="altCourse in altCourses" class="submenu">
+                    <div ng-repeat="altCourse in altCourses">
                         <a ng-href="/course/{{altCourse.name}}">
-                            {{altCourse.name}}
+                            <li class="submenu">
+                                {{altCourse.name}}
+                            </li>
                         </a>
-                    </li>
+                    </div>
                 </ul>
             </li>
             
