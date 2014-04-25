@@ -3,6 +3,12 @@ var Assignment = require('../models/assignment');
 var Student    = require('../models/student');
 var Grader     = require('../models/grader');
 var Professor  = require('../models/professor');
+var Helpers    = require('../helpers');
+var csv = require("csv");
+var multiparty = require("multiparty");
+var util = require("util");
+var path = require("path");
+var fs = require("fs");
 
 module.exports = function(app, passport){
     app.get('/cs5', isLoggedIn, function(req, res) {
