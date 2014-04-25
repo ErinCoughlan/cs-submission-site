@@ -9,8 +9,11 @@
                 </a>
             </li>
             <!-- Disabled only if one course; otherwise show as dropdown -->
-            <li ng-cloak ng-show="!altCourses.length>0" class="lfloat disabled">{{course.name}}</li>
-            <li ng-cloak ng-show="altCourses.length>0" class="lfloat dropdown">{{course.name}}
+            <li ng-cloak ng-show="!altCourses.length>0" class="lfloat disabled">
+                <a ng-href="/grader/course/{{course.name}}">{{course.name}}</a>
+            </li>
+            <li ng-cloak ng-show="altCourses.length>0" class="lfloat dropdown">
+                <a ng-href="/grader/course/{{course.name}}">{{course.name}}</a>
                 <img class="center-vert" src="/img/dropdown_arrow.png">
                 <ul class="dropdown-menu">
                     <div ng-repeat="altCourse in altCourses">
