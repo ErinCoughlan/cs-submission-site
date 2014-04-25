@@ -125,6 +125,10 @@ app.get("/prof/addStudent", isLoggedIn, function(req, res) {
     res.render("add_student");
 });
 
+app.get("/admin/addCourse", isLoggedIn, function(req, res) {
+    res.render("add_course");
+});
+
 app.get("/students/:course", isLoggedIn, function(req, res) {
     var courseid = req.params.course;
     Course.findOne({
