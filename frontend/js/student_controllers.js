@@ -84,8 +84,15 @@
         $http.get('/courses').success(
             function (data) {
                 $scope.courses = data.courses;
-                $scope.course = $scope.courses[0];
-                $scope.courseid = $scope.courses[0].name;
+
+                if (courseId) {
+                    var index = $scope.courses.map(function(e) { return e['name']; }).indexOf(courseId);
+                    $scope.course = $scope.courses[index];
+                    $scope.courseid = $scope.courses[index].name;
+                } else {
+                    $scope.course = $scope.courses[0];
+                    $scope.courseid = $scope.courses[0].name;
+                }
 
                 // get the list of files for the assignment
                 $http.get('/course/' + $scope.courseid + '/assignment/' + params.assignmentId).success(
