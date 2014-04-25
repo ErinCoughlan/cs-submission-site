@@ -59,6 +59,10 @@ img {
     margin: 0 auto;
 }
 
+.center-vert {
+    vertical-align: middle;
+}
+
 .clear {
     clear: both;
 }
