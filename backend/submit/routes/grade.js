@@ -122,6 +122,7 @@ module.exports = function(app, passport) {
         });
     });
 
+
     // TODO validate that it's a grutor for the class
     app.get("/course/:course/assignment/:assignment/student/:student/file/:file/grade/", isLoggedIn, function(req, res) {
         res.render("grade", {
@@ -136,6 +137,91 @@ module.exports = function(app, passport) {
         res.render("grade");
     });
 
+
+    // Route to get all a student's stuff for a given course
+    app.get("/grader/course/:course/student/:student/", function(req,res) {
+        var courseName = req.params.course;
+        var studentName = req.params.student;
+        
+        Course.findOne({"name": courseName}, function(err, course) {
+            
+            Student.findOne({"name": studentName, "course_id": course._id}, function(err, student) {
+                
+                var data = {
+                    "course": course,
+                    "student": student,
+                    "files": student.files
+                };
+                
+                res.json(data);
+            });
+        });
+    });
+    
+    // json route for downloading submissions
+    app.get("/course/:course/assignment/:assignment/file/:file/submit/", isLoggedIn, function(req, res) {
+        var userid = req.session.passport.user;
+        var coursename = req.params.course;
+        var assignmentname = req.params.assignment;
+        var filename = req.params.file;
+        
+        // get the course
+        Course.findOne({
+            "name": coursename
+        }, function(err, retrievedCourse) {
+            if (err) {
+                res.send("Error getting course");
+                return;
+            }
+            
+            var course = retrievedCourse;
+            
+            // Get the current user"s student object for the current course
+            Student.findOne({
+                "user_id": userid,
+                "course_id": course._id
+            }, function(err, retrievedStudent) {
+                if (err) {
+                    res.send("Error getting student");
+                    return;
+                }
+                
+                var student = retrievedStudent;
+                
+                // get the correct assignment
+                var assignment;
+                course.assignments.forEach(function(anAssignment) {
+                    if (anAssignment.name === asignmentname) {
+                        assignment = anAssignment;
+                    }
+                });
+                
+                if (!assignment) {
+                    console.log("Failed to get assignment");
+                    return;
+                }
+                
+                // Get the relevant file
+                // TODO catch edge case if assignment changes while this might be being used.
+                // Generally, assignments won"t be being modified when we try to grab files,
+                // so the new-file-creation for all students should be safe usually.
+                console.log(student._id, assignment._id);
+                
+                var file = retrievedFile;
+                
+                // Get the relevant submission (the last added, i.e. most recently submitted)
+                var submission = file.submissions[file.submissions.length - 1];
+                
+                console.log("location", submission);
+                var readStream = fs.createReadStream(
+                    submission.document);
+                // set the actual file name and extension. can't do that now because the database doesn't work.
+                res.setHeader("Content-disposition", "attachment; filename=fakename.fakeext");
+                readStream.pipe(res);
+            });
+        });
+    });
+    
 };
 
 
