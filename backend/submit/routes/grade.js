@@ -17,9 +17,9 @@ module.exports = function(app, passport) {
     app.post("/course/:course/assignment/:assignment/student/:student/file/:file/grade", isLoggedIn, function(req, res) {
         var graderUser         = req.session.passport.user;
         var courseName         = req.params.course;
-        var assignmentNumber   = req.params.assignments;
+        var assignmentName     = req.params.assignments;
         var studentName        = req.params.student;
-        var fileNumber         = req.params.file;
+        var fileName           = req.params.file;
 
         // Hit the database for all the things we need to save this. Cry inside.
         Course.findOne({"name": courseName}, function(err, course) {
@@ -30,19 +30,29 @@ module.exports = function(app, passport) {
 
             var assignments = course.assignments;
 
-            // TODO this will break if an assignment is deleted (not sure if it
-            // matters, arguably then we should just never see this page anyway)
-            var assignment = course.assignments[assignmentNumber];
+            var assignment;
+            assignments.forEach(function(anAssignment) {
+                if(anAssignment.name === assignmentName) {
+                    assignment = anAssignment;
+                }
+            });
 
+            if(!assignment) {
+                console.log("Failed to find assignemnt by name");
+                return;
+            }
+            
             Grader.find({"course_id": course._id, "name": graderUser.name},
                         function(err, grader) {
-                            Student.find({"files": {$exists: true}, "course_id": course.id,
+                            Student.find({"course_id": course.id,
                                           "name": studentName},
                                          function(err, student) {
                                              var file;
+
+                                             // TODO: This way of checking equality is uberhacky
                                              student.files.forEach(function(aFile) {
-                                                 if(aFile.assignment == assignmentNumber &&
-                                                    aFile.template == fileNumber) {
+                                                 if(assignments[aFile.assignment].name === assignmentName &&
+                                                    course.files[aFile.template].name === fileName) {
                                                      file = aFile;
                                                  }
                                              });
@@ -56,11 +66,11 @@ module.exports = function(app, passport) {
 
     // TODO validate that it's a grutor for the class
     app.get("/course/:course/assignment/:assignment/student/:student/file/:file/grade/info/", isLoggedIn, function(req, res) {
-        var graderUser         = req.session.passport.user;
+        var graderUser     = req.session.passport.user;
         var courseName     = req.params.course;
-        var assignmentNumber = req.params.assignments;
+        var assignmentName = req.params.assignments;
         var studentName    = req.params.student;
-        var fileNumber       = req.params.file;
+        var fileName       = req.params.file;
 
         console.log(req.params);
         // Hit the database for all the things we need to save this. Cry inside.
@@ -72,24 +82,33 @@ module.exports = function(app, passport) {
 
             var assignments = course.assignments;
 
-            // TODO this will break if an assignment is deleted (not sure if it
-            // matters, arguably then we should just never see this page anyway)
-            var assignment = course.assignments[assignmentNumber];
+            var assignment;
+            assignments.forEach(function(anAssignment) {
+                if(anAssignment.name === assignmentName) {
+                    assignment = anAssignment;
+                }
+            });
+
 
             Grader.find({"course_id": course._id, "name": graderUser.name},
                         function(err, grader) {
-                            Student.findOne({"files": {$exists: true}, "course_id": course.id,
+                            Student.findOne({"course_id": course.id,
                                           "name": studentName},
                                          function(err, student) {
+
+
                                              var file;
                                              console.log(student);
+
                                              student.files.forEach(function(aFile) {
-                                                 if(aFile.assignment == assignmentNumber &&
-                                                    aFile.template == fileNumber) {
+                                                 if(assignments[aFile.assignment].name === assignmentName &&
+                                                    course.files[aFile.template].name === fileName) {
                                                      file = aFile;
                                                  }
                                              });
-
+                                             if(!file) {
+                                                 file = {"name": fileName}
+                                             }
                                              data = {
                                                  "file": file,
                                                  "student": student,

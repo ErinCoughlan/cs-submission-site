@@ -116,28 +116,63 @@
         );
     });
 
-    submissionApp.controller('GradePageCtrl', function ($scope, $http, $routeParams) {
+
+    submissionApp.controller('GraderStudentCtrl', function ($scope, $http, $routeParams) {
         $scope.isDefined = function (item){
             return angular.isDefined(item) && (item !== null);
         };
 
-        //TODO make this work so it can be uncommented.
-
-        /*
         $scope.courseid = submissionApp.courseid;
-        $scope.assignment = JSON.stringify(assignment);
-        $scope.student = JSON.stringify(student);
-        $scope.urlfile = JSON.stringify(file);
 
         this.params = $routeParams;
 
-        $http.get('/course/' + submissionApp.courseid + '/assignment/' + assignment  + '/student/' + student  + '/file/' + file  + '/grade/info/').success(
+        // get the list of files for the assignment
+
+        $http.get('/grader/course/' + submissionApp.courseid + '/student/' + this.params.studentId + "/").success(
+            function (data) {
+                $scope.course      = data.course;
+                $scope.assignments = data.course.assignments;
+                $scope.files       = data.files;
+                $scope.student     = data.student;
+            }
+        );
+    });
+
+    submissionApp.controller('GradePageCtrl', function ($scope, $http, $routeParams, $location) {
+        $scope.isDefined = function (item){
+            return angular.isDefined(item) && (item !== null);
+        };
+
+        var splitURL = $location.absUrl().split('/');
+        var startIndex = 0;
+        while(splitURL[startIndex] != "course") {
+            startIndex++;
+        }
+
+        $scope.splitURL = splitURL;
+        $scope.courseName     = splitURL[startIndex + 1];
+        $scope.assignmentName = splitURL[startIndex + 3];
+        $scope.studentName    = splitURL[startIndex + 5];
+        $scope.fileName       = splitURL[startIndex + 7];
+        $scope.courseid = submissionApp.courseid;
+
+        this.params = $routeParams;
+
+        var infoURL = "/course/" + $scope.courseName;
+        infoURL += "/assignment/" + $scope.assignmentName;
+        infoURL += "/student/" + $scope.studentName;
+        infoURL += "/file/" + $scope.fileName;
+        infoURL += "/grade/info/";
+
+        this.params = $routeParams;
+        $scope.infoURL = infoURL;
+        $http.get(infoURL).success(
             function (data) {
                 $scope.course = data.course;
                 $scope.file = data.file;
                 $scope.student = data.student;
                 $scope.grader = data.grader;
-            });*/
+            });
     });
 
 

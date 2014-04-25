@@ -31,7 +31,7 @@ var submissionApp = angular.module('submissionApp', ['ngRoute', 'submissionFilte
     submissionApp.config(function($routeProvider, $locationProvider) {
         $routeProvider.when('/grader/students/:studentId', {
             templateUrl: '/partials/grader_student.html',
-            controller: 'GraderAssignmentCtrl',
+            controller: 'GraderStudentCtrl',
             controllerAs: 'assignment'
         });
     });
