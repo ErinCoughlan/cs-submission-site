@@ -300,15 +300,16 @@ function addAssignment(assignment) {
  * security.
  */
 function makeEditable(e) {
-    // Convert to jquery object so methods will work
-    var row = document.getElementById(e.id);
-    var table = $(row).parents("table");
+    var table = $(e).parents("table");
     table.addClass("editable");
 }
 
 /**
  * Save the assignment and make it appear solid.
+ * Saving should occur in the background because we don't actually want
+ * to refresh the page.
  */
-function saveAssignment() {
-    location.reload();
+function saveAssignment(e) {
+    var table = $(e).parents("table");
+    table.removeClass("editable");
 }

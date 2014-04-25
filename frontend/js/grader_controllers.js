@@ -194,9 +194,7 @@
  * Helper which calls toggle with the correct parent
  */
 function toggleRow(e) {
-    // Convert to jquery object so methods will work
-    var row = document.getElementById(e.id);
-    toggleRowChildren($(row), 'fixedHeader');
+    toggleRowChildren($(e), 'fixedHeader');
 }
 
 /**
