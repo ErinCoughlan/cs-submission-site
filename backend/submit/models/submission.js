@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var submissionSchema = mongoose.Schema({
         document: String, // evenually this will be a path on the db
         date: Date
-    });
+}, {collection: 'submissions'});
 
 // create the model expose it to our app
 module.exports = mongoose.model('Submission', submissionSchema);
