@@ -8,36 +8,33 @@
 (function(){
     "use strict";
 
-    // TODO: get this from the server during page load somehow.
-    // maybe a <script src="/courses.js"></script> in student.html
-    // with a route on the server that supplies the list of courses?
-    submissionApp.courseid = "CS5";
-
     submissionApp.controller('ProfCtrl', function ($scope, $http, $route, $routeParams, $location) {
         this.$route = $route;
         this.$location = $location;
         this.$routeParams = $routeParams;
 
-        $scope.courseid = submissionApp.courseid;
-
-        // get the list of assignments
-        $http.get('/assignments/'+submissionApp.courseid).success(
-            function (data) {
-                $scope.course = data.course;
-                $scope.assignments = data.assignments;
-            }
-        );
-
         // get the list of all courses (eventually for the given user)
-        // this allows users to switch between courses they belong to
         $http.get('/courses').success(
             function (data) {
-                // Remove the current course and sort the rest
-                var index = data.courses.map(function(e) { return e['name']; }).indexOf($scope.course.name);
+                $scope.courses = data.courses;
+                $scope.course = $scope.courses[0];
+                $scope.courseid = $scope.courses[0].name;
+
+                // get the list of assignments
+                $http.get('/assignments/'+$scope.courseid).success(
+                    function (data) {
+                        //$scope.course = data.course;
+                        $scope.assignments = data.assignments;
+                    }
+                );
+
+                // Remove the current course and sort the rest for the dropdown
+                var altCourses = $scope.courses;
+                var index = altCourses.map(function(e) { return e['name']; }).indexOf($scope.course.name);
                 if (index > -1) {
-                    data.courses.splice(index, 1);
+                    altCourses.splice(index, 1);
                 }
-                data.courses.sort(function(a,b) {
+                altCourses.sort(function(a,b) {
                     if (a['name'] === b['name']) {
                         return 0;
                     } else if (a['name'] > b['name']) {
@@ -47,38 +44,38 @@
                     }
                 });
 
-                $scope.courses = data.courses;
+                $scope.altCourses = altCourses;
+
+                $http.get('/students/'+$scope.courseid).success(
+                  function (data) {
+                    data.students.sort(function(a,b) {
+                        if (a['name'] === b['name']) {
+                            return 0;
+                        } else if (a['name'] > b['name']) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    });
+                    $scope.students = data.students;
+                  }
+                );
+
+                $http.get('/graders/'+$scope.courseid).success(
+                  function (data) {
+                    data.graders.sort(function(a,b) {
+                        if (a['name'] === b['name']) {
+                            return 0;
+                        } else if (a['name'] > b['name']) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    });
+                    $scope.graders = data.graders;
+                  }
+                );
             }
-        );
-
-        $http.get('/students/'+submissionApp.courseid).success(
-          function (data) {
-            data.students.sort(function(a,b) {
-                if (a['name'] === b['name']) {
-                    return 0;
-                } else if (a['name'] > b['name']) {
-                    return 1;
-                } else {
-                    return -1;
-                }
-            });
-            $scope.students = data.students;
-          }
-        );
-
-        $http.get('/graders/'+submissionApp.courseid).success(
-          function (data) {
-            data.graders.sort(function(a,b) {
-                if (a['name'] === b['name']) {
-                    return 0;
-                } else if (a['name'] > b['name']) {
-                    return 1;
-                } else {
-                    return -1;
-                }
-            });
-            $scope.graders = data.graders;
-          }
         );
 
         $scope.addUsers = function addUsers($event) {
