@@ -55,24 +55,24 @@
                 <table class="newAssignment" cellspacing="0" cellpadding="0">
                     <tr id="{{assignment.name | letters}}" class="fixedHeader">
                         <th colspan="2">
-                            <input type="text" name="assignmentName" placeholder="Assignment Name">
+                            <input type="text" required="required" name="assignmentName" placeholder="Assignment Name">
                         </th>
                         <th class="alignRight">
-                            Due: <input type="datetime-local" name="dueDate">
+                            Due: <input type="datetime-local" required="required" name="dueDate">
                         </th>
                     </tr>
                     <tr class="file">
                         <td>
-                            <input type="text" name="filename-0" placeholder="File Name">
+                            <input type="text" required="required" name="filename-0" placeholder="File Name">
                         </td>
                         <td>
                             Points:
-                            <input type="number" class="score" name="maxPoints-0">
+                            <input type="number" required="required" class="score" name="maxPoints-0">
                         </td>
                         <td>
                             Partner:
-                            <input type="radio" name="partnerable-0" value="true">Yes
-                            <input type="radio" name="partnerable-0" checked="true" value="false">No
+                            <input type="radio" required="required" name="partnerable-0" value="true">Yes
+                            <input type="radio" required="required" name="partnerable-0" checked="true" value="false">No
                         </td>
                     </tr>
                     <tr id="addNew">
