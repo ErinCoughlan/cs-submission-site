@@ -16,10 +16,10 @@ module.exports = function(app, passport) {
     // TODO validate that it's a grutor for the class
     app.post("/course/:course/assignment/:assignment/student/:student/file/:file/grade", isLoggedIn, function(req, res) {
         var graderUser         = req.session.passport.user;
-        var courseName     = req.params.course;
-        var assignmentNumber = req.params.assignments;
-        var studentName    = req.params.student;
-        var fileNumber       = req.params.file;
+        var courseName         = req.params.course;
+        var assignmentNumber   = req.params.assignments;
+        var studentName        = req.params.student;
+        var fileNumber         = req.params.file;
 
         // Hit the database for all the things we need to save this. Cry inside.
         Course.findOne({"name": courseName}, function(err, course) {
