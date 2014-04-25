@@ -8,30 +8,49 @@
 (function(){
     "use strict";
 
-    // TODO: get this from the server during page load somehow.
-    // maybe a <script src="/courses.js"></script> in student.html
-    // with a route on the server that supplies the list of courses?
-    // TODO: This shouldn't be hardcoded.
-    submissionApp.courseid = "CS5";
-
     submissionApp.controller('GraderCtrl', function ($scope, $http, $route, $routeParams, $location) {
         this.$route = $route;
         this.$location = $location;
         this.$routeParams = $routeParams;
 
-        $scope.courseid = submissionApp.courseid;
-
-        // get the list of assignments
-        $http.get('/assignments/'+ $scope.courseid).success(
+        // get the list of all courses (eventually for the given user)
+        $http.get('/courses').success(
             function (data) {
-                $scope.course = data.course;
-                $scope.assignments = data.assignments;
-            }
-        );
+                $scope.courses = data.courses;
+                $scope.course = $scope.courses[0];
+                $scope.courseid = $scope.courses[0].name;
 
-        $http.get('/students/' + $scope.courseid).success(
-            function(data) {
-                $scope.students = data.students;
+                // get the list of assignments
+                $http.get('/assignments/'+ $scope.courseid).success(
+                    function (data) {
+                        $scope.assignments = data.assignments;
+                    }
+                );
+
+                $http.get('/students/' + $scope.courseid).success(
+                    function(data) {
+                        $scope.students = data.students;
+                    }
+                );
+
+                // Remove the current course and sort the rest for the dropdown
+                var altCourses = $scope.courses;
+                var index = altCourses.map(function(e) { return e['name']; }).indexOf($scope.course.name);
+                if (index > -1) {
+                    altCourses.splice(index, 1);
+                }
+                altCourses.sort(function(a,b) {
+                    if (a['name'] === b['name']) {
+                        return 0;
+                    } else if (a['name'] > b['name']) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                });
+
+                $scope.altCourses = altCourses;
+
             }
         );
 
@@ -101,17 +120,23 @@
             return angular.isDefined(item) && (item !== null);
         };
 
-        $scope.courseid = submissionApp.courseid;
+        var params = $routeParams;
 
-        this.params = $routeParams;
-
-        // get the list of files for the assignment
-        $http.get('/grader/course/' + submissionApp.courseid + '/assignment/' + this.params.assignmentId).success(
+        // get the list of all courses (eventually for the given user)
+        $http.get('/courses').success(
             function (data) {
-                $scope.course = data.course;
-                $scope.assignment = data.assignment;
-                $scope.files = data.files;
-                $scope.students = data.students;
+                $scope.courses = data.courses;
+                $scope.course = $scope.courses[0];
+                $scope.courseid = $scope.courses[0].name;
+
+                // get the list of files for the assignment
+                $http.get('/grader/course/' + $scope.courseid + '/assignment/' + params.assignmentId).success(
+                    function (data) {
+                        $scope.assignment = data.assignment;
+                        $scope.files = data.files;
+                        $scope.students = data.students;
+                    }
+                );
             }
         );
     });
@@ -122,18 +147,24 @@
             return angular.isDefined(item) && (item !== null);
         };
 
-        $scope.courseid = submissionApp.courseid;
+        var params = $routeParams;
 
-        this.params = $routeParams;
-
-        // get the list of files for the assignment
-
-        $http.get('/grader/course/' + submissionApp.courseid + '/student/' + this.params.studentId + "/").success(
+        // get the list of all courses (eventually for the given user)
+        $http.get('/courses').success(
             function (data) {
-                $scope.course      = data.course;
-                $scope.assignments = data.course.assignments;
-                $scope.files       = data.files;
-                $scope.student     = data.student;
+                $scope.courses = data.courses;
+                $scope.course = $scope.courses[0];
+                $scope.courseid = $scope.courses[0].name;
+
+                // get the list of files for the assignment
+
+                $http.get('/grader/course/' + $scope.courseid + '/student/' + params.studentId + "/").success(
+                    function (data) {
+                        $scope.assignments = data.course.assignments;
+                        $scope.files       = data.files;
+                        $scope.student     = data.student;
+                    }
+                );
             }
         );
     });

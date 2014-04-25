@@ -8,48 +8,43 @@
 (function(){
     "use strict";
 
-    // TODO: get this from the server during page load somehow.
-    // maybe a <script src="/courses.js"></script> in student.html
-    // with a route on the server that supplies the list of courses?
-    submissionApp.courseid = "CS5";
-
     submissionApp.controller('StudentCtrl', function ($scope, $http, $route, $routeParams, $location) {
         this.$route = $route;
         this.$location = $location;
         this.$routeParams = $routeParams;
 
-        $scope.courseid = submissionApp.courseid
-
-        // get the list of assignments
-        $http.get('/assignments/'+submissionApp.courseid).success(
+        // get the list of all courses (eventually for the given user)
+        $http.get('/courses').success(
             function (data) {
-                $scope.course = data.course;
-                $scope.assignments = data.assignments;
+                $scope.courses = data.courses;
+                $scope.course = $scope.courses[0];
+                $scope.courseid = $scope.courses[0].name;
 
-                // Something is async, so these are nested
-                
-                // get the list of all courses (eventually for the given user)
-                // this allows users to switch between courses they belong to
-                $http.get('/courses').success(
+                // get the list of assignments
+                $http.get('/assignments/'+$scope.courseid).success(
                     function (data) {
-                        // Remove the current course and sort the rest
-                        var index = data.courses.map(function(e) { return e['name']; }).indexOf($scope.course.name);
-                        if (index > -1) {
-                            data.courses.splice(index, 1);
-                        }
-                        data.courses.sort(function(a,b) {
-                            if (a['name'] === b['name']) {
-                                return 0;
-                            } else if (a['name'] > b['name']) {
-                                return 1;
-                            } else {
-                                return -1;
-                            }
-                        });
-
-                        $scope.courses = data.courses;
+                        //$scope.course = data.course;
+                        $scope.assignments = data.assignments;
                     }
                 );
+
+                // Remove the current course and sort the rest for the dropdown
+                var altCourses = $scope.courses;
+                var index = altCourses.map(function(e) { return e['name']; }).indexOf($scope.course.name);
+                if (index > -1) {
+                    altCourses.splice(index, 1);
+                }
+                altCourses.sort(function(a,b) {
+                    if (a['name'] === b['name']) {
+                        return 0;
+                    } else if (a['name'] > b['name']) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+                });
+
+                $scope.altCourses = altCourses;
             }
         );
 
@@ -114,17 +109,23 @@
             return angular.isDefined(item) && (item !== null)
         };
 
-        $scope.courseid = submissionApp.courseid;
+        var params = $routeParams;
 
-        this.params = $routeParams;
-
-        // get the list of files for the assignment
-        $http.get('/course/' + submissionApp.courseid + '/assignment/' + this.params.assignmentId).success(
+        // get the list of all courses (eventually for the given user)
+        $http.get('/courses').success(
             function (data) {
-                console.log(data)
-                $scope.course = data.course;
-                $scope.assignment = data.assignment;
-                $scope.files = data['files'];
+                $scope.courses = data.courses;
+                $scope.course = $scope.courses[0];
+                $scope.courseid = $scope.courses[0].name;
+
+                // get the list of files for the assignment
+                $http.get('/course/' + $scope.courseid + '/assignment/' + params.assignmentId).success(
+                    function (data) {
+                        console.log(data)
+                        $scope.assignment = data.assignment;
+                        $scope.files = data['files'];
+                    }
+                );
             }
         );
 
