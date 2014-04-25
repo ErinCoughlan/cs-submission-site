@@ -116,6 +116,28 @@
         );
     });
 
+
+    submissionApp.controller('GraderStudentCtrl', function ($scope, $http, $routeParams) {
+        $scope.isDefined = function (item){
+            return angular.isDefined(item) && (item !== null);
+        };
+
+        $scope.courseid = submissionApp.courseid;
+
+        this.params = $routeParams;
+
+        // get the list of files for the assignment
+
+        $http.get('/grader/course/' + submissionApp.courseid + '/student/' + this.params.studentId + "/").success(
+            function (data) {
+                $scope.course      = data.course;
+                $scope.assignments = data.course.assignments;
+                $scope.files       = data.files;
+                $scope.student     = data.student;
+            }
+        );
+    });
+
     submissionApp.controller('GradePageCtrl', function ($scope, $http, $routeParams, $location) {
         $scope.isDefined = function (item){
             return angular.isDefined(item) && (item !== null);

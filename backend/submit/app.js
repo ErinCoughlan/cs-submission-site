@@ -893,6 +893,27 @@ app.post("/removestudents", function(req, res) {
     res.redirect("/prof/addStudent");
 });
 
+// Route to get all a student's stuff for a given course
+app.get("/grader/course/:course/student/:student/", function(req,res) {
+    var courseName = req.params.course;
+    var studentName = req.params.student;
+
+    Course.findOne({"name": courseName}, function(err, course) {
+
+        Student.findOne({"name": studentName, "course_id": course._id}, function(err, student) {
+
+            var data = {
+                "course": course,
+                "student": student,
+                "files": student.files
+            };
+
+            res.json(data);
+        });
+    });
+});
+
+
 // development only
 if ("development" == app.get("env")) {
     app.use(express.errorHandler());
