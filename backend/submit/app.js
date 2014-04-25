@@ -33,6 +33,7 @@ var passport = require("passport");
 var User = require("./models/user.js");
 var Grader = require("./models/grader.js");
 var Student = require("./models/student.js");
+var Professor = require("./models/professor.js");
 var Course = require("./models/course.js");
 var Assignment = require("./models/assignment.js");
 var Submission = require("./models/submission.js");
