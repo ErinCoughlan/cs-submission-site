@@ -30,14 +30,14 @@
 
                 // Remove the current course and sort the rest for the dropdown
                 var altCourses = $scope.courses;
-                var index = altCourses.map(function(e) { return e['name']; }).indexOf($scope.course.name);
+                var index = altCourses.map(function(e) { return e.name; }).indexOf($scope.course.name);
                 if (index > -1) {
                     altCourses.splice(index, 1);
                 }
                 altCourses.sort(function(a,b) {
-                    if (a['name'] === b['name']) {
+                    if (a.name === b.name) {
                         return 0;
-                    } else if (a['name'] > b['name']) {
+                    } else if (a.name > b.name) {
                         return 1;
                     } else {
                         return -1;
@@ -49,9 +49,9 @@
                 $http.get('/students/'+$scope.courseid).success(
                   function (data) {
                     data.students.sort(function(a,b) {
-                        if (a['name'] === b['name']) {
+                        if (a.name === b.name) {
                             return 0;
-                        } else if (a['name'] > b['name']) {
+                        } else if (a.name > b.name) {
                             return 1;
                         } else {
                             return -1;
@@ -64,9 +64,9 @@
                 $http.get('/graders/'+$scope.courseid).success(
                   function (data) {
                     data.graders.sort(function(a,b) {
-                        if (a['name'] === b['name']) {
+                        if (a.name === b.name) {
                             return 0;
-                        } else if (a['name'] > b['name']) {
+                        } else if (a.name > b.name) {
                             return 1;
                         } else {
                             return -1;
@@ -109,25 +109,25 @@
             var form = document.getElementById("form-add-student");
             var fd = new FormData(form);
 
-            var studentRemoves = new Array();
+            var studentRemoves = [];
 
             $scope.students.forEach(function(specificStudent) {
               var foo= specificStudent.name + "Checked";
               var toPush = {
                 name: specificStudent.name,
                 toRemove: document.getElementById(specificStudent.name + "Check").checked
-              }
+              };
 
               studentRemoves.push(toPush);
             });
 
-            var graderRemoves = new Array();
+            var graderRemoves = [];
 
             $scope.graders.forEach(function(specificGrader) {
               var toPush = {
                 name: specificGrader.name,
                 toRemove: document.getElementById(specificGrader.name + "Check").checked
-              }
+              };
               graderRemoves.push(toPush);
             });
 
@@ -182,7 +182,7 @@ function addFile(e) {
                 '</tr>';
 
     $('#addNew').before(html);
-};
+}
 
 /**
  * Create a new assignment (NO ACTUAL SUBMIT FOR NOW)
@@ -214,7 +214,7 @@ function addFile(e) {
 
     addAssignment(assignment);
     clearAssignment();
- };
+ }
 
  /**
   * Clears all data within the new assignment form
@@ -229,7 +229,7 @@ function clearAssignment() {
         $("input[name='maxPoints-"+i+"']").val('');
         $("input[name='partnerable-"+i+"'][value='false']").prop('checked', true);
     }
-};
+}
 
 /**
  * Add an assignment to the HTML. (SHOULD USE NODE AND REFRESH WITH NEW ASSIGNMENT)
@@ -266,4 +266,4 @@ function addAssignment(assignment) {
     var finalHtml = html + moreHtml + '</table>';
 
     $('#newAssignment').before(finalHtml);
-};
+}

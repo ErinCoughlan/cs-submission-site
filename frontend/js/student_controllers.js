@@ -26,8 +26,10 @@
             function (data) {
                 $scope.courses = data.courses;
 
+                var index;
+
                 if (courseId) {
-                    var index = $scope.courses.map(function(e) { return e['name']; }).indexOf(courseId);
+                    index = $scope.courses.map(function(e) { return e.name; }).indexOf(courseId);
                     $scope.course = $scope.courses[index];
                     $scope.courseid = $scope.courses[index].name;
                 } else {
@@ -44,14 +46,14 @@
 
                 // Remove the current course and sort the rest for the dropdown
                 var altCourses = $scope.courses;
-                var index = altCourses.map(function(e) { return e['name']; }).indexOf($scope.courseid);
+                index = altCourses.map(function(e) { return e.name; }).indexOf($scope.courseid);
                 if (index > -1) {
                     altCourses.splice(index, 1);
                 }
                 altCourses.sort(function(a,b) {
-                    if (a['name'] === b['name']) {
+                    if (a.name === b.name) {
                         return 0;
-                    } else if (a['name'] > b['name']) {
+                    } else if (a.name > b.name) {
                         return 1;
                     } else {
                         return -1;
@@ -75,7 +77,7 @@
 
     submissionApp.controller('StudentAssignmentCtrl', function ($scope, $http, $routeParams) {
         $scope.isDefined = function (item){
-            return angular.isDefined(item) && (item !== null)
+            return angular.isDefined(item) && (item !== null);
         };
 
         var params = $routeParams;
@@ -86,7 +88,7 @@
                 $scope.courses = data.courses;
 
                 if (courseId) {
-                    var index = $scope.courses.map(function(e) { return e['name']; }).indexOf(courseId);
+                    var index = $scope.courses.map(function(e) { return e.name; }).indexOf(courseId);
                     $scope.course = $scope.courses[index];
                     $scope.courseid = $scope.courses[index].name;
                 } else {
@@ -97,9 +99,9 @@
                 // get the list of files for the assignment
                 $http.get('/course/' + $scope.courseid + '/assignment/' + params.assignmentId).success(
                     function (data) {
-                        console.log(data)
+                        console.log(data);
                         $scope.assignment = data.assignment;
-                        $scope.files = data['files'];
+                        $scope.files = data.files;
                     }
                 );
             }
@@ -110,7 +112,7 @@
             var assignmentid = $scope.assignment._id;
             console.log($scope, $scope.assignment, $scope.assignment.files);
             var fd = new FormData();
-            var comments = {}
+            var comments = {};
             $scope.files.forEach(function(file){
                 console.log("file", file);
                 if(file.file_to_submit){
@@ -118,7 +120,7 @@
                     fd.append(file.name, file.file_to_submit);
                 }
                 if(file.comment_to_submit){
-                    comments[file.name] = file.comment_to_submit
+                    comments[file.name] = file.comment_to_submit;
                 }
             });
             fd.append("comments", JSON.stringify(comments));

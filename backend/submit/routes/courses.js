@@ -21,7 +21,7 @@ module.exports = function(app, passport){
             res.json(data);
         });
     });
-    
+
     // Get course object
     app.get('/course/:course', isLoggedIn, function(req, res) {
         var userid = req.session.passport.user;
@@ -30,7 +30,7 @@ module.exports = function(app, passport){
 
         res.render('student');
     });
-   
+
 
     // get all students in a course
     app.get("/students/:course", isLoggedIn, function(req, res) {
@@ -43,7 +43,7 @@ module.exports = function(app, passport){
                 res.send("error getting course");
                 return;
             }
-            
+
             Student.find({
                 "course_id": course._id}, function(err, students) {
                     if (err) {
@@ -78,7 +78,7 @@ module.exports = function(app, passport){
                         return;
                     }
                     console.log(graders);
-                    
+
                     var data = {
                         "graders": graders
                     };
@@ -86,13 +86,13 @@ module.exports = function(app, passport){
                 });
         });
     });
-    
+
     // json route for course info
     app.get("/assignments/:course", isLoggedIn, function(req, res) {
         var userid = req.session.passport.user;
         var courseid = req.params.course;
         console.log("got request for course", req.params, "from", req.session);
-        
+
         Course.findOne({
             "name": courseid
         }, function(err, course) {
@@ -101,14 +101,14 @@ module.exports = function(app, passport){
                 res.send("Error getting list of assignments.");
                 return;
             }
-            
+
             console.log("Course contents: ", course);
             var assignments = course.assignments;
             var data = {
                 "course": course,
                 "assignments": assignments
             };
-            
+
             res.json(data);
         });
     });
@@ -118,7 +118,7 @@ module.exports = function(app, passport){
     app.get("/course/:course/export", isLoggedIn, function(req, res) {
         var coursename = req.params.course;
         console.log("coursename", coursename);
-        
+
         // get the course
         Course.findOne({
             "name": coursename
@@ -182,8 +182,8 @@ module.exports = function(app, passport){
             });
         });
     });
-    
-    
+
+
 };
 
 function isLoggedIn(req, res, next) {
@@ -194,4 +194,4 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't, redirect them to the home page
     res.redirect('/');
-};
+}

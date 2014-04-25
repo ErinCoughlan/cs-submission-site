@@ -8,24 +8,24 @@ module.exports = function(app, passport){
     app.get("/prof", isLoggedIn, function(req, res) {
         res.render("prof");
     });
-    
+
     app.get("/prof/addStudent", isLoggedIn, function(req, res) {
         res.render("add_student");
     });
-    
+
 
     app.post("/addstudents/course/:course", function(req, res) {
         var coursename = req.params.course;
-        
+
         Course.findOne({
             "name": coursename
         }, function(err, course) {
             var studentsText = req.body.students;
             var shouldBeGrader = req.body.grader;
-            
+
             var noSpaces = studentsText.replace(/\s/g, "");
             var separatedOnCommas = noSpaces.split(",");
-            
+
             separatedOnCommas.forEach(function(username) {
                 User.findOne({
                     "local.username": username
@@ -37,7 +37,7 @@ module.exports = function(app, passport){
                         user.local.email = "placeholder@cs.hmc.edu";
                         user.save();
                     }
-                    
+
                     if (shouldBeGrader) {
                         Grader.findOne({
                             "user_id": user._id,
@@ -46,7 +46,7 @@ module.exports = function(app, passport){
                             if (grader) {
                                 return;
                             }
-                            
+
                             grader = new Grader();
                             grader.course_id = course._id;
                             grader.user_id = user._id;
@@ -63,7 +63,7 @@ module.exports = function(app, passport){
                             if (student) {
                                 return;
                             }
-                            
+
                             student = new Student();
                             student.course_id = course._id;
                             student.user_id = user._id;
@@ -76,20 +76,20 @@ module.exports = function(app, passport){
                 });
             });
         });
-        
+
         res.redirect("/prof/addStudent");
     });
 
 
     app.post("/removestudents/course/:course", function(req, res) {
         var coursename = req.params.course;
-        
+
         Course.findOne({
             "name": coursename
         }, function(err, course) {
             var students = req.body.students;
             var graders = req.body.grader;
-            
+
             students.forEach(function(student) {
                 if (student.toRemove) {
                     User.findOne({
@@ -100,10 +100,10 @@ module.exports = function(app, passport){
                             if (student._id === aStudent) {
                                 user.students.splice(index, 1);
                             }
-                            
+
                             index += 1;
                         });
-                        
+
                         Student.findOne({
                             "course_id": course._id,
                             "name": student.name
@@ -113,7 +113,7 @@ module.exports = function(app, passport){
                     });
                 }
             });
-            
+
             graders.forEach(function(grader) {
                 if (grader.toRemove) {
                     User.findOne({
@@ -124,10 +124,10 @@ module.exports = function(app, passport){
                             if (grader._id === aGrader) {
                                 user.graders.splice(index, 1);
                             }
-                            
+
                             index += 1;
                         });
-                        
+
                         Grader.findOne({
                             "course_id": course._id,
                             "name": grader.name
@@ -137,12 +137,12 @@ module.exports = function(app, passport){
                     });
                 }
             });
-            
+
         });
-        
+
         res.redirect("/prof/addStudent");
     });
-    
+
 
 
 
@@ -157,5 +157,4 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't, redirect them to the home page
     res.redirect('/');
-};
-
+}

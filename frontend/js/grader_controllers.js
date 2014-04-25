@@ -35,14 +35,14 @@
 
                 // Remove the current course and sort the rest for the dropdown
                 var altCourses = $scope.courses;
-                var index = altCourses.map(function(e) { return e['name']; }).indexOf($scope.course.name);
+                var index = altCourses.map(function(e) { return e.name; }).indexOf($scope.course.name);
                 if (index > -1) {
                     altCourses.splice(index, 1);
                 }
                 altCourses.sort(function(a,b) {
-                    if (a['name'] === b['name']) {
+                    if (a.name === b.name) {
                         return 0;
-                    } else if (a['name'] > b['name']) {
+                    } else if (a.name > b.name) {
                         return 1;
                     } else {
                         return -1;
@@ -130,7 +130,7 @@
         // TODO: I don't know why $location.url() is empty;
         var splitURL = $location.absUrl().split('/');
         var startIndex = splitUrl.indexOf("course");
-        
+
         // TODO: Handle errors (i.e. startIndex == -1)
         $scope.splitURL = splitURL;
         $scope.courseName     = splitURL[startIndex + 1];
@@ -169,7 +169,7 @@ function toggleRow(e) {
     // Convert to jquery object so methods will work
     var row = document.getElementById(e.id);
     toggleRowChildren($(row), 'fixedHeader');
-};
+}
 
 /**
  * Toggles all of the rows under a given header.
@@ -185,9 +185,9 @@ function toggleRowChildren(parentRowElement, parentClass) {
         }
     });
     parentRowElement.toggleClass('collapsed');
-};
+}
 
 function gradeUnsubmitted(e) {
     e.stopPropagation();
     var grade = parseInt(prompt("What grade would you like to give all unsubmitted assignments?",0));
-};
+}

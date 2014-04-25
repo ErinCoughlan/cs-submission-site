@@ -8,14 +8,14 @@ module.exports = function(app, passport){
     app.get("/admin/newCourse", function(req, res) {
         res.render("add_course");
     });
-    
+
     // Add a new course
     app.post("/addCourse", function(req, res) {
         coursename = req.body.course;
         username = req.body.professor;
         console.log("course name: " + coursename);
         console.log("professor name: " + username);
-        
+
         // Create the course
         Course.findOne({
             "name": coursename
@@ -24,11 +24,11 @@ module.exports = function(app, passport){
                 console.log("course already created");
                 return;
             }
-            
+
             course = new Course();
             course.name = courseName;
             course.save();
-            
+
             // Add the professor
             User.findOne({
                 "local.username": username
@@ -40,7 +40,7 @@ module.exports = function(app, passport){
                     user.local.email = "placeholder@cs.hmc.edu";
                     user.save();
                 }
-                
+
                 // Make the user a professor for the course
                 Professor.findOne({
                     "user_id": user._id,
@@ -50,7 +50,7 @@ module.exports = function(app, passport){
                         console.log("professor already added");
                         return;
                     }
-                    
+
                     professor = new Professor();
                     professor.course_id = course._id;
                     professor.user_id = user._id;
@@ -61,7 +61,7 @@ module.exports = function(app, passport){
                 });
             });
         });
-        
+
         res.redirect("/home");
     });
 
@@ -79,4 +79,4 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't, redirect them to the home page
     res.redirect('/');
-};
+}

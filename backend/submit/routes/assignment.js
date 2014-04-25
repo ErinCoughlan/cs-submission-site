@@ -9,7 +9,7 @@ module.exports = function(app, passport){
         var userid = req.session.passport.user;
         var coursename = req.params.course;
         var assignmentname = req.params.assignment;
-        
+
         Course.findOne({
             "name": coursename
         }, function(err, course) {
@@ -17,20 +17,20 @@ module.exports = function(app, passport){
                 res.send("Error getting course");
                 return;
             }
-            
+
             var assignment;
-            
+
             course.assignments.forEach(function(anAssignment) {
                 if (anAssignment.name === assignmentname) {
                     assignment = anAssignment;
                 }
             });
-            
+
             if (!assignment) {
                 console.log("No matching assignment found");
                 return;
             }
-            
+
             Student.findOne({
                 "course_id": course._id
             }, function(err, student) {
@@ -53,20 +53,20 @@ module.exports = function(app, passport){
                             "maxScore": template.maxScore
                         });
                     }
-                    
+
                     index += 1;
                 });
-                
+
                 console.log(combined_files);
-                
+
                 var data = {
                     "students": student,
                     "course": course,
                     "assignment": assignment,
                     "files": combined_files
                 };
-                
-                
+
+
                 res.json(data);
             });
         });
@@ -77,7 +77,7 @@ module.exports = function(app, passport){
         var userid = req.session.passport.user;
         var coursename = req.params.course;
         var assignmentname = req.params.assignment;
-        
+
         Course.findOne({
             "name": coursename
         }, function(err, course) {
@@ -85,22 +85,22 @@ module.exports = function(app, passport){
                 res.send("Error getting course");
                 return;
             }
-            
+
             var assignment;
-            
+
             course.assignments.forEach(function(anAssignment) {
                 if (anAssignment.name === assignmentname) {
                     assignment = anAssignment;
                 }
             });
-            
+
             if (!assignment) {
                 console.log("No matching assignment found");
                 return;
             }
-            
-            
-            
+
+
+
             Student.find({ "course_id": course._id}, function(err, students) {
                 var combined_files = [];
                 assignment.files.forEach(function(foo) {
@@ -110,13 +110,13 @@ module.exports = function(app, passport){
                     });
                 });
                 console.log(students);
-                
+
                 students.forEach(function(student) {
                     if (student.gradedFiles) {
                         return;
                     }
                     console.log("student:", student);
-                    
+
                     var index = 0;
                     assignment.files.forEach(function(template) {
                         var file = student.files[index];
@@ -138,29 +138,29 @@ module.exports = function(app, passport){
                                 "maxScore": template.maxScore
                             });
                         }
-                        
+
                         index += 1;
                     });
-                    
-                    
+
+
                 });
-                
+
                 console.log("Students: " + students);
-                
+
                 var data = {
                     "students": students,
                     "course": course,
                     "assignment": assignment,
                     "files": combined_files
                 };
-                
-                
+
+
                 res.json(data);
             });
         });
     });
-    
-    
+
+
 };
 
 function isLoggedIn(req, res, next) {
@@ -171,4 +171,4 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't, redirect them to the home page
     res.redirect('/');
-};
+}
