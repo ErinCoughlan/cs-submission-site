@@ -174,12 +174,11 @@
             return angular.isDefined(item) && (item !== null);
         };
 
+        // TODO: I don't know why $location.url() is empty;
         var splitURL = $location.absUrl().split('/');
-        var startIndex = 0;
-        while(splitURL[startIndex] != "course") {
-            startIndex++;
-        }
-
+        var startIndex = splitUrl.indexOf("course");
+        
+        // TODO: Handle errors (i.e. startIndex == -1)
         $scope.splitURL = splitURL;
         $scope.courseName     = splitURL[startIndex + 1];
         $scope.assignmentName = splitURL[startIndex + 3];
