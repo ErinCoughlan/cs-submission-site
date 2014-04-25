@@ -1,6 +1,8 @@
 var Course     = require('../models/course');
 var Assignment = require('../models/assignment');
 var Student    = require('../models/student');
+var Grader     = require('../models/grader');
+var Professor  = require('../models/professor');
 
 module.exports = function(app, passport){
     app.get('/cs5', isLoggedIn, function(req, res) {
