@@ -58,14 +58,24 @@ a.underline {
 	font-size: 20px;
 }
 
-.datetimepicker {
-	width: 225px;
-}
-
 .newAssignment td {
 	border-bottom: 2px solid #7d8ca9;
 }
 
 #addNew td {
 	border-bottom: none;
+}
+
+.editButtons {
+    display: none;
+    visibility: hidden;
+}
+
+.editButtons td {
+    border-top: 2px solid #7d8ca9;
+}
+
+.editable .editButtons {
+    display: table-row;
+    visibility: visible;
 }

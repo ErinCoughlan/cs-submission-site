@@ -24,7 +24,7 @@
                 <table ng-repeat="assignment in assignments" cellspacing="0" cellpadding="0">
                     <tr id="{{assignment.name | letters}}" class="fixedHeader">
                         <th colspan="2">
-                            <a class="underline">
+                            <a id="editAssignment-{{assignment.name}}" class="underline" onclick="makeEditable(this)">
                                 {{assignment.name}}
                             </a>
                         </th>
@@ -41,6 +41,12 @@
                         </td>
                         <td>
                             Partner: {{file.partnerable}}
+                        </td>
+                    </tr>
+                    <tr class="editButtons">
+                        <td colspan="3">
+                            <input type="submit" value="Save">
+                            <input type="submit" value="Delete Assignment">
                         </td>
                     </tr>
                 </table>

@@ -194,7 +194,7 @@
                 due: due,
                 files: files
             };
-            
+
             console.log("about to create new assignment");
             $.ajax({
                 type: "POST",
@@ -206,7 +206,7 @@
             });
 
             //addAssignment(assignment);
-            clearAssignment();
+            //clearAssignment();
          }
 
     });
@@ -292,4 +292,16 @@ function addAssignment(assignment) {
     var finalHtml = html + moreHtml + '</table>';
 
     $('#newAssignment').before(finalHtml);
+}
+
+/**
+ * Make an assignment editable. This means that we show input elements instead of
+ * the actual values. Possibly, we want to toggle between two views to help
+ * security.
+ */
+function makeEditable(e) {
+    // Convert to jquery object so methods will work
+    var row = document.getElementById(e.id);
+    var table = $(row).parents("table");
+    table.addClass("editable");
 }
