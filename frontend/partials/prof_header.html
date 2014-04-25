@@ -14,7 +14,7 @@
                 <img class="center-vert" src="/img/dropdown_arrow.png">
                 <ul class="dropdown-menu">
                     <li ng-repeat="altCourse in altCourses" class="submenu">
-                        <a ng-href="/course/{{altCourse.name}}">
+                        <a ng-href="/prof/course/{{altCourse.name}}">
                             {{altCourse.name}}
                         </a>
                     </li>
@@ -24,7 +24,7 @@
             <li class="lfoat dropdown">Manage
                 <img class="center-vert" src="/img/dropdown_arrow.png">
                 <ul class="dropdown-menu">
-                    <li class="submenu"><a ng-href="/prof/addStudent">Add/Remove Students</a></li>
+                    <li class="submenu"><a ng-href="/prof/course/{{course.name}}/addStudent">Add/Remove Students</a></li>
                     <li class="submenu"><a ng-href="/course/{{course.name}}/export">Gradebook</a></li>
                 </ul>
             </li>

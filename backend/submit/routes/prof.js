@@ -8,8 +8,12 @@ module.exports = function(app, passport){
     app.get("/prof", isLoggedIn, function(req, res) {
         res.render("prof");
     });
+
+    app.get("/prof/course/:course", isLoggedIn, function(req, res) {
+        res.render("prof");
+    });
     
-    app.get("/prof/addStudent", isLoggedIn, function(req, res) {
+    app.get("/prof/course/:course/addStudent", isLoggedIn, function(req, res) {
         res.render("add_student");
     });
     
@@ -77,7 +81,7 @@ module.exports = function(app, passport){
             });
         });
         
-        res.redirect("/prof/addStudent");
+        res.redirect("/prof/course/"+coursename+"/addStudent");
     });
 
 
@@ -140,7 +144,7 @@ module.exports = function(app, passport){
             
         });
         
-        res.redirect("/prof/addStudent");
+        res.redirect("/prof/course/"+coursename+"/addStudent");
     });
     
 

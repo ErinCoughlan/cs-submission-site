@@ -7,18 +7,32 @@
 
 (function(){
     "use strict";
+    var courseId;
 
     submissionApp.controller('ProfCtrl', function ($scope, $http, $route, $routeParams, $location) {
         this.$route = $route;
         this.$location = $location;
         this.$routeParams = $routeParams;
 
+        var splitUrl = $location.absUrl().split('/');
+        var indexCourse = splitUrl.indexOf("course");
+        if (indexCourse != -1) {
+            courseId = splitUrl[indexCourse+1];
+        }
+
         // get the list of all courses (eventually for the given user)
         $http.get('/courses').success(
             function (data) {
                 $scope.courses = data.courses;
-                $scope.course = $scope.courses[0];
-                $scope.courseid = $scope.courses[0].name;
+
+                if (courseId) {
+                    var index = $scope.courses.map(function(e) { return e['name']; }).indexOf(courseId);
+                    $scope.course = $scope.courses[index];
+                    $scope.courseid = $scope.courses[index].name;
+                } else {
+                    $scope.course = $scope.courses[0];
+                    $scope.courseid = $scope.courses[0].name;
+                }
 
                 // get the list of assignments
                 $http.get('/assignments/'+$scope.courseid).success(
@@ -96,7 +110,7 @@
                 contentType : "application/json",
                 success : function(m) {
                     console.log(m);
-                    window.location.href="/prof/addStudent";
+                    window.location.href="/prof/course/" + $scope.course.name + "/addStudent";
                 },
                 failure : function (m) {
                     console.log(m);
@@ -143,7 +157,7 @@
                 contentType : "application/json",
                 success : function(m) {
                     console.log(m);
-                    window.location.href="/prof/addStudent";
+                    window.location.href="/prof/course/" + $scope.course.name + "/addStudent";s
                 },
                 failure : function (m) {
                     console.log(m);
