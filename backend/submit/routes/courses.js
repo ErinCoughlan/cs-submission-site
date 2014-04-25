@@ -11,8 +11,8 @@ module.exports = function(app, passport){
         Course.find({}, function(err, courses) {
             var data = { "courses": courses};
             res.json(data);
-        }
-    }
+        });
+    });
     
     // Get course object
     app.get('/course/:course', isLoggedIn, function(req, res) {
