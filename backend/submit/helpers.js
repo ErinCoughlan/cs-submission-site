@@ -1,11 +1,12 @@
 var assignWName =  function assignmentWithName(name, assignments) {
-    assignments.forEach(function(assignment) {
-        if(name === assignment.name) {
-            return assignment;
+    var assignment
+    assignments.forEach(function(anAssignment) {
+        if(name === anAssignment.name) {
+            assignment = anAssignment;
         }
     });
 
-    return;
+    return assignment;
 };
 
 
@@ -14,14 +15,22 @@ var assignWName =  function assignmentWithName(name, assignments) {
 // assignmentName
 // TODO: There is probably a way around that issue that makes this less ugly.
 var fileInAssignWName = function fileInAssignmentWithName(assignments, assignmentName, files, fileName) {
+    var file;
     files.forEach(function(aFile) {
-        if(assignments[aFile.assignment].name === assignmentName &&
-           files[aFile.template].name === fileName) {
-            return file;
+        // If we're somehow past the end of the assignments array, bail before
+        // we crash.
+        if(assignments.length <= aFile.assignment) {
+          console.log("File assignment number " + aFile.assignment + " exceeds length of assignment array");
+          return;
+        }
+        assignment = assignments[aFile.assignment];
+        if(assignment.name === assignmentName &&
+          assignment.files[aFile.template].name === fileName) {
+              file = aFile;
         }
     });
 
-    return;
+    return file;
 };
 
 exports.assignmentWithName = assignWName;

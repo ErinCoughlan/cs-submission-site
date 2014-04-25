@@ -129,7 +129,7 @@
 
         // TODO: I don't know why $location.url() is empty;
         var splitURL = $location.absUrl().split('/');
-        var startIndex = splitUrl.indexOf("course");
+        var startIndex = splitURL.indexOf("course");
 
         // TODO: Handle errors (i.e. startIndex == -1)
         $scope.splitURL = splitURL;
@@ -155,6 +155,7 @@
                 $scope.file = data.file;
                 $scope.student = data.student;
                 $scope.grader = data.grader;
+                $scope.template = data.template;
             });
     });
 

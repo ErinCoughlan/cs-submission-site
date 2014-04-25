@@ -3,10 +3,12 @@
 var Course = require('../models/course');
 var Grader = require('../models/grader');
 var Assignment = require('../models/assignment');
+var Submission = require('../models/submission');
 var Student = require('../models/student');
 var FileTemplate = require('../models/fileTemplate');
 var File = require('../models/student');
 var Helpers = require('../helpers');
+
 
 // TODO: All these functions should make sure the current user is a grutor
 module.exports = function(app, passport) {
@@ -51,6 +53,13 @@ module.exports = function(app, passport) {
                                              );
 
                                              // TODO: actually save the grade
+
+                                             file.gradedBy       = grader._id;
+                                             file.gradedByName   = grader.name;
+                                             file.grade          = req.body.score;
+                                             file.graderComments = req.body.graderComment;
+                                             file.save();
+                                             res.redirect('/home');
                                          });
                         });
         });
@@ -62,11 +71,10 @@ module.exports = function(app, passport) {
     app.get("/course/:course/assignment/:assignment/student/:student/file/:file/grade/info/", isLoggedIn, function(req, res) {
         var graderUser     = req.session.passport.user;
         var courseName     = req.params.course;
-        var assignmentName = req.params.assignments;
+        var assignmentName = req.params.assignment;
         var studentName    = req.params.student;
         var fileName       = req.params.file;
 
-        console.log(req.params);
         // Hit the database for all the things we need to save this. Cry inside.
         Course.findOne({"name": courseName}, function(err, course) {
             if (err) {
@@ -87,7 +95,7 @@ module.exports = function(app, passport) {
                                                 var file = Helpers.fileInAssignmentWithName(
                                                     assignments,
                                                     assignmentName,
-                                                    files,
+                                                    student.files,
                                                     fileName
                                                 );
 
@@ -97,6 +105,7 @@ module.exports = function(app, passport) {
                                                 }
 
                                                 data = {
+                                                    "template": assignment.files[file.template],
                                                     "file": file,
                                                     "student": student,
                                                     "course": course,
@@ -111,7 +120,7 @@ module.exports = function(app, passport) {
 
 
     // TODO validate that it's a grutor for the class
-    app.get("/course/:course/assignment/:assignment/student/:student/file/:file/grade/", isLoggedIn, function(req, res) {
+    app.get("/course/:course/assignment/:assignment/student/:student/file/:file/grade", isLoggedIn, function(req, res) {
         res.render("grade", {
           'course': req.params.course,
           'assignment': req.params.assignment,

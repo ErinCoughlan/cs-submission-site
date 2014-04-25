@@ -31,6 +31,8 @@ module.exports = function(app, passport){
                 return;
             }
 
+
+
             Student.findOne({
                 "course_id": course._id
             }, function(err, student) {
