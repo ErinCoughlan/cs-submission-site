@@ -6,6 +6,13 @@ module.exports = function(app, passport){
     app.get('/cs5', isLoggedIn, function(req, res) {
         res.render('student');
     });
+
+    app.get('/courses', isLoggedIn, function(req, res) {
+        Course.find({}, function(err, courses) {
+            var data = { "courses": courses};
+            res.json(data);
+        }
+    }
     
     // Get course object
     app.get('/course/:course', isLoggedIn, function(req, res) {
