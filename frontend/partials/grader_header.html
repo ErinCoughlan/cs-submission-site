@@ -2,22 +2,22 @@
     <div id="navbar">
         <ul>
             <li class="lfloat disabled">
-                <a ng-href="/prof">
+                <a ng-href="/home">
                     <div id="title">HMC CS
                         <img class="alien" src="/img/alien.png">
                     </div>
                 </a>
             </li>
-             <!-- Disabled only if one course; otherwise show as dropdown -->
+            <!-- Disabled only if one course; otherwise show as dropdown -->
             <li ng-cloak ng-show="!altCourses.length>0" class="lfloat disabled">
-                <a ng-href="/prof/course/{{course.name}}">{{course.name}}<a>
+                <a ng-href="/grader/course/{{course.name}}">{{course.name}}</a>
             </li>
             <li ng-cloak ng-show="altCourses.length>0" class="lfloat dropdown">
-                <a ng-href="/prof/course/{{course.name}}">{{course.name}}<a>
+                <a ng-href="/grader/course/{{course.name}}">{{course.name}}</a>
                 <img class="center-vert" src="/img/dropdown_arrow.png">
                 <ul class="dropdown-menu">
                     <div ng-repeat="altCourse in altCourses">
-                        <a ng-href="/prof/course/{{altCourse.name}}">
+                        <a ng-href="/grader/course/{{altCourse.name}}">
                             <li class="submenu">
                                 {{altCourse.name}}
                             </li>
@@ -25,15 +25,7 @@
                     </div>
                 </ul>
             </li>
-            <li class="lfloat"><a ng-href="/grader/course/{{course.name}}">Grade</a></li>
-            <li class="lfoat dropdown">Manage
-                <img class="center-vert" src="/img/dropdown_arrow.png">
-                <ul class="dropdown-menu">
-                    <li class="submenu"><a ng-href="/prof/course/{{course.name}}/addStudent">Add/Remove Students</a></li>
-                    <li class="submenu"><a ng-href="/course/{{course.name}}/export">Gradebook</a></li>
-                </ul>
-            </li>
-
+            
             <li class="rfloat"><a ng-href="/logout">logout</a></li>
             <li class="rfloat"><a ng-href="/settings">settings<a></li>
         </ul>

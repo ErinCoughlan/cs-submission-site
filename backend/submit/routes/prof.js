@@ -1,6 +1,8 @@
 var Course     = require('../models/course');
 var Assignment = require('../models/assignment');
+var FileTemplate = require('../models/fileTemplate');
 var Student    = require('../models/student');
+var Grader     = require('../models/grader');
 var User       = require('../models/user');
 var Professor  = require('../models/professor');
 
@@ -9,7 +11,11 @@ module.exports = function(app, passport){
         res.render("prof");
     });
 
-    app.get("/prof/addStudent", isLoggedIn, function(req, res) {
+    app.get("/prof/course/:course", isLoggedIn, function(req, res) {
+        res.render("prof");
+    });
+    
+    app.get("/prof/course/:course/addStudent", isLoggedIn, function(req, res) {
         res.render("add_student");
     });
 
@@ -76,8 +82,7 @@ module.exports = function(app, passport){
                 });
             });
         });
-
-        res.redirect("/prof/addStudent");
+        res.redirect("/prof/course/"+coursename+"/addStudent");
     });
 
 
@@ -139,12 +144,46 @@ module.exports = function(app, passport){
             });
 
         });
-
-        res.redirect("/prof/addStudent");
+        res.redirect("/prof/course/"+coursename+"/addStudent");
     });
 
+    app.post("/course/:course/addAssignment", function(req, res) {
+        var coursename = req.params.course;
+        var name = req.body.name;
+        var due = req.body.due;
+        var files = req.body.files;
+        console.log(files);
 
+        var totalPoints = 0;
 
+        Course.findOne({
+            "name": coursename
+        }, function(err, course) {
+            var templates = [];
+            for (var i = 0; i < files.length; i++) {
+                var f = files[i];
+                fileTemplate = new FileTemplate();
+                fileTemplate.name = f.name;
+                fileTemplate.maxScore = Number(f.maxPoints);
+                fileTemplate.partnerable = f.partnerable;
+                fileTemplate.save();
+
+                totalPoints += Number(f.maxPoints);
+                templates.push(fileTemplate);
+            }
+
+            assignment = new Assignment();
+            assignment.name = name;
+            assignment.due = Date(due);
+            assignment.point = Number(totalPoints);
+            assignment.files = templates;
+            assignment.save();
+
+            course.assignments.push(assignment);
+            course.save();
+        });
+        res.redirect("/prof/course/"+coursename);
+    });
 
 };
 
