@@ -766,11 +766,11 @@ app.post("/addCourse", function(req, res) {
     res.redirect("/cs5");
 });
 
-
-app.post("/addstudents", function(req, res) {
-    //TOOD un-hardcode
+app.post("/addstudents/course/:course", function(req, res) {
+    var coursename = req.params.course;
+    
     Course.findOne({
-        "name": "CS5"
+        "name": coursename
     }, function(err, course) {
         var studentsText = req.body.students;
         var shouldBeGrader = req.body.grader;
@@ -832,10 +832,12 @@ app.post("/addstudents", function(req, res) {
     res.redirect("/prof/addStudent");
 });
 
-app.post("/removestudents", function(req, res) {
-    //TOOD un-hardcode
+
+app.post("/removestudents/course/:course", function(req, res) {
+    var coursename = req.params.course;
+
     Course.findOne({
-        "name": "CS5"
+        "name": coursename
     }, function(err, course) {
         var students = req.body.students;
         var graders = req.body.grader;

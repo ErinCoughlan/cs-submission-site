@@ -30,12 +30,30 @@
 
         $http.get('/students/'+submissionApp.courseid).success(
           function (data) {
+            data.students.sort(function(a,b) {
+                if (a['name'] === b['name']) {
+                    return 0;
+                } else if (a['name'] > b['name']) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            });
             $scope.students = data.students;
           }
         );
 
         $http.get('/graders/'+submissionApp.courseid).success(
           function (data) {
+            data.graders.sort(function(a,b) {
+                if (a['name'] === b['name']) {
+                    return 0;
+                } else if (a['name'] > b['name']) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            });
             $scope.graders = data.graders;
           }
         );
@@ -52,7 +70,7 @@
 
 
             $.ajax({
-                url : "/addStudents",
+                url : "/addStudents/course/" + $scope.course.name,
                 data : dataStr,
                 type : "POST",
                 contentType : "application/json",
@@ -99,7 +117,7 @@
 
 
             $.ajax({
-                url : "/removeStudents",
+                url : "/removeStudents/course/" + $scope.course.name,
                 data : dataStr,
                 type : "POST",
                 contentType : "application/json",
