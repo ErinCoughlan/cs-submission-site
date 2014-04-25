@@ -5,7 +5,7 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 
 var graderSchema = mongoose.Schema({
     name: String,
-    user_id: ,
+    user_id: ObjectId,
     course_id: ObjectId,
     gradedFiles: [ ObjectId ]
 }, {collection: 'graders'});
