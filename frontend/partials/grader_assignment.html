@@ -11,7 +11,7 @@
                 {{file.name}}
             </th>
             <th>
-                <input type="button" id="gradeUnsubmitted_{{file.name}}" value="Grade Unsubmitted" onclick="gradeUnsubmitted(event)">
+                <input type="button" class="gradeButton" id="gradeUnsubmitted_{{file.name}}" value="Grade Unsubmitted" onclick="gradeUnsubmitted(event)">
             </th>
         </tr>
         <tr ng-repeat="student in file.studentSubmissions" class="{{file.name | letters}}">
@@ -21,11 +21,11 @@
             <td class="lastCol">
                 <div ng-if="!isDefined(student.grade)">
                     <a ng-href="/grade">
-                        <input type="button" id="grade_{{file.name}}_{{student.student}}" value="Grade Problem">
+                        <input class="gradeButton" type="button" id="grade_{{file.name}}_{{student.student}}" value="Grade Problem">
                     </a>
                 </div>
                 <div ng-if="isDefined(student.grade)">
-                    <input type="button" id="grade_{{file.name}}_{{student.student}}" value="Graded by {{student.gradedBy}}" onclick="window.location='/grade'">
+                    <input class="gradeButton" type="button" id="grade_{{file.name}}_{{student.student}}" value="Graded by {{student.gradedBy}}" onclick="window.location='/grade'">
                 </div>
             </td>
         </tr>

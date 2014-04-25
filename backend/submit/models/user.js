@@ -17,8 +17,11 @@ var userSchema = mongoose.Schema({
     // Keep refs to this user's instances as a student and a grader
     students: [ ObjectId ],
     
-    graders: [ ObjectId ]
+    graders: [ ObjectId ], 
+
+    professors: [ ObjectId ]
 });
+
 
 
 // methods ======================

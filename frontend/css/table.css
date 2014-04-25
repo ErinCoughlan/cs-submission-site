@@ -48,3 +48,8 @@
 #rightCol .fixedHeader th {
 	text-align: center;
 }
+
+#rightCol .gradeButton {
+	height: 50px;
+	width: 200px;
+}
