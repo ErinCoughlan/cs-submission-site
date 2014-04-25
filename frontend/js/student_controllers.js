@@ -7,30 +7,44 @@
 
 (function(){
     "use strict";
+    var courseId;
 
     submissionApp.controller('StudentCtrl', function ($scope, $http, $route, $routeParams, $location) {
         this.$route = $route;
         this.$location = $location;
         this.$routeParams = $routeParams;
 
+        var splitUrl = $location.absUrl().split('/');
+        var indexCourse = splitUrl.indexOf("course");
+        if (indexCourse != -1) {
+            courseId = splitUrl[indexCourse+1];
+        }
+
+
         // get the list of all courses (eventually for the given user)
         $http.get('/courses').success(
             function (data) {
                 $scope.courses = data.courses;
-                $scope.course = $scope.courses[0];
-                $scope.courseid = $scope.courses[0].name;
+
+                if (courseId) {
+                    var index = $scope.courses.map(function(e) { return e['name']; }).indexOf(courseId);
+                    $scope.course = $scope.courses[index];
+                    $scope.courseid = $scope.courses[index].name;
+                } else {
+                    $scope.course = $scope.courses[0];
+                    $scope.courseid = $scope.courses[0].name;
+                }
 
                 // get the list of assignments
                 $http.get('/assignments/'+$scope.courseid).success(
                     function (data) {
-                        //$scope.course = data.course;
                         $scope.assignments = data.assignments;
                     }
                 );
 
                 // Remove the current course and sort the rest for the dropdown
                 var altCourses = $scope.courses;
-                var index = altCourses.map(function(e) { return e['name']; }).indexOf($scope.course.name);
+                var index = altCourses.map(function(e) { return e['name']; }).indexOf($scope.courseid);
                 if (index > -1) {
                     altCourses.splice(index, 1);
                 }
