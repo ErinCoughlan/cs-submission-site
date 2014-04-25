@@ -17,16 +17,16 @@
       <ng-include src=" '/partials/header.html' "></ng-include>
       <div id="contentArea">
         <div class="center box">
-          <form id="email-form" class="settings">
+          <form id="email-form" class="settings" action="/changemail" method="post">
             <label for="email">New email:</label><br>
             <input id="email" type="text" name="email"><br>
-            <input type="button" value="Change email" ng-click="changeEmail(event)">
+            <button type="submit">Change email</button>
           </form>
 
-          <form id="password-form" class="settings">
+          <form id="password-form" class="settings" action="/changepw" method="post">
             <label for="password">New password:</label><br>
             <input id="password" type="password" name="password"><br>
-            <input type="button" value="Change password" ng-click="changePassword(event)">
+            <button type="submit">Change password</button>
           </form>
         </div>
       </div>

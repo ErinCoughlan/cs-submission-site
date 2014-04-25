@@ -66,53 +66,6 @@
                 return false;
             }
         };
-
-
-        $scope.changeEmail = function changeEmail($event) {
-            var form = document.getElementById("email-form");
-            var fd = new FormData(form);
-
-            var emailAddr = document.getElementById('email').value;
-
-            var dataStr = JSON.stringify({ email : emailAddr });
-
-            $.ajax({
-                url : "/changemail",
-                data : dataStr,
-                type : "POST",
-                contentType : "application/json",
-                success : function(m) {
-                    console.log(m);
-                    window.location.href="/cs5";
-                },
-                failure : function (m) {
-                    console.log(m);
-                }
-            });
-        };
-
-        $scope.changePassword = function changePassword($event) {
-            var form = document.getElementById("password-form");
-            var fd = new FormData(form);
-
-            var pw = document.getElementById('password').value;
-
-            var dataStr = JSON.stringify({ password : pw });
-
-            $.ajax({
-                url : "/changepw",
-                data : dataStr,
-                type : "POST",
-                contentType: "application/json",
-                success: function(m){
-                    console.log(m);
-                    window.location.href="/cs5";
-                },
-                failure: function(m){
-                    console.log(m);
-                }
-            });
-        };
     });
 
     submissionApp.controller('GraderAssignmentCtrl', function ($scope, $http, $routeParams) {

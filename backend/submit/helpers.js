@@ -1,4 +1,4 @@
-module.export(function(app) {
+module.exports = function() {
     function assignmentWithName(name, assignments) {
         assignments.forEach(function(assignment) {
             if(name === assignment.name) {
@@ -16,7 +16,7 @@ module.export(function(app) {
     // TODO: There is probably a way around that issue that makes this less ugly.
     function fileInAssignmentWithName(assignments, assignmentName, files, fileName) {
         files.foreEach(function(aFile) {
-            if(assignments[aFile.assignment].name= == assignmentName &&
+            if(assignments[aFile.assignment].name === assignmentName &&
                files[aFile.template].name === fileName) {
                 return file;
             };
