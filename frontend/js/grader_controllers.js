@@ -116,28 +116,41 @@
         );
     });
 
-    submissionApp.controller('GradePageCtrl', function ($scope, $http, $routeParams) {
+    submissionApp.controller('GradePageCtrl', function ($scope, $http, $routeParams, $location) {
         $scope.isDefined = function (item){
             return angular.isDefined(item) && (item !== null);
         };
 
-        //TODO make this work so it can be uncommented.
+        var splitURL = $location.absUrl().split('/');
+        var startIndex = 0;
+        while(splitURL[startIndex] != "course") {
+            startIndex++;
+        }
 
-        /*
+        $scope.splitURL = splitURL;
+        $scope.courseName     = splitURL[startIndex + 1];
+        $scope.assignmentName = splitURL[startIndex + 3];
+        $scope.studentName    = splitURL[startIndex + 5];
+        $scope.fileName       = splitURL[startIndex + 7];
         $scope.courseid = submissionApp.courseid;
-        $scope.assignment = JSON.stringify(assignment);
-        $scope.student = JSON.stringify(student);
-        $scope.urlfile = JSON.stringify(file);
 
         this.params = $routeParams;
 
-        $http.get('/course/' + submissionApp.courseid + '/assignment/' + assignment  + '/student/' + student  + '/file/' + file  + '/grade/info/').success(
+        var infoURL = "/course/" + $scope.courseName;
+        infoURL += "/assignment/" + $scope.assignmentName;
+        infoURL += "/student/" + $scope.studentName;
+        infoURL += "/file/" + $scope.fileName;
+        infoURL += "/grade/info/";
+
+        this.params = $routeParams;
+        $scope.infoURL = infoURL;
+        $http.get(infoURL).success(
             function (data) {
                 $scope.course = data.course;
                 $scope.file = data.file;
                 $scope.student = data.student;
                 $scope.grader = data.grader;
-            });*/
+            });
     });
 
 
