@@ -72,7 +72,7 @@
                 contentType : "application/json",
                 success : function(m) {
                     console.log(m);
-                    window.location.href="/cs5";
+                    window.location.href="/home";
                 },
                 failure : function (m) {
                     console.log(m);
@@ -95,7 +95,7 @@
                 contentType: "application/json",
                 success: function(m){
                     console.log(m);
-                    window.location.href="/cs5";
+                    window.location.href="/home";
                 },
                 failure: function(m){
                     console.log(m);

@@ -14,7 +14,7 @@
                 <img class="center-vert" src="/img/dropdown_arrow.png">
                 <ul class="dropdown-menu">
                     <li ng-repeat="altCourse in altCourses" class="submenu">
-                        <a ng-href="/home">
+                        <a ng-href="/course/{{altCourse.name}}">
                             {{altCourse.name}}
                         </a>
                     </li>
