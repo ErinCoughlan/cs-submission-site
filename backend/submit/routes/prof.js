@@ -1,6 +1,7 @@
 var Course     = require('../models/course');
 var Assignment = require('../models/assignment');
 var Student    = require('../models/student');
+var Grader     = require('../models/grader');
 var User       = require('../models/user');
 var Professor  = require('../models/professor');
 
