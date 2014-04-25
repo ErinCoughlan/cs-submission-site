@@ -15,6 +15,6 @@ var assignmentSchema = mongoose.Schema({
     euros: Number,
     point: Number,
     files: [ fileTemplate.fileTemplateSchema ]
-}, {collection: 'submit'});
+});
 // create the model expose it to our app
 module.exports = mongoose.model('Assignment', assignmentSchema);

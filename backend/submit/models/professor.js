@@ -8,7 +8,7 @@ var professorSchema = mongoose.Schema({
     user_id: ObjectId,
     course_id: ObjectId,
     gradedFiles: [ ObjectId ]
-}, {collection: 'submit'});
+}, {collection: 'profs'});
 
 
 // create the model expose it to our app

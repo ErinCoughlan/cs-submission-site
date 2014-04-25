@@ -9,7 +9,7 @@ var fileTemplateSchema = mongoose.Schema({
     maxScore: Number,
     partnerable: Boolean,
     numGraded: Number
-}, {collection: 'submit'});
+});
 
 
 // create the model expose it to our app

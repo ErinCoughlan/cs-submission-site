@@ -9,7 +9,7 @@ var studentSchema = mongoose.Schema({
     course_id: ObjectId,
     files: [ File.fileSchema ],
     name: String
-}, {collection: 'submit'});
+}, {collection: 'students'});
 
 
 // create the model expose it to our app
