@@ -222,7 +222,6 @@ module.exports = function(app, passport){
                 index += 1;
             });
         });
-        res.redirect("/prof/course/"+coursename);
     })
 
 };

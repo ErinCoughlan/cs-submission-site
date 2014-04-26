@@ -228,6 +228,18 @@
                 }
             });
          }
+
+         /**
+         * Save an assignment.
+         * This function will run for every editable item, even though we
+         * submit everything here.
+         */
+         $scope.saveAssignment = function saveAssignment(aName) {
+            // Create the assignment object
+            var assignment = {
+                name: aName
+            };
+         }
     });
 
 })();
@@ -269,7 +281,7 @@ function addFile(e) {
  */
 function makeEditable(e) {
     var table = $(e).parents("table");
-    table.addClass("editable");
+    table.toggleClass("editable");
     $('.editable .edit').trigger("edit");
 };
 
@@ -280,7 +292,7 @@ function makeEditable(e) {
  * to refresh the page.
  */
 function saveAssignment(e) {
-    var table = $(e).parents("table");
-    table.removeClass("editable");
     $('.edit :submit').click();
+    //var table = $(e).parents("table");
+    //table.removeClass("editable");
 };

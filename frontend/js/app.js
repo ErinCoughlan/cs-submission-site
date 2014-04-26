@@ -63,8 +63,11 @@ var submissionApp = angular.module('submissionApp', ['ngRoute', 'submissionFilte
                  * we hide the button on each element and instead group them
                  * and manually call submit.
                  */
-                element.editable("javascript:void(0)", {
-                    event     : "edit",
+                element.editable(function(value, settings) {
+                    scope.saveAssignment(scope.assignment.name);
+                    return value;
+                }, {
+                    event     : "click",
                     style     : 'display: inline',
                     onblur    : 'ignore',
                     submit    : 'invisible'
