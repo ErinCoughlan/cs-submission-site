@@ -176,10 +176,33 @@ module.exports = function(app, passport){
             assignment.due = new Date(due);
             assignment.point = Number(totalPoints);
             assignment.files = templates;
-            assignment.save();
 
             course.assignments.push(assignment);
             course.save();
+        });
+        res.redirect("/prof/course/"+coursename);
+    });
+
+    app.post("/course/:course/deleteAssignment", function(req, res) {
+        var coursename = req.params.course;
+        var aName = req.body.name;
+        console.log(aName);
+
+        Course.findOne({
+            "name": coursename
+        }, function(err, course) {
+            // Remove the assignment from the course
+            var index = 0;
+            course.assignments.forEach(function(assignment) {
+                console.log(assignment.name);
+                if (assignment.name === aName) {
+                    console.log("match found: " + assignment._id);
+                    course.assignments.splice(index, 1);
+                    course.save();
+                }
+
+                index += 1;
+            });
         });
         res.redirect("/prof/course/"+coursename);
     });

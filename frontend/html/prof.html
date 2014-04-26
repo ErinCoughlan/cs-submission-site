@@ -46,7 +46,7 @@
                     <tr class="editButtons">
                         <td colspan="3">
                             <input type="submit" value="Save" onclick="saveAssignment(this)">
-                            <input type="submit" value="Delete Assignment">
+                            <input type="submit" value="Delete Assignment" ng-click="deleteAssignment(assignment.name)">
                         </td>
                     </tr>
                 </table>
@@ -77,7 +77,7 @@
                     </tr>
                     <tr id="addNew">
                         <td colspan="3">
-                            <input type="button" value="Add Another File" name="addFile" onClick="addFile(event)">
+                            <input type="button" value="Add Another File" name="addFile" onClick="addFile(this)">
                         </td>
                     </tr>
                 </table>

@@ -209,6 +209,25 @@
             });
          }
 
+         /**
+         * Create a new assignment
+         */
+         $scope.deleteAssignment = function deleteAssignment(aName) {
+            // Create the assignment object
+            var assignment = {
+                name: aName
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/course/"+courseId+"/deleteAssignment",
+                data: assignment,
+                success: function(data) {
+                    location.reload();
+                }
+            });
+         }
+
     });
 
 })();
@@ -218,7 +237,7 @@
  * Adds a row to the table so that another file can be added
  */
 function addFile(e) {
-    var table = $(e.target).parents('table');
+    var table = $(e).parents('table');
     console.log(table);
 
     var index = $('#addNew').index() - 1;
