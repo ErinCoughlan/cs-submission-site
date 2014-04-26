@@ -1,4 +1,4 @@
-a.underline {
+.underline {
 	text-decoration: underline;
 }
 
@@ -78,4 +78,14 @@ a.underline {
 .editable .editButtons {
     display: table-row;
     visibility: visible;
+}
+
+.edit {
+    display: inline;
+}
+
+/** We don't want to see the jEditable submit button, but it needs to exist */
+.edit button {
+    display: none;
+    visibility: hidden;
 }

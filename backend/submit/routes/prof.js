@@ -186,7 +186,6 @@ module.exports = function(app, passport){
     app.post("/course/:course/deleteAssignment", function(req, res) {
         var coursename = req.params.course;
         var aName = req.body.name;
-        console.log(aName);
 
         Course.findOne({
             "name": coursename
@@ -194,9 +193,7 @@ module.exports = function(app, passport){
             // Remove the assignment from the course
             var index = 0;
             course.assignments.forEach(function(assignment) {
-                console.log(assignment.name);
                 if (assignment.name === aName) {
-                    console.log("match found: " + assignment._id);
                     course.assignments.splice(index, 1);
                     course.save();
                 }
@@ -206,6 +203,27 @@ module.exports = function(app, passport){
         });
         res.redirect("/prof/course/"+coursename);
     });
+
+    app.post("/course/:course/saveAssignment", function(req, res) {
+        var coursename = req.params.course;
+        var aName = req.body.name;
+
+        Course.findOne({
+            "name": coursename
+        }, function(err, course) {
+            // Find the correct assignment so we can modify it
+            var index = 0;
+            course.assignments.forEach(function(assignment) {
+                if (assignment.name === aName) {
+                    // Any changes go here
+                    course.save();
+                }
+
+                index += 1;
+            });
+        });
+        res.redirect("/prof/course/"+coursename);
+    })
 
 };
 

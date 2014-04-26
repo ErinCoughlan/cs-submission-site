@@ -10,6 +10,7 @@
         <link rel="stylesheet" type="text/css" href="/css/prof.css">
         <link rel="stylesheet" type="text/css" href="/css/form.css">
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js"></script>
+        <script src="http://www.appelsiini.net/download/jquery.jeditable.mini.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-route.js"></script>
         <script src="/js/app.js"></script>
@@ -20,27 +21,27 @@
         <ng-include src=" '/partials/prof_header.html' "></ng-include>
         <div id="contentArea">
             <div id="profMain">
-                <div class="title">Click an assignment name to edit.</div>
+                <div class="edit title">Click an assignment name to edit.</div>
                 <table ng-repeat="assignment in assignments" cellspacing="0" cellpadding="0">
                     <tr id="{{assignment.name | letters}}" class="fixedHeader">
                         <th colspan="2">
-                            <a id="editAssignment-{{assignment.name}}" class="underline" onclick="makeEditable(this)">
-                                {{assignment.name}}
+                            <a class="underline" onclick="makeEditable(this)">
+                                <div class="edit" ui-editable="assignment.name">{{assignment.name}}</div>
                             </a>
                         </th>
                         <th class="alignRight">
-                            Due: {{assignment.due | date : 'MMM d, yyyy h:mm a'}}
+                            Due: <div class="edit" ui-editable="assignment.due">{{assignment.due | date : 'MMM d, yyyy h:mm a'}}</div>
                         </th>
                     </tr>
                     <tr ng-repeat="file in assignment.files">
                         <td>
-                            {{file.name}}
+                            <div class="edit" ui-editable="file.name">{{file.name}}</div>
                         </td>
                         <td>
-                            Points: {{file.maxScore}}
+                            Points: <div class="edit" ui-editable="file.maxScore">{{file.maxScore}}</div>
                         </td>
                         <td>
-                            Partner: {{file.partnerable}}
+                            Partner: <div class="edit" ui-editable="file.partnerable">{{file.partnerable}}</div>
                         </td>
                     </tr>
                     <tr class="editButtons">

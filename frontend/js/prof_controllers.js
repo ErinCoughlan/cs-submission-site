@@ -167,6 +167,7 @@
 
         /**
          * Create a new assignment
+         * TODO: The date object does not contain time zone information
          */
          $scope.createAssignment = function createAssignment() {
             var aName = $("input[name='assignmentName'").val();
@@ -209,8 +210,8 @@
             });
          }
 
-         /**
-         * Create a new assignment
+        /**
+         * Delete an assignment
          */
          $scope.deleteAssignment = function deleteAssignment(aName) {
             // Create the assignment object
@@ -227,14 +228,14 @@
                 }
             });
          }
-
     });
 
 })();
 
 
 /**
- * Adds a row to the table so that another file can be added
+ * Adds a row to the table so that another file can be added.
+ * TODO: Use a template for html for security
  */
 function addFile(e) {
     var table = $(e).parents('table');
@@ -259,18 +260,18 @@ function addFile(e) {
                 '</tr>';
 
     $('#addNew').before(html);
-}
+};
 
 
 /**
  * Make an assignment editable. This means that we show input elements instead of
- * the actual values. Possibly, we want to toggle between two views to help
- * security.
+ * the actual values.
  */
 function makeEditable(e) {
     var table = $(e).parents("table");
     table.addClass("editable");
-}
+    $('.editable .edit').trigger("edit");
+};
 
 
 /**
@@ -281,4 +282,5 @@ function makeEditable(e) {
 function saveAssignment(e) {
     var table = $(e).parents("table");
     table.removeClass("editable");
-}
+    $('.edit :submit').click();
+};
