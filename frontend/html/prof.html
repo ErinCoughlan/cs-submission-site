@@ -29,7 +29,7 @@
                             </a>
                         </th>
                         <th class="alignRight">
-                            Due: {{assignment.due}}
+                            Due: {{assignment.due | date : 'MMM d, yyyy h:mm a'}}
                         </th>
                     </tr>
                     <tr ng-repeat="file in assignment.files">

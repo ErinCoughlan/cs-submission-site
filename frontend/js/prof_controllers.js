@@ -173,6 +173,12 @@
             var due = $("input[name='dueDate'").val();
             var files = [];
 
+            var dueWithTimezone = new Date(due).toString();
+            console.log(dueWithTimezone);
+            console.log(new Date(due).toString());
+            console.log(new Date(due).toUTCString());
+            console.log(new Date(due).toISOString());
+
             var rows = $(".file");
             for (var i = 0; i < rows.length; i++) {
                 var filename = $("input[name='filename-"+i+"']").val();
@@ -189,11 +195,10 @@
             // Create the assignment object
             var assignment = {
                 name: aName,
-                due: due,
+                due: dueWithTimezone,
                 files: files
             };
 
-            console.log("about to create new assignment");
             $.ajax({
                 type: "POST",
                 url: "/course/"+courseId+"/addAssignment",

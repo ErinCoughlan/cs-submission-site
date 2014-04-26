@@ -173,7 +173,7 @@ module.exports = function(app, passport){
 
             assignment = new Assignment();
             assignment.name = name;
-            assignment.due = due;
+            assignment.due = new Date(due);
             assignment.point = Number(totalPoints);
             assignment.files = templates;
             assignment.save();
