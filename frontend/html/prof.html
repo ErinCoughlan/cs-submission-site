@@ -26,11 +26,12 @@
                     <tr id="{{assignment.name | letters}}" class="fixedHeader">
                         <th colspan="2">
                             <a class="underline" onclick="makeEditable(this)">
-                                {{assignment.name}}
+                                <div style="display: inline;">{{assignment.name}}</div>
                             </a>
                         </th>
                         <th class="alignRight">
-                            Due: <div class="edit" ui-editable="assignment.due">{{assignment.due | date : 'MMM d, yyyy h:mm a'}}</div>
+                            <div style="display: inline;">Due: </div>
+                            <div class="edit" ui-editable="assignment.due">{{assignment.due | date : 'MMM d, yyyy h:mm a'}}</div>
                         </th>
                     </tr>
                     <tr ng-repeat="file in assignment.files">
@@ -38,10 +39,12 @@
                             <div class="edit" ui-editable="file.name">{{file.name}}</div>
                         </td>
                         <td>
-                            Points: <div class="edit" ui-editable="file.maxScore">{{file.maxScore}}</div>
+                            <div style="display: inline;">Points: </div>
+                            <div class="edit" ui-editable="file.maxScore">{{file.maxScore}}</div>
                         </td>
                         <td>
-                            Partner: <div class="edit" ui-editable="file.partnerable">{{file.partnerable}}</div>
+                            <div style="display: inline;">Partner: </div>
+                            <div class="edit" ui-editable="file.partnerable">{{file.partnerable | yesNo}}</div>
                         </td>
                     </tr>
                     <tr class="editButtons">
@@ -59,7 +62,8 @@
                             <input type="text" required="required" name="assignmentName" placeholder="Assignment Name">
                         </th>
                         <th class="alignRight">
-                            Due: <input type="datetime-local" required="required" name="dueDate">
+                            <div style="display: inline;">Due: </div>
+                            <input type="datetime-local" required="required" name="dueDate">
                         </th>
                     </tr>
                     <tr class="file">
@@ -67,11 +71,11 @@
                             <input type="text" required="required" name="filename-0" placeholder="File Name">
                         </td>
                         <td>
-                            Points:
+                            <div style="display: inline;">Points: </div>
                             <input type="number" required="required" class="score" name="maxPoints-0">
                         </td>
                         <td>
-                            Partner:
+                            <div style="display: inline;">Partner: </div>
                             <input type="radio" required="required" name="partnerable-0" value="true">Yes
                             <input type="radio" required="required" name="partnerable-0" checked="true" value="false">No
                         </td>
