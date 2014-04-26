@@ -281,7 +281,7 @@ function addFile(e) {
  */
 function makeEditable(e) {
     var table = $(e).parents("table");
-    table.toggleClass("editable");
+    table.addClass("editable");
     $('.editable .edit').trigger("edit");
 };
 
@@ -293,6 +293,6 @@ function makeEditable(e) {
  */
 function saveAssignment(e) {
     $('.edit :submit').click();
-    //var table = $(e).parents("table");
-    //table.removeClass("editable");
+    var table = $(e).parents("table");
+    table.removeClass("editable");
 };

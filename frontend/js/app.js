@@ -67,7 +67,7 @@ var submissionApp = angular.module('submissionApp', ['ngRoute', 'submissionFilte
                     scope.saveAssignment(scope.assignment.name);
                     return value;
                 }, {
-                    event     : "click",
+                    event     : "edit",
                     style     : 'display: inline',
                     onblur    : 'ignore',
                     submit    : 'invisible'
