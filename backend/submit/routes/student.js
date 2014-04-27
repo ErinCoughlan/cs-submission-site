@@ -4,6 +4,7 @@ var Course     = require('../models/course');
 var Assignment = require('../models/assignment');
 var Student    = require('../models/student');
 var Submission = require("../models/submission.js");
+var Helpers = require('../helpers');
 var File = require("../models/file.js");
 var _ = require("underscore");
 var multiparty = require("multiparty");
@@ -118,24 +119,7 @@ module.exports = function(app, passport){
                                 var comment = JSON.parse(fields.comments[0])[key];
                                 console.log("comment", comment);
                                 file.studentComments = comment;
-                                var new_files = [];
-                                retrievedStudent.files.forEach(function(f){
-                                    new_files.push(f);
-                                });
-                                console.log("new files",
-                                            util.inspect(new_files,
-                                                         true, 10));
-                                console.log("old files",
-                                            util.inspect(retrievedStudent.files,
-                                                         true, 10));
-                                retrievedStudent.update({
-                                    $set: {"files": new_files}
-                                }, function (err) {
-                                    if (err){
-                                        console.log("save error", err);
-                                    }
-                                    console.log("saved student", retrievedStudent);
-                                });
+                                Helpers.updateStudentFiles(retrievedStudent);
                             });
                         });
                     });
