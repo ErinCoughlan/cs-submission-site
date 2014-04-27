@@ -14,7 +14,7 @@ module.exports = function(app, passport){
     app.get("/prof/course/:course", isLoggedIn, function(req, res) {
         res.render("prof");
     });
-    
+
     app.get("/prof/course/:course/addStudent", isLoggedIn, function(req, res) {
         res.render("add_student");
     });
@@ -35,6 +35,7 @@ module.exports = function(app, passport){
                 User.findOne({
                     "local.username": username
                 }, function(err, user) {
+                    // If the user didn't exist, we should create them
                     if (!user) {
                         user = new User();
                         user.local.username = username;
@@ -44,6 +45,8 @@ module.exports = function(app, passport){
                     }
 
                     if (shouldBeGrader) {
+                        // If they're already a grader in this course, don't
+                        // create a new one.
                         Grader.findOne({
                             "user_id": user._id,
                             "course_id": course._id
@@ -52,6 +55,8 @@ module.exports = function(app, passport){
                                 return;
                             }
 
+                            // Create a grader object, save it, and add it to
+                            // the user's list of graders.
                             grader = new Grader();
                             grader.course_id = course._id;
                             grader.user_id = user._id;
@@ -61,6 +66,8 @@ module.exports = function(app, passport){
                             user.save();
                         });
                     } else {
+                        // If they're already a student in this course,
+                        // don't create a second one.
                         Student.findOne({
                             "user_id": user._id,
                             "course_id": course._id
@@ -69,6 +76,8 @@ module.exports = function(app, passport){
                                 return;
                             }
 
+                            // Create the student object, save it, and add it
+                            // to the user's list of students.
                             student = new Student();
                             student.course_id = course._id;
                             student.user_id = user._id;
@@ -91,6 +100,15 @@ module.exports = function(app, passport){
         Course.findOne({
             "name": coursename
         }, function(err, course) {
+            if(err) {
+              console.log(err);
+              return;
+            }
+
+            if(!course) {
+              console.log("Failed to find course " + coursename + " by name");
+              return;
+            }
             var students = req.body.students;
             var graders = req.body.grader;
 
@@ -99,9 +117,14 @@ module.exports = function(app, passport){
                     User.findOne({
                         "local.username": student.name
                     }, function(err, user) {
+
+                        // TODO: There really should be a nicer way to do this...
                         user.students.forEach(function(aStudent, index) {
                             if (student._id === aStudent) {
                                 user.students.splice(index, 1);
+                                // TODO: Make sure that this actually saves the
+                                //       removal.
+                                user.save();
                             }
                         });
 
@@ -121,8 +144,11 @@ module.exports = function(app, passport){
                         "local.username": grader.name
                     }, function(err, user) {
                         user.students.forEach(function(aGrader, index) {
+                          // TODO: There really should be a nicer way to do this...
                             if (grader._id === aGrader) {
                                 user.graders.splice(index, 1);
+                                // TODO: Make sure that this actually saves the
+                                //       removal.
                             }
                         });
 
@@ -151,7 +177,18 @@ module.exports = function(app, passport){
         Course.findOne({
             "name": coursename
         }, function(err, course) {
+            if(err) {
+              console.log(err);
+              return;
+            }
+
+            if(!course) {
+              console.log("Failed to find course " + coursename + " by name");
+              return;
+            }
             var templates = [];
+
+            // Create template files as specified.
             for (var i = 0; i < files.length; i++) {
                 var f = files[i];
                 fileTemplate = new FileTemplate();
@@ -163,6 +200,7 @@ module.exports = function(app, passport){
                 templates.push(fileTemplate);
             }
 
+            // Create assignment, set fields, and save.
             assignment = new Assignment();
             assignment.name = name;
             assignment.due = new Date(due);
@@ -205,6 +243,16 @@ module.exports = function(app, passport){
         Course.findOne({
             "name": coursename
         }, function(err, course) {
+            if(err) {
+              console.log(err);
+              return;
+            }
+
+            if(!course) {
+              console.log("Failed to get course " + coursename + " by name");
+              return;
+            }
+
             var templates = [];
             for (var i = 0; i < files.length; i++) {
                 var f = files[i];
@@ -217,7 +265,8 @@ module.exports = function(app, passport){
                 templates.push(fileTemplate);
             }
 
-            // Remove the assignment from the course
+            // TODO: As with helpers.js's updateStudent function, this is really
+            //       hacky and there should be a better way to do it.
             var newAssignments = [];
             course.assignments.forEach(function(assignment) {
                 if (assignment._id == id) {
@@ -235,7 +284,7 @@ module.exports = function(app, passport){
             course.save();
         });
         res.send("success");
-    })
+    });
 
 };
 
@@ -248,4 +297,4 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't, redirect them to the home page
     res.redirect('/');
-};
+}

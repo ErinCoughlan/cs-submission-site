@@ -47,6 +47,11 @@ module.exports = function(app, passport){
                 return;
             }
 
+            if (!course) {
+              console.log("Failed to get course " + courseid + " by name");
+              return;
+            }
+
             Student.find({
                 "course_id": course._id}, function(err, students) {
                     if (err) {
@@ -72,6 +77,11 @@ module.exports = function(app, passport){
             if (err) {
                 res.send("error getting course");
                 return;
+            }
+
+            if (!course) {
+              console.log("Failed to get course " + courseid + " by name");
+              return;
             }
 
             Grader.find({
@@ -199,4 +209,4 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't, redirect them to the home page
     res.redirect('/');
-};
+}

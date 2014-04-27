@@ -42,6 +42,8 @@ module.exports = function(app, passport){
                 console.log("Failed to find student");
                 return;
               }
+
+              // TODO: This should be gathered into a helper.
               var studentFiles = [];
               student.files.forEach(function(file) {
                 if(file.assignment === assignmentIndex) {
@@ -51,7 +53,7 @@ module.exports = function(app, passport){
 
               if(studentFiles === []) {
                 console.log("Failed to find student files for assignment " +
-                  assignmentName);
+                  assignmentName + ". Was the assignment unsubmitted?");
               }
 
               assignment = course.assignments[assignmentIndex];

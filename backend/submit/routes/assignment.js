@@ -36,8 +36,20 @@ module.exports = function(app, passport){
             Student.findOne({
                 "course_id": course._id
             }, function(err, student) {
+                if (err) {
+                  console.log(err);
+                  return;
+                }
+
+                if (!student) {
+                  console.log("Failed to find student");
+                  return;
+                }
+
                 var combined_files = [];
                 var index = 0;
+
+                // TODO: use helper functions, forEach built in index var
                 assignment.files.forEach(function(template) {
                     var file = student.files[index];
                     if (file) {
@@ -88,8 +100,14 @@ module.exports = function(app, passport){
                 return;
             }
 
+            if (!course) {
+              console.log("Failed to get course " + coursename + " by name");
+              return;
+            }
+
             var assignment;
 
+            // TODO: Helper function
             course.assignments.forEach(function(anAssignment) {
                 if (anAssignment.name === assignmentname) {
                     assignment = anAssignment;
@@ -104,6 +122,16 @@ module.exports = function(app, passport){
 
 
             Student.find({ "course_id": course._id}, function(err, students) {
+                if (err) {
+                  console.log(err);
+                  return;
+                }
+
+                if (!student) {
+                  console.log("Failed to get student");
+                  return;
+                }
+
                 var combined_files = [];
                 assignment.files.forEach(function(foo) {
                     combined_files.push({
@@ -111,15 +139,17 @@ module.exports = function(app, passport){
                         "studentSubmissions": []
                     });
                 });
-                console.log(students);
 
                 students.forEach(function(student) {
                     if (student.gradedFiles) {
                         return;
                     }
-                    console.log("student:", student);
 
                     var index = 0;
+
+                    // TODO: This is a crappy way to combine files/templates. We
+                    //       should do better.
+                    // TODO: Use the forEach builtin index variable.
                     assignment.files.forEach(function(template) {
                         var file = student.files[index];
                         if (file) {
@@ -147,8 +177,6 @@ module.exports = function(app, passport){
 
                 });
 
-                console.log("Students: " + students);
-
                 var data = {
                     "students": students,
                     "course": course,
@@ -174,4 +202,4 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't, redirect them to the home page
     res.redirect('/');
-};
+}

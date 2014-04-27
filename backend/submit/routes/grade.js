@@ -1,4 +1,5 @@
 /*global require, module */
+/*jshint multistr: true */
 
 var Course = require('../models/course');
 var Grader = require('../models/grader');
@@ -10,13 +11,21 @@ var File = require('../models/file');
 var Helpers = require('../helpers');
 
 
-// TODO: All these functions should make sure the current user is a grutor
+// TODO: All these functions should make sure the current user is a grutor for
+//       the given course. I recommend a function like isLoggedIn, but that
+//       takes a course as well.
 module.exports = function(app, passport) {
     app.get("/grader/course/:course", isLoggedIn, function(req, res) {
         res.render("grader");
     });
 
-    app.post("/course/:course/assignment/:assignment/student/:student/file/:file/grade", isLoggedIn, function(req, res) {
+    /* TODO: There is a huge amount of code duplication between this route and
+     *       the get to /course/.../assignment/.../student.../file/.../grade/info.
+     *       The code should really, really, really be refactored to split these
+     *       into reusable helpers.
+     */
+    app.post("/course/:course/assignment/:assignment/student/:student/file/:file\
+      /grade", isLoggedIn, function(req, res) {
         var graderUserId       = req.session.passport.user;
         var courseName         = req.params.course;
         var assignmentName     = req.params.assignment;
@@ -33,68 +42,73 @@ module.exports = function(app, passport) {
             }
 
             var assignments = course.assignments;
-
             var assignment = Helpers.assignmentWithName(assignmentName, assignments);
-
-
 
             if(!assignment) {
                 console.log("Failed to find assignemnt " + assignmentName + " by name");
                 return;
             }
 
+            // Get correct grader object for currently logged in user.
             Grader.findOne({"course_id": course._id, "user_id": graderUserId},
-                        function(err, grader) {
-                            Student.findOne({"course_id": course.id, "name": studentName},
-                                         function(err, student) {
-                                             var templateIndex = Helpers.fileInAssignmentWithName(
-                                                 assignment,
-                                                 fileName
-                                             );
+                function(err, grader) {
 
-                                             var fileIndex = Helpers.fileInStudentWithNumber(
+                   // Get student currently being graded
+                   Student.findOne({"course_id": course.id, "name": studentName},
+                      function(err, student) {
+                        var templateIndex = Helpers.fileInAssignmentWithName(
+                                              assignment,
+                                              fileName
+                                            );
+
+                        var fileIndex = Helpers.fileInStudentWithNumber(
                                                 student.files,
                                                 course.assignments,
                                                 assignment,
                                                 templateIndex
                                              );
 
-                                             if(fileIndex < 0) {
-                                               var file = new File();
-                                               file.assignment =
-                                               Helpers.getAssignmentIndex(assignmentName,
-                                                 assignments);
-                                               file.template    = templateIndex;
-                                               file.course      = course._id;
-                                               file.submissions = [];
-                                               student.files.push(file);
-                                               fileIndex = student.files.length - 1;
-                                             }
-                                             student.files[fileIndex].gradedBy       = grader._id;
-                                             student.files[fileIndex].gradedByName   = grader.name;
-                                             student.files[fileIndex].grade          = req.body.grade;
-                                             student.files[fileIndex].graderComments = req.body.graderComment;
+                       // If the student doesn't have a file object corresponding
+                       // to this template (e.g. they never submitted), create
+                       // the file.
+                       if(fileIndex < 0) {
+                         var file = new File();
+                         file.assignment =
+                         Helpers.getAssignmentIndex(assignmentName,
+                           assignments);
+                         file.template    = templateIndex;
+                         file.course      = course._id;
+                         file.submissions = [];
+                         student.files.push(file);
+                         fileIndex = student.files.length - 1;
+                       }
 
+                       // Set graded information
+                       student.files[fileIndex].gradedBy       = grader._id;
+                       student.files[fileIndex].gradedByName   = grader.name;
+                       student.files[fileIndex].grade          = req.body.grade;
+                       student.files[fileIndex].graderComments = req.body.graderComment;
 
-                                             student = Helpers.updateStudentFiles(student);
+                       // Save student's new array.
+                       student = Helpers.updateStudentFiles(student);
 
-                                             res.redirect('/home');
-                                         });
-                        });
+                       // TODO: Ultimately, this should probably be /, not /home
+                       res.redirect('/home');
+                   });
+              });
         });
     });
 
-
-
-    // TODO validate that it's a grutor for the class
-    app.get("/course/:course/assignment/:assignment/student/:student/file/:file/grade/info/", isLoggedIn, function(req, res) {
+    // Get JSONified info for the given file. Used by angular to fill in the page.
+    app.get("/course/:course/assignment/:assignment/student/:student/file/:file/\
+      grade/info/", isLoggedIn, function(req, res) {
         var graderUser     = req.session.passport.user;
         var courseName     = req.params.course;
         var assignmentName = req.params.assignment;
         var studentName    = req.params.student;
         var fileName       = req.params.file;
 
-        // Hit the database for all the things we need to save this. Cry inside.
+
         Course.findOne({"name": courseName}, function(err, course) {
             if (err) {
                 res.send("error getting course");
@@ -102,54 +116,59 @@ module.exports = function(app, passport) {
             }
 
             var assignments = course.assignments;
-
             var assignment = Helpers.assignmentWithName(assignmentName, assignments);
 
-            // TODO: check for null assignment.
+            if(!assignment) {
+                console.log("Failed to find assignemnt " + assignmentName + " by name");
+                return;
+            }
 
             Grader.find({"course_id": course._id, "name": graderUser.name},
-                        function(err, grader) {
-                            Student.findOne({"course_id": course.id, "name": studentName},
-                                            function(err, student) {
-                                                var templateIndex = Helpers.fileInAssignmentWithName(
-                                                    assignment,
-                                                    fileName
-                                                );
+                   function(err, grader) {
+                       Student.findOne({"course_id": course.id, "name": studentName},
+                               function(err, student) {
+                                  var templateIndex =
+                                  Helpers.fileInAssignmentWithName(
+                                                      assignment,
+                                                      fileName
+                                  );
 
-                                                var fileIndex = Helpers.fileInStudentWithNumber(
+                                  var fileIndex = Helpers.fileInStudentWithNumber(
                                                     student.files,
                                                     course.assignments,
                                                     assignment,
                                                     templateIndex
-                                                );
+                                                   );
 
-                                                var templateFile = assignment.files[templateIndex];
+                                  var templateFile = assignment.files[templateIndex];
+                                  var studentFile  = student.files[fileIndex];
 
-
-                                                var studentFile  = student.files[fileIndex];
-
-                                                var file = Helpers.mergeFiles(
+                                  var file = Helpers.mergeFiles(
                                                   [studentFile],
                                                   [templateFile]
-                                                )[0];
+                                             )[0];
 
-                                                data = {
-                                                    "template": templateFile,
-                                                    "file": file,
-                                                    "student": student,
-                                                    "course": course,
-                                                    "grader": grader
-                                                };
+                                  data = {
+                                      "template": templateFile,
+                                      "file": file,
+                                      "student": student,
+                                      "course": course,
+                                      "grader": grader
+                                  };
 
-                                                res.json(data);
-                                            });
-                        });
+                                  res.json(data);
+                              });
+                  });
         });
     });
 
 
-    // TODO validate that it's a grutor for the class
-    app.get("/course/:course/assignment/:assignment/student/:student/file/:file/grade", isLoggedIn, function(req, res) {
+    /* TODO: if might be possible to pass the URL params from here to angular.
+     *       If so, we should do it that way rather than ugly hard-coded parsing
+     *       in grader_controller.
+     */
+    app.get("/course/:course/assignment/:assignment/student/:student/file/:file\
+    /grade", isLoggedIn, function(req, res) {
         res.render("grade", {
           'course': req.params.course,
           'assignment': req.params.assignment,
@@ -184,7 +203,8 @@ module.exports = function(app, passport) {
     });
 
     // json route for downloading submissions
-    app.get("/course/:course/assignment/:assignment/file/:file/submit/", isLoggedIn, function(req, res) {
+    app.get("/course/:course/assignment/:assignment/file/:file/submit/",
+      isLoggedIn, function(req, res) {
         var userid = req.session.passport.user;
         var coursename = req.params.course;
         var assignmentname = req.params.assignment;
