@@ -228,33 +228,21 @@ module.exports = function(app, passport){
             }
 
             // Remove the assignment from the course
-            var index = 0;
+            var newAssignments = [];
             course.assignments.forEach(function(assignment) {
-                console.log(id);
-                console.log(assignment._id);
                 if (assignment._id == id) {
-                    console.log("matched id " + totalPoints);
+                    assignment = new Assignment();
                     assignment.name = name;
                     assignment.due = new Date(due);
                     assignment.point = Number(totalPoints);
                     assignment.files = templates;
-
-                    course.save();
-
                 }
 
-                index += 1;
-
-                /*
-                Assignment.update({ _id: id }, {
-                    name: name,
-                    due: due,
-                    point: Number(totalPoints),
-                    files: templates
-                }, function (err, numberAffected, raw) {
-                    console.log("Updated " + numberAffected + " assignments");
-                }); */
+                newAssignments.push(assignment);
             });
+
+            course.assignments = newAssignments;
+            course.save();
         });
         res.send("success");
     })
