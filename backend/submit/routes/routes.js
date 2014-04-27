@@ -9,4 +9,4 @@ module.exports = function(app, passport) {
         var name = file.substr(0, file.indexOf('.'));
         require('./' + name)(app, passport);
     });
-}
+};

@@ -19,7 +19,6 @@ module.exports = function(app, passport){
         res.render("add_student");
     });
 
-
     app.post("/addstudents/course/:course", function(req, res) {
         var coursename = req.params.course;
 
@@ -29,10 +28,10 @@ module.exports = function(app, passport){
             var studentsText = req.body.students;
             var shouldBeGrader = req.body.grader;
 
-            var noSpaces = studentsText.replace(/\s/g, "");
-            var separatedOnCommas = noSpaces.split(",");
+            // Parse on spaces, tabs, commas, newlines, semicolon
+            var separated = studentsText.split(/[\s\t\n,;]+/);
 
-            separatedOnCommas.forEach(function(username) {
+            separated.forEach(function(username) {
                 User.findOne({
                     "local.username": username
                 }, function(err, user) {
@@ -100,13 +99,10 @@ module.exports = function(app, passport){
                     User.findOne({
                         "local.username": student.name
                     }, function(err, user) {
-                        var index = 0;
-                        user.students.forEach(function(aStudent) {
+                        user.students.forEach(function(aStudent, index) {
                             if (student._id === aStudent) {
                                 user.students.splice(index, 1);
                             }
-
-                            index += 1;
                         });
 
                         Student.findOne({
@@ -124,13 +120,10 @@ module.exports = function(app, passport){
                     User.findOne({
                         "local.username": grader.name
                     }, function(err, user) {
-                        var index = 0;
-                        user.students.forEach(function(aGrader) {
+                        user.students.forEach(function(aGrader, index) {
                             if (grader._id === aGrader) {
                                 user.graders.splice(index, 1);
                             }
-
-                            index += 1;
                         });
 
                         Grader.findOne({
@@ -152,7 +145,6 @@ module.exports = function(app, passport){
         var name = req.body.name;
         var due = req.body.due;
         var files = req.body.files;
-        console.log(files);
 
         var totalPoints = 0;
 
@@ -166,7 +158,6 @@ module.exports = function(app, passport){
                 fileTemplate.name = f.name;
                 fileTemplate.maxScore = Number(f.maxPoints);
                 fileTemplate.partnerable = f.partnerable;
-                fileTemplate.save();
 
                 totalPoints += Number(f.maxPoints);
                 templates.push(fileTemplate);
@@ -174,16 +165,77 @@ module.exports = function(app, passport){
 
             assignment = new Assignment();
             assignment.name = name;
-            assignment.due = Date(due);
+            assignment.due = new Date(due);
             assignment.point = Number(totalPoints);
             assignment.files = templates;
-            assignment.save();
 
             course.assignments.push(assignment);
             course.save();
         });
         res.redirect("/prof/course/"+coursename);
     });
+
+    app.post("/course/:course/deleteAssignment", function(req, res) {
+        var coursename = req.params.course;
+        var aName = req.body.name;
+
+        Course.findOne({
+            "name": coursename
+        }, function(err, course) {
+            // Remove the assignment from the course
+            course.assignments.forEach(function(assignment, index) {
+                if (assignment.name === aName) {
+                    course.assignments.splice(index, 1);
+                    course.save();
+                }
+            });
+        });
+        res.redirect("/prof/course/"+coursename);
+    });
+
+    app.post("/course/:course/saveAssignment", function(req, res) {
+        var coursename = req.params.course;
+        var id = req.body.id;
+        var name = req.body.name;
+        var due = req.body.due;
+        var files = req.body.files;
+
+        var totalPoints = 0;
+
+        Course.findOne({
+            "name": coursename
+        }, function(err, course) {
+            var templates = [];
+            for (var i = 0; i < files.length; i++) {
+                var f = files[i];
+                fileTemplate = new FileTemplate();
+                fileTemplate.name = f.name;
+                fileTemplate.maxScore = Number(f.maxPoints);
+                fileTemplate.partnerable = f.partnerable;
+
+                totalPoints += Number(f.maxPoints);
+                templates.push(fileTemplate);
+            }
+
+            // Remove the assignment from the course
+            var newAssignments = [];
+            course.assignments.forEach(function(assignment) {
+                if (assignment._id == id) {
+                    assignment = new Assignment();
+                    assignment.name = name;
+                    assignment.due = new Date(due);
+                    assignment.point = Number(totalPoints);
+                    assignment.files = templates;
+                }
+
+                newAssignments.push(assignment);
+            });
+
+            course.assignments = newAssignments;
+            course.save();
+        });
+        res.send("success");
+    })
 
 };
 
@@ -196,4 +248,4 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't, redirect them to the home page
     res.redirect('/');
-}
+};

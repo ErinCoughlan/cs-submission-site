@@ -37,7 +37,6 @@
                 // get the list of assignments
                 $http.get('/assignments/'+$scope.courseid).success(
                     function (data) {
-                        //$scope.course = data.course;
                         $scope.assignments = data.assignments;
                     }
                 );
@@ -166,14 +165,21 @@
         };
 
         /**
-         * Create a new assignment (NO ACTUAL SUBMIT FOR NOW)
+         * Create a new assignment
+         * TODO: The date object does not contain time zone information
          */
          $scope.createAssignment = function createAssignment() {
             var aName = $("input[name='assignmentName'").val();
             var due = $("input[name='dueDate'").val();
             var files = [];
 
-            var rows = $(".file");
+            var dueWithTimezone = new Date(due).toString();
+            console.log(dueWithTimezone);
+            console.log(new Date(due).toString());
+            console.log(new Date(due).toUTCString());
+            console.log(new Date(due).toISOString());
+
+            var rows = $(".newFile");
             for (var i = 0; i < rows.length; i++) {
                 var filename = $("input[name='filename-"+i+"']").val();
                 var maxPoints = $("input[name='maxPoints-"+i+"']").val();
@@ -189,37 +195,106 @@
             // Create the assignment object
             var assignment = {
                 name: aName,
-                due: due,
+                due: dueWithTimezone,
                 files: files
             };
 
-            console.log("about to create new assignment");
             $.ajax({
                 type: "POST",
                 url: "/course/"+courseId+"/addAssignment",
-                data: assignment
+                data: assignment,
+                success: function(data) {
+                    location.reload();
+                }
             });
-
-            //addAssignment(assignment);
-            clearAssignment();
          }
 
+        /**
+         * Delete an assignment
+         */
+         $scope.deleteAssignment = function deleteAssignment(aName) {
+            // Create the assignment object
+            var assignment = {
+                name: aName
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "/course/"+courseId+"/deleteAssignment",
+                data: assignment,
+                success: function(data) {
+                    location.reload();
+                }
+            });
+         }
+
+         /**
+         * Save the assignment and make it appear solid.
+         * Saving should occur in the background because we don't actually want
+         * to refresh the page.
+         */
+        $scope.saveAssignment = function saveAssignment(e, id) {
+            // Make all the elements permanent
+            $('.edit :submit').click();
+
+            // Get all the assignment params ready for saving
+            var aName = $('.editable .assignmentName').text();
+            var due = $('.editable .assignmentDue').text();
+            var files = [];
+
+            var rows = $(".editable .file");
+            for (var i = 0; i < rows.length; i++) {
+                var filename = $(".editable .filename-"+i).text();
+                var maxPoints = $(".editable .maxPoints-"+i).text();
+                var partnerable = $(".editable .partnerable-"+i).text();
+                // Change partnerable to a boolean
+                partnerable = (["yes", "Yes", "true"].indexOf(partnerable) != -1);
+                var file = {
+                    name: filename,
+                    maxPoints: maxPoints,
+                    partnerable: partnerable
+                };
+                files.push(file);
+            }
+
+            // Create the assignment object
+            var assignment = {
+                id: id,
+                name: aName,
+                due: due,
+                files: files
+            };
+            console.log(assignment);
+
+            $.ajax({
+                type: "POST",
+                url: "/course/"+courseId+"/saveAssignment",
+                data: assignment,
+                success: function(data) {
+                    console.log("saved assignment");
+                    //location.reload();
+                }
+            });
+
+            // Remove the editable class
+            var table = $(e).parents("table");
+            table.removeClass("editable");
+        };
     });
 
 })();
 
 
 /**
- * Adds a row to the table so that another file can be added
+ * Adds a row to the table so that another file can be added.
+ * TODO: Use a template for html for security
  */
 function addFile(e) {
-    var table = $(e.target).parents('table');
-    console.log(table);
-
+    var table = $(e).parents('table');
     var index = $('#addNew').index() - 1;
 
     // Make sure this is actual html somehow
-    var html = '<tr class="file">'+
+    var html = '<tr class="newFile">'+
                     '<td>'+
                         '<input type="text" name="filename-'+index+'" placeholder="File Name">'+
                     '</td>'+
@@ -235,56 +310,15 @@ function addFile(e) {
                 '</tr>';
 
     $('#addNew').before(html);
-}
+};
 
- /**
-  * Clears all data within the new assignment form
-  */
-function clearAssignment() {
-    $("input[name='assignmentName'").val('');
-    $("input[name='dueDate'").val('');
-
-    var rows = $(".file");
-    for (var i = 0; i < rows.length; i++) {
-        $("input[name='filename-"+i+"']").val('');
-        $("input[name='maxPoints-"+i+"']").val('');
-        $("input[name='partnerable-"+i+"'][value='false']").prop('checked', true);
-    }
-}
 
 /**
- * Add an assignment to the HTML. (SHOULD USE NODE AND REFRESH WITH NEW ASSIGNMENT)
- * input: assignment - {name: , due: , files:[file1, file2]}
+ * Make an assignment editable. This means that we show input elements instead of
+ * the actual values.
  */
-function addAssignment(assignment) {
-    var date = new Date(assignment.due);
-    var html = '<table cellspacing="0" cellpadding="0">'+
-                    '<tr id="'+assignment.name+'" class="fixedHeader">'+
-                        '<th colspan="2">'+
-                            '<a class="underline" ng-href="/edit">'+
-                                assignment.name+
-                            '</a>'+
-                        '</th>'+
-                        '<th class="alignRight">'+
-                            'Due: '+date.toDateString()+date.toTimeString()+
-                        '</th>'+
-                    '</tr>';
-    var moreHtml = "";
-    for (var i = 0; i < assignment.files.length; i++) {
-        var file = assignment.files[i];
-        moreHtml += '<tr ng-repeat="file in assignment.files">'+
-                        '<td>'+
-                            file.name+
-                        '</td>'+
-                        '<td>'+
-                            'Points: '+file.maxPoints+
-                        '</td>'+
-                        '<td>'+
-                            'Partner: '+file.partnerable+
-                        '</td>'+
-                    '</tr>';
-                }
-    var finalHtml = html + moreHtml + '</table>';
-
-    $('#newAssignment').before(finalHtml);
-}
+function makeEditable(e) {
+    var table = $(e).parents("table");
+    table.addClass("editable");
+    $('.editable .edit').trigger("edit");
+};

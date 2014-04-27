@@ -10,6 +10,7 @@
         <link rel="stylesheet" type="text/css" href="/css/prof.css">
         <link rel="stylesheet" type="text/css" href="/css/form.css">
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js"></script>
+        <script src="http://www.appelsiini.net/download/jquery.jeditable.mini.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular-route.js"></script>
         <script src="/js/app.js"></script>
@@ -20,27 +21,36 @@
         <ng-include src=" '/partials/prof_header.html' "></ng-include>
         <div id="contentArea">
             <div id="profMain">
-                <div class="title">Click an assignment name to edit.</div>
+                <div class="edit title">Click an assignment name to edit.</div>
                 <table ng-repeat="assignment in assignments" cellspacing="0" cellpadding="0">
-                    <tr id="{{assignment.name | letters}}" class="fixedHeader">
+                    <tr class="fixedHeader">
                         <th colspan="2">
-                            <a class="underline">
-                                {{assignment.name}}
+                            <a class="underline" onclick="makeEditable(this)">
+                                <div class="assignmentName" style="display: inline;">{{assignment.name}}</div>
                             </a>
                         </th>
                         <th class="alignRight">
-                            Due: {{assignment.due | date : 'MMM d, yyyy h:mm a'}}
+                            <div style="display: inline;">Due: </div>
+                            <div class="edit assignmentDue" ui-editable="assignment.due">{{assignment.due | date : 'MMM d, yyyy h:mm a'}}</div>
                         </th>
                     </tr>
-                    <tr ng-repeat="file in assignment.files">
+                    <tr class="file" ng-repeat="file in assignment.files">
                         <td>
-                            {{file.name}}
+                            <div class="edit filename-{{$index}}" ui-editable="file.name">{{file.name}}</div>
                         </td>
                         <td>
-                            Points: {{file.maxScore}}
+                            <div style="display: inline;">Points: </div>
+                            <div class="edit maxPoints-{{$index}}" ui-editable="file.maxScore">{{file.maxScore}}</div>
                         </td>
                         <td>
-                            Partner: {{file.partnerable}}
+                            <div style="display: inline;">Partner: </div>
+                            <div class="edit partnerable-{{$index}}" ui-editable="file.partnerable">{{file.partnerable | yesNo}}</div>
+                        </td>
+                    </tr>
+                    <tr class="editButtons">
+                        <td colspan="3">
+                            <input type="submit" value="Save" ng-click="saveAssignment(this, assignment._id)">
+                            <input type="submit" value="Delete Assignment" ng-click="deleteAssignment(assignment.name)">
                         </td>
                     </tr>
                 </table>
@@ -49,29 +59,30 @@
                 <table class="newAssignment" cellspacing="0" cellpadding="0">
                     <tr id="{{assignment.name | letters}}" class="fixedHeader">
                         <th colspan="2">
-                            <input type="text" name="assignmentName" placeholder="Assignment Name">
+                            <input type="text" required="required" name="assignmentName" placeholder="Assignment Name">
                         </th>
                         <th class="alignRight">
-                            Due: <input type="datetime-local" name="dueDate">
+                            <div style="display: inline;">Due: </div>
+                            <input type="datetime-local" required="required" name="dueDate">
                         </th>
                     </tr>
-                    <tr class="file">
+                    <tr class="newFile">
                         <td>
-                            <input type="text" name="filename-0" placeholder="File Name">
+                            <input type="text" required="required" name="filename-0" placeholder="File Name">
                         </td>
                         <td>
-                            Points:
-                            <input type="number" class="score" name="maxPoints-0">
+                            <div style="display: inline;">Points: </div>
+                            <input type="number" required="required" class="score" name="maxPoints-0">
                         </td>
                         <td>
-                            Partner:
-                            <input type="radio" name="partnerable-0" value="true">Yes
-                            <input type="radio" name="partnerable-0" checked="true" value="false">No
+                            <div style="display: inline;">Partner: </div>
+                            <input type="radio" required="required" name="partnerable-0" value="true">Yes
+                            <input type="radio" required="required" name="partnerable-0" checked="true" value="false">No
                         </td>
                     </tr>
                     <tr id="addNew">
                         <td colspan="3">
-                            <input type="button" value="Add Another File" name="addFile" onClick="addFile(event)">
+                            <input type="button" value="Add Another File" name="addFile" onClick="addFile(this)">
                         </td>
                     </tr>
                 </table>

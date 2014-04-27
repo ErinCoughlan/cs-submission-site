@@ -36,20 +36,28 @@ var submissionApp = angular.module('submissionApp', ['ngRoute', 'submissionFilte
         });
     });
 
-    submissionApp.directive('fileModel', ['$parse', function ($parse) {
+    submissionApp.directive("uiEditable", function () {
         return {
             restrict: 'A',
-            link: function(scope, element, attrs) {
-                var model = $parse(attrs.fileModel);
-                var modelSetter = model.assign;
-
-                element.bind('change', function(){
-                    scope.$apply(function(){
-                        modelSetter(scope, element[0].files[0]);
-                    });
+            link: function (scope, element, attrs) {
+                /**
+                 * The information for inline editing assignments.
+                 * The item will become editable when an "edit" event is fired.
+                 * The only way to submit is through the submit button, but
+                 * we hide the button on each element and instead group them
+                 * and manually call submit.
+                 */
+                element.editable(function(value) {
+                    // We are handling the actual submit in another function
+                    return value;
+                }, {
+                    event     : "edit",
+                    style     : 'display: inline',
+                    onblur    : 'ignore',
+                    submit    : 'invisible'
                 });
             }
         };
-    }]);
+    });
 
 })();

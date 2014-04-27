@@ -224,14 +224,14 @@
 
 })();
 
+
 /**
  * Helper which calls toggle with the correct parent
  */
 function toggleRow(e) {
-    // Convert to jquery object so methods will work
-    var row = document.getElementById(e.id);
-    toggleRowChildren($(row), 'fixedHeader');
-}
+    toggleRowChildren($(e), 'fixedHeader');
+};
+
 
 /**
  * Toggles all of the rows under a given header.
@@ -247,9 +247,10 @@ function toggleRowChildren(parentRowElement, parentClass) {
         }
     });
     parentRowElement.toggleClass('collapsed');
-}
+};
+
 
 function gradeUnsubmitted(e) {
     e.stopPropagation();
     var grade = parseInt(prompt("What grade would you like to give all unsubmitted assignments?",0));
-}
+};

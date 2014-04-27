@@ -75,12 +75,6 @@ img {
     width:11px;
 }
 
-/*
-::-webkit-scrollbar:horizontal {
-height: 11px;
-}
-*/
-
 ::-webkit-scrollbar-corner {
     background-color: rgba(0,0,0,.1);
 }

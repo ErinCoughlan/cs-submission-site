@@ -1,6 +1,7 @@
 #rightCol table.collapseTable {
 	border: none;
 	margin: 0px;
+	width: 100%;
 }
 
 #rightCol .collapseTable tr {
@@ -12,18 +13,13 @@
 	cursor: pointer;
 }
 
-#rightCol .collapseTable td, #rightCol .collapseTable th {
-	border: 1px solid #7d8ca9;
-	padding: 10px;
-	text-align: left;
-}
-
 #rightCol .collapseTable th {
 	border-top: 3px solid #7d8ca9;
 	border-bottom: 3px solid #7d8ca9;
 }
 
 #rightCol .collapseTable td {
+	border: 1px solid #7d8ca9;
 	border-left: none;
 	border-right: none;
 }
@@ -51,5 +47,7 @@
 
 #rightCol .gradeButton {
 	height: 50px;
+	float: right;
+	margin-right: 50px;
 	width: 200px;
 }
