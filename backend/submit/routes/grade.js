@@ -6,7 +6,7 @@ var Assignment = require('../models/assignment');
 var Submission = require('../models/submission');
 var Student = require('../models/student');
 var FileTemplate = require('../models/fileTemplate');
-var File = require('../models/student');
+var File = require('../models/file');
 var Helpers = require('../helpers');
 
 
@@ -47,18 +47,34 @@ module.exports = function(app, passport) {
                         function(err, grader) {
                             Student.findOne({"course_id": course.id, "name": studentName},
                                          function(err, student) {
-                                             var fileIndex = Helpers.fileInAssignmentWithName(
-                                                 assignments,
-                                                 assignmentName,
-                                                 student.files,
+                                             var templateIndex = Helpers.fileInAssignmentWithName(
+                                                 assignment,
                                                  fileName
                                              );
 
-                                             // TODO: actually save the grade
+                                             var fileIndex = Helpers.fileInStudentWithNumber(
+                                                student.files,
+                                                course.assignments,
+                                                assignment,
+                                                templateIndex
+                                             );
+
+                                             if(fileIndex < 0) {
+                                               var file = new File();
+                                               file.assignment =
+                                               Helpers.getAssignmentIndex(assignmentName,
+                                                 assignments);
+                                               file.template    = templateIndex;
+                                               file.course      = course._id;
+                                               file.submissions = [];
+                                               student.files.push(file);
+                                               fileIndex = student.files.length - 1;
+                                             }
                                              student.files[fileIndex].gradedBy       = grader._id;
                                              student.files[fileIndex].gradedByName   = grader.name;
                                              student.files[fileIndex].grade          = req.body.grade;
                                              student.files[fileIndex].graderComments = req.body.graderComment;
+
 
                                              student = Helpers.updateStudentFiles(student);
 
@@ -95,21 +111,30 @@ module.exports = function(app, passport) {
                         function(err, grader) {
                             Student.findOne({"course_id": course.id, "name": studentName},
                                             function(err, student) {
-                                                var fileIndex = Helpers.fileInAssignmentWithName(
-                                                    assignments,
-                                                    assignmentName,
-                                                    student.files,
+                                                var templateIndex = Helpers.fileInAssignmentWithName(
+                                                    assignment,
                                                     fileName
                                                 );
 
-                                                var file = student.files[fileIndex];
+                                                var fileIndex = Helpers.fileInStudentWithNumber(
+                                                    student.files,
+                                                    course.assignments,
+                                                    assignment,
+                                                    templateIndex
+                                                );
 
-                                                if(fileIndex == -1) {
-                                                    file = {"name": fileName};
-                                                }
+                                                var templateFile = assignment.files[templateIndex];
+
+
+                                                var studentFile  = student.files[fileIndex];
+
+                                                var file = Helpers.mergeFiles(
+                                                  [studentFile],
+                                                  [templateFile]
+                                                )[0];
 
                                                 data = {
-                                                    "template": assignment.files[file.template],
+                                                    "template": templateFile,
                                                     "file": file,
                                                     "student": student,
                                                     "course": course,
@@ -226,4 +251,4 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't, redirect them to the home page
     res.redirect('/');
-};
+}

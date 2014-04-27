@@ -14,29 +14,27 @@ var assignWName =  function assignmentWithName(name, assignments) {
 // assignment #, not name, so otherwise we can't check against
 // assignmentName
 // TODO: There is probably a way around that issue that makes this less ugly.
-var fileInAssignWName = function fileInAssignmentWithName(assignments, assignmentName, files, fileName) {
-    var fileIndex;
-    var found = false;
-    files.forEach(function(aFile, index) {
-        // If we're somehow past the end of the assignments array, bail before
-        // we crash.
-        if(assignments.length <= aFile.assignment) {
-          console.log("File assignment number " + aFile.assignment + " exceeds length of assignment array");
-          return;
-        }
-        assignment = assignments[aFile.assignment];
+var fileInAssignWName = function fileInAssignmentWithName(assignment, fileName) {
+    var fileIndex = -1;
 
-        if(assignment.name === assignmentName &&
-          assignment.files[aFile.template].name === fileName) {
+    assignment.files.forEach(function(aFile, index) {
+        if(aFile.name === fileName) {
               fileIndex = index;
-              found = true;
         }
     });
-    if(found === false) {
-      return -1;
-    }
 
     return fileIndex;
+};
+
+var fileInStudentWNum = function fileInStudentWithNumber(files, assignments, assignment, templateNumber) {
+  var fileIndex = -1;
+  files.forEach(function(aFile, index) {
+    if(aFile.template === templateNumber && assignments[aFile.assignment].name == assignment.name) {
+      fileIndex = index;
+    }
+  });
+
+  return fileIndex;
 };
 
 var updateStudentFiles = function updateStudentFiles(student) {
@@ -79,7 +77,8 @@ var mergeFiles = function mergeFiles(studentFiles, templateFiles) {
     // TODO: more efficient algorithm
 
     studentFiles.forEach(function(studentFile) {
-      if(studentFile.template === index) {
+      // Catch the case where there wasn't a studentFile
+      if(studentFile && studentFile.template === index) {
         //TODO: Partner's name
         file.grade           = studentFile.grade;
         file.gradedBy        = studentFile.gradedBy;
@@ -100,3 +99,4 @@ exports.fileInAssignmentWithName = fileInAssignWName;
 exports.updateStudentFiles       = updateStudentFiles;
 exports.getAssignmentIndex       = getAssignmentIndex;
 exports.mergeFiles               = mergeFiles;
+exports.fileInStudentWithNumber    = fileInStudentWNum;
