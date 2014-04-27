@@ -1,6 +1,14 @@
+/*global require, __dirname, console, process, module */
+
 var Course     = require('../models/course');
 var Assignment = require('../models/assignment');
 var Student    = require('../models/student');
+var Submission = require("../models/submission.js");
+var File = require("../models/file.js");
+var multiparty = require("multiparty");
+var util = require("util");
+var path = require("path");
+var fs = require("fs");
 
 module.exports = function(app, passport){
     // recieve file uploads
@@ -19,20 +27,24 @@ module.exports = function(app, passport){
             Object.keys(files).forEach(function(key, i) {
                 var file = files[key][0];
                 var filename = file.fieldName;
-                console.log("fileid", filename);
+                console.log("filename", filename);
                 // TODO: copy the file to a better location
                 var new_file = path.join(__dirname, "files", (new Date()).getTime().toString());
+                console.log("path:", new_file);
                 copyFile(file.path, new_file, function(err) {
                     // make a submission schema
                     var submission = new Submission({
                         "document": new_file,
                         "date": new Date().toJSON()
                     });
-                    console.log(submission);
+                    console.log("submission", submission);
                     // save to mongo
                     submission.save(function(err) {
-                        console.log(err);
-                        console.log(new_file, submission);
+                        if (err) {
+                            console.log("err:", err);
+                            res.send("Error saving submission");
+                            return;
+                        }
 
                         // Get the current course
                         Course.findOne({
@@ -43,22 +55,20 @@ module.exports = function(app, passport){
                                 return;
                             }
 
-                            var course = retrievedCourse;
-                            console.log(course._id);
+                            console.log("course:", retrievedCourse._id);
 
 
                             // Get the current user"s student object for this course
+                            console.log("look for student with userid", userid, "courseid", retrievedCourse._id);
                             Student.findOne({
                                 "user_id": userid,
-                                "course_id": course._id
+                                "course_id": retrievedCourse._id
                             }, function(err, retrievedStudent) {
                                 if (err) {
                                     res.send("Error getting student");
                                     return;
                                 }
-
-                                var student = retrievedStudent;
-                                console.log(student._id);
+                                console.log("student:", retrievedStudent);
 
                                 // get the correct assignment
                                 Assignment.findOne({
@@ -69,7 +79,6 @@ module.exports = function(app, passport){
                                             return;
                                         }
 
-                                        var assignment = retrievedAssignment;
                                         res.send(assignment);
 
                                         // Get the correct file for this assignment
@@ -77,9 +86,9 @@ module.exports = function(app, passport){
                                         // Generally, assignments won"t be being modified when we try to grab files,
                                         // so the new-file-creation for all students should be safe usually.
                                         File.findOne({
-                                            "assignment": assignment._id,
+                                            "assignment": retrievedAssignment._id,
                                             "name": filename,
-                                            "owner": student._id
+                                            "owner": retrievedStudent._id
                                         }, function(err, retrievedFile) {
                                             if (err) {
                                                 res.send("Error getting file");

@@ -1,9 +1,12 @@
+/*global require, __dirname, console, process, module */
+
 var Course     = require('../models/course');
 var Assignment = require('../models/assignment');
 var Student    = require('../models/student');
 var Grader     = require('../models/grader');
 var Professor  = require('../models/professor');
 var Helpers    = require('../helpers');
+var _ = require("underscore");
 var csv = require("csv");
 var multiparty = require("multiparty");
 var util = require("util");
