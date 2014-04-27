@@ -160,7 +160,8 @@ module.exports = function(app, passport){
                         var assignment_row = [];
                         assignment.files.forEach(function(file, fix) {
                             // use the array indices to find the right file.
-                            // would be better to use template id for this, but the per-user file info currently gives us that it is the nth assignment and template.
+                            // would be better to use template id for this, but the per-user
+                            //file info currently gives us that it is the nth assignment and template.
                             var file_info = _.find(student.files, function(student_file) {
                                 var right_assignment = (student_file.assignment === aix + 1);
                                 var right_template = (student_file.template === fix + 1);
@@ -189,6 +190,7 @@ module.exports = function(app, passport){
 
 };
 
+
 function isLoggedIn(req, res, next) {
 
     // if user is authenticated in the session, carry on
@@ -197,4 +199,4 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't, redirect them to the home page
     res.redirect('/');
-}
+};

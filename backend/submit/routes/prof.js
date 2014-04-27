@@ -19,7 +19,6 @@ module.exports = function(app, passport){
         res.render("add_student");
     });
 
-
     app.post("/addstudents/course/:course", function(req, res) {
         var coursename = req.params.course;
 
@@ -249,4 +248,4 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't, redirect them to the home page
     res.redirect('/');
-}
+};

@@ -1,6 +1,9 @@
-var alienLoc = "../img/alien.png";
+var alienLoc = "/img/alien.png";
 
-/** Creates a new alien in a random location on the screen */
+/**
+ * Creates a new alien in a random location on the screen.
+ * This is Dodds favorite part of the website.
+ */ 
 function createAlien() {
 	// Subtract 100, which is approx. alien size
 	var x = randInt(1, $(window).width()-100);
@@ -17,9 +20,11 @@ function createAlien() {
 
 	var src = document.getElementById('alienHome');
 	src.appendChild(alien);
-}
+};
 
-/** Returns a random integer between start and end */
+/**
+ * Returns a random integer between start and end.
+ */
 function randInt(start, end) {
 	return Math.floor(Math.random() * (1 + end - start)) + start;
-}
+};

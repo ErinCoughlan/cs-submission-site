@@ -114,11 +114,8 @@ module.exports = function(app, passport){
         res.send("good");
     });
 
-
-
-
-
 };
+
 
 // copy a file
 function copyFile(source, target, cb) {
@@ -145,7 +142,7 @@ function copyFile(source, target, cb) {
             cbCalled = true;
         }
     }
-}
+};
 
 
 function isLoggedIn(req, res, next) {
@@ -156,4 +153,4 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't, redirect them to the home page
     res.redirect('/');
-}
+};
