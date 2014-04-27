@@ -3,15 +3,13 @@
 </div>
 <div ng-cloak ng-show="assignments.length>0">
     <table ng-repeat="assignment in assignments" class="collapseTable" cellspacing="0" cellpadding="0">
-        <tr id="{{assignment.name | letters}}" class="fixedHeader" onClick="toggleRow(this)">
-            <th></th>
-            <th>
+        <tr id="{{assignment.name | letters}}" class="fixedHeader" onclick="toggleRow(this)">
+            <th colspan="2">
                 {{assignment.name}}
             </th>
-            <th></th>
         </tr>
         <tr ng-repeat="file in assignment.files" class="{{assignment.name | letters}}">
-            <td colspan="2">
+            <td>
                 {{file.name}}
             </td>
             <td class="lastCol">
@@ -22,7 +20,7 @@
                 </div>
                 <div ng-if="isDefined(student.grade)">
                   <a ng-href="/course/{{course.name}}/assignment/{{assignment.name}}/student/{{student.student}}/file/{{file.name}}/grade/">
-                    <input class="gradeButton" type="button" id="grade_{{file.name}}_{{student.student}}" value="Graded by {{student.gradedBy}}" onclick="window.location='/grade'">
+                    <input class="gradeButton" type="button" id="grade_{{file.name}}_{{student.student}}" value="Graded by {{student.gradedBy}}">
                   </a>
                 </div>
             </td>

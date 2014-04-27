@@ -37,7 +37,6 @@
                 // get the list of assignments
                 $http.get('/assignments/'+$scope.courseid).success(
                     function (data) {
-                        //$scope.course = data.course;
                         $scope.assignments = data.assignments;
                     }
                 );

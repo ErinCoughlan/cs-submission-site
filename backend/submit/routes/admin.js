@@ -13,8 +13,6 @@ module.exports = function(app, passport){
     app.post("/addCourse", function(req, res) {
         coursename = req.body.course;
         username = req.body.professor;
-        console.log("course name: " + coursename);
-        console.log("professor name: " + username);
 
         // Create the course
         Course.findOne({
@@ -57,17 +55,13 @@ module.exports = function(app, passport){
                     professor.name = username;
                     professor.save();
                     user.professors.push(professor._id);
-                        user.save();
+                    user.save();
                 });
             });
         });
 
         res.redirect("/home");
     });
-
-
-
-
 };
 
 
@@ -79,4 +73,4 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't, redirect them to the home page
     res.redirect('/');
-}
+};
