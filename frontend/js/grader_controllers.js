@@ -167,13 +167,46 @@
         $scope.fileName       = splitURL[startIndex + 7];
         $scope.courseid = submissionApp.courseid;
 
-        this.params = $routeParams;
 
         var infoURL = "/course/" + $scope.courseName;
         infoURL += "/assignment/" + $scope.assignmentName;
         infoURL += "/student/" + $scope.studentName;
         infoURL += "/file/" + $scope.fileName;
-        infoURL += "/grade/info/";
+        infoURL += "/grade"
+        var postURL = infoURL;
+
+        // TODO: Be less lazy, use a separate variable rather than splitting
+        //       up the +=es
+
+        $scope.saveGrade = function saveGrade($event) {
+            var form = document.getElementById("form-grade");
+            var fd = new FormData(form);
+
+            var grade = $("input[name='score']").val();
+            var graderComments   = $("input[name='graderComment']").val();
+
+            var dataStr = JSON.stringify({ grade: grade,
+                                          graderComments: graderComments });
+
+
+            $.ajax({
+                url : postURL,
+                data : dataStr,
+                type : "POST",
+                contentType : "application/json",
+                success : function(m) {
+                    console.log(m);
+                    window.location.href="/home";
+                },
+                failure : function (m) {
+                    console.log(m);
+                }
+            });
+        };
+
+        this.params = $routeParams;
+
+        infoURL += "/info/";
 
         this.params = $routeParams;
         $scope.infoURL = infoURL;

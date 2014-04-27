@@ -17,11 +17,13 @@ module.exports = function(app, passport) {
     });
 
     app.post("/course/:course/assignment/:assignment/student/:student/file/:file/grade", isLoggedIn, function(req, res) {
-        var graderUser         = req.session.passport.user;
+        var graderUserId       = req.session.passport.user;
         var courseName         = req.params.course;
-        var assignmentName     = req.params.assignments;
+        var assignmentName     = req.params.assignment;
         var studentName        = req.params.student;
         var fileName           = req.params.file;
+
+
 
         // Grab the course for this file
         Course.findOne({"name": courseName}, function(err, course) {
@@ -37,28 +39,29 @@ module.exports = function(app, passport) {
 
 
             if(!assignment) {
-                console.log("Failed to find assignemnt by name");
+                console.log("Failed to find assignemnt " + assignmentName + " by name");
                 return;
             }
 
-            Grader.find({"course_id": course._id, "name": graderUser.name},
+            Grader.findOne({"course_id": course._id, "user_id": graderUserId},
                         function(err, grader) {
-                            Student.find({"course_id": course.id, "name": studentName},
+                            Student.findOne({"course_id": course.id, "name": studentName},
                                          function(err, student) {
-                                             var file = Helpers.fileInAssignmentWithName(
+                                             var fileIndex = Helpers.fileInAssignmentWithName(
                                                  assignments,
                                                  assignmentName,
-                                                 files,
+                                                 student.files,
                                                  fileName
                                              );
 
                                              // TODO: actually save the grade
+                                             student.files[fileIndex].gradedBy       = grader._id;
+                                             student.files[fileIndex].gradedByName   = grader.name;
+                                             student.files[fileIndex].grade          = req.body.grade;
+                                             student.files[fileIndex].graderComments = req.body.graderComment;
 
-                                             file.gradedBy       = grader._id;
-                                             file.gradedByName   = grader.name;
-                                             file.grade          = req.body.score;
-                                             file.graderComments = req.body.graderComment;
-                                             file.save();
+                                             student = Helpers.updateStudentFiles(student);
+
                                              res.redirect('/home');
                                          });
                         });
@@ -92,15 +95,16 @@ module.exports = function(app, passport) {
                         function(err, grader) {
                             Student.findOne({"course_id": course.id, "name": studentName},
                                             function(err, student) {
-                                                var file = Helpers.fileInAssignmentWithName(
+                                                var fileIndex = Helpers.fileInAssignmentWithName(
                                                     assignments,
                                                     assignmentName,
                                                     student.files,
                                                     fileName
                                                 );
 
+                                                var file = student.files[fileIndex];
 
-                                                if(!file) {
+                                                if(fileIndex == -1) {
                                                     file = {"name": fileName};
                                                 }
 
@@ -196,14 +200,12 @@ module.exports = function(app, passport) {
                 // TODO catch edge case if assignment changes while this might be being used.
                 // Generally, assignments won"t be being modified when we try to grab files,
                 // so the new-file-creation for all students should be safe usually.
-                console.log(student._id, assignment._id);
 
                 var file = retrievedFile;
 
                 // Get the relevant submission (the last added, i.e. most recently submitted)
                 var submission = file.submissions[file.submissions.length - 1];
 
-                console.log("location", submission);
                 var readStream = fs.createReadStream(
                     submission.document);
                 // set the actual file name and extension. can't do that now because the database doesn't work.

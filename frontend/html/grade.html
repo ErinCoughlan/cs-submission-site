@@ -25,9 +25,7 @@
                     Homework 1 - Problem: {{template.name}} - Student: {{student.name}}
                 </div>
                 <hr class="iRule">
-                <form id="form-grade" class="center" name="form-grade" enctype="multipart/form-data"
-                  action="/course/{{course.name}}/assignment/{{assignment.name}}/student/{{student.name}}/file/{{file.name}}/grade"
-                  method="post">
+                <form id="form-grade" class="center" name="form-grade" enctype="multipart/form-data">
                     <div class="formGroup">
                         <div class="lfloat">
                             <div class="formBox">
@@ -56,7 +54,7 @@
                             </div>
                         </div>
                     </div>
-                    <input type="submit" id="submit" value="Submit">
+                    <input type="submit" id="submit" value="Submit" ng-click="saveGrade()">
                 </form>
             </div>
         </div>
