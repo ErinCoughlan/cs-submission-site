@@ -24,9 +24,9 @@
         $http.get('/courses').success(
             function (data) {
                 $scope.courses = data.courses;
-
+                var index;
                 if (courseId) {
-                    var index = $scope.courses.map(function(e) { return e['name']; }).indexOf(courseId);
+                    index = $scope.courses.map(function(e) { return e.name; }).indexOf(courseId);
                     $scope.course = $scope.courses[index];
                     $scope.courseid = $scope.courses[index].name;
                 } else {
@@ -43,7 +43,7 @@
 
                 // Remove the current course and sort the rest for the dropdown
                 var altCourses = $scope.courses;
-                var index = altCourses.map(function(e) { return e.name; }).indexOf($scope.course.name);
+                index = altCourses.map(function(e) { return e.name; }).indexOf($scope.course.name);
                 if (index > -1) {
                     altCourses.splice(index, 1);
                 }
@@ -156,7 +156,7 @@
                 contentType : "application/json",
                 success : function(m) {
                     console.log(m);
-                    window.location.href="/prof/course/" + $scope.course.name + "/addStudent";s
+                    window.location.href="/prof/course/" + $scope.course.name + "/addStudent";
                 },
                 failure : function (m) {
                     console.log(m);
@@ -207,7 +207,7 @@
                     location.reload();
                 }
             });
-         }
+         };
 
         /**
          * Delete an assignment
@@ -226,7 +226,7 @@
                     location.reload();
                 }
             });
-         }
+         };
 
          /**
          * Save the assignment and make it appear solid.
@@ -310,7 +310,7 @@ function addFile(e) {
                 '</tr>';
 
     $('#addNew').before(html);
-};
+}
 
 
 /**
@@ -321,4 +321,4 @@ function makeEditable(e) {
     var table = $(e).parents("table");
     table.addClass("editable");
     $('.editable .edit').trigger("edit");
-};
+}

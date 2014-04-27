@@ -24,9 +24,10 @@
         $http.get('/courses').success(
             function (data) {
                 $scope.courses = data.courses;
+                var index;
 
                 if (courseId) {
-                    var index = $scope.courses.map(function(e) { return e['name']; }).indexOf(courseId);
+                    index = $scope.courses.map(function(e) { return e.name; }).indexOf(courseId);
                     $scope.course = $scope.courses[index];
                     $scope.courseid = $scope.courses[index].name;
                 } else {
@@ -49,7 +50,7 @@
 
                 // Remove the current course and sort the rest for the dropdown
                 var altCourses = $scope.courses;
-                var index = altCourses.map(function(e) { return e.name; }).indexOf($scope.course.name);
+                index = altCourses.map(function(e) { return e.name; }).indexOf($scope.course.name);
                 if (index > -1) {
                     altCourses.splice(index, 1);
                 }
@@ -95,7 +96,7 @@
                 $scope.courses = data.courses;
 
                 if (courseId) {
-                    var index = $scope.courses.map(function(e) { return e['name']; }).indexOf(courseId);
+                    var index = $scope.courses.map(function(e) { return e.name; }).indexOf(courseId);
                     $scope.course = $scope.courses[index];
                     $scope.courseid = $scope.courses[index].name;
                 } else {
@@ -129,7 +130,7 @@
                 $scope.courses = data.courses;
 
                 if (courseId) {
-                    var index = $scope.courses.map(function(e) { return e['name']; }).indexOf(courseId);
+                    var index = $scope.courses.map(function(e) { return e.name; }).indexOf(courseId);
                     $scope.course = $scope.courses[index];
                     $scope.courseid = $scope.courses[index].name;
                 } else {
@@ -172,7 +173,7 @@
         infoURL += "/assignment/" + $scope.assignmentName;
         infoURL += "/student/" + $scope.studentName;
         infoURL += "/file/" + $scope.fileName;
-        infoURL += "/grade"
+        infoURL += "/grade";
         var postURL = infoURL;
 
         // TODO: Be less lazy, use a separate variable rather than splitting
@@ -230,7 +231,7 @@
  */
 function toggleRow(e) {
     toggleRowChildren($(e), 'fixedHeader');
-};
+}
 
 
 /**
@@ -247,10 +248,10 @@ function toggleRowChildren(parentRowElement, parentClass) {
         }
     });
     parentRowElement.toggleClass('collapsed');
-};
+}
 
 
 function gradeUnsubmitted(e) {
     e.stopPropagation();
     var grade = parseInt(prompt("What grade would you like to give all unsubmitted assignments?",0));
-};
+}
