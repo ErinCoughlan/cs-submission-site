@@ -29,10 +29,10 @@ module.exports = function(app, passport){
             var studentsText = req.body.students;
             var shouldBeGrader = req.body.grader;
 
-            var noSpaces = studentsText.replace(/\s/g, "");
-            var separatedOnCommas = noSpaces.split(",");
+            // Parse on spaces, tabs, commas, newlines, semicolon
+            var separated = studentsText.split(/[\s\t\n,;]+/);
 
-            separatedOnCommas.forEach(function(username) {
+            separated.forEach(function(username) {
                 User.findOne({
                     "local.username": username
                 }, function(err, user) {
@@ -100,13 +100,10 @@ module.exports = function(app, passport){
                     User.findOne({
                         "local.username": student.name
                     }, function(err, user) {
-                        var index = 0;
-                        user.students.forEach(function(aStudent) {
+                        user.students.forEach(function(aStudent, index) {
                             if (student._id === aStudent) {
                                 user.students.splice(index, 1);
                             }
-
-                            index += 1;
                         });
 
                         Student.findOne({
@@ -124,13 +121,10 @@ module.exports = function(app, passport){
                     User.findOne({
                         "local.username": grader.name
                     }, function(err, user) {
-                        var index = 0;
-                        user.students.forEach(function(aGrader) {
+                        user.students.forEach(function(aGrader, index) {
                             if (grader._id === aGrader) {
                                 user.graders.splice(index, 1);
                             }
-
-                            index += 1;
                         });
 
                         Grader.findOne({
@@ -190,14 +184,11 @@ module.exports = function(app, passport){
             "name": coursename
         }, function(err, course) {
             // Remove the assignment from the course
-            var index = 0;
-            course.assignments.forEach(function(assignment) {
+            course.assignments.forEach(function(assignment, index) {
                 if (assignment.name === aName) {
                     course.assignments.splice(index, 1);
                     course.save();
                 }
-
-                index += 1;
             });
         });
         res.redirect("/prof/course/"+coursename);
