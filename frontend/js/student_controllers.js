@@ -109,7 +109,7 @@
 
         // submit files and comments
         $scope.submit = function submit($event) {
-            var assignmentid = $scope.assignment._id;
+            var assignmentname = $scope.assignment.name;
             console.log($scope, $scope.assignment, $scope.assignment.files);
             var fd = new FormData();
             var comments = {};
@@ -125,7 +125,7 @@
             });
             fd.append("comments", JSON.stringify(comments));
 
-            $http.post('/course/'+$scope.courseid+'/assignment/'+assignmentid+'/', fd, {
+            $http.post('/course/'+$scope.courseid+'/assignment/'+assignmentname+'/', fd, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             })

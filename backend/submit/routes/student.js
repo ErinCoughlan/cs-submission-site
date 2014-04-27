@@ -5,6 +5,7 @@ var Assignment = require('../models/assignment');
 var Student    = require('../models/student');
 var Submission = require("../models/submission.js");
 var File = require("../models/file.js");
+var _ = require("underscore");
 var multiparty = require("multiparty");
 var util = require("util");
 var path = require("path");
@@ -16,7 +17,7 @@ module.exports = function(app, passport){
         console.log(req.files);
         console.log(req.body);
         var coursename = req.params.course;
-        var assignmentid = req.params.assignment;
+        var assignmentname = req.params.assignment;
         var userid = req.session.passport.user;
         var submission = new Submission();
 
@@ -29,9 +30,12 @@ module.exports = function(app, passport){
                 var filename = file.fieldName;
                 console.log("filename", filename);
                 // TODO: copy the file to a better location
-                var new_file = path.join(__dirname, "files", (new Date()).getTime().toString());
-                console.log("path:", new_file);
+                var new_file = path.join(__dirname, "/../files", (new Date()).getTime().toString());
+                console.log("new path:", new_file);
                 copyFile(file.path, new_file, function(err) {
+                    if (err){
+                        console.log("file copy error", err, "from", file.path);
+                    }
                     // make a submission schema
                     var submission = new Submission({
                         "document": new_file,
@@ -59,50 +63,78 @@ module.exports = function(app, passport){
 
 
                             // Get the current user"s student object for this course
-                            console.log("look for student with userid", userid, "courseid", retrievedCourse._id);
                             Student.findOne({
                                 "user_id": userid,
                                 "course_id": retrievedCourse._id
                             }, function(err, retrievedStudent) {
                                 if (err) {
+                                    console.log("error finding student with userid", userid,
+                                                "courseid", retrievedCourse._id);
                                     res.send("Error getting student");
                                     return;
                                 }
                                 console.log("student:", retrievedStudent);
 
                                 // get the correct assignment
-                                Assignment.findOne({
-                                    "_id": assignmentid},
-                                    function(err, retrievedAssignment) {
-                                        if (err) {
-                                            res.send("Error getting assignment");
-                                            return;
-                                        }
+                                var assignment = _.findWhere(
+                                    retrievedCourse.assignments,
+                                    {"name": assignmentname});
+                                var assignment_index = _.indexOf(
+                                    retrievedCourse.assignments,
+                                    assignment);
 
-                                        res.send(assignment);
+                                console.log("assignment:", assignment);
+                                //res.send(retrievedAssignment);
 
-                                        // Get the correct file for this assignment
-                                        // TODO catch edge case if assignment changes while this might be being used.
-                                        // Generally, assignments won"t be being modified when we try to grab files,
-                                        // so the new-file-creation for all students should be safe usually.
-                                        File.findOne({
-                                            "assignment": retrievedAssignment._id,
-                                            "name": filename,
-                                            "owner": retrievedStudent._id
-                                        }, function(err, retrievedFile) {
-                                            if (err) {
-                                                res.send("Error getting file");
-                                                return;
-                                            }
+                                var template = _.findWhere(assignment.files,
+                                                       {name: filename});
+                                var template_index = _.indexOf(assignment.files,
+                                                               template);
+                                console.log("templates", assignment.files);
+                                console.log("template", template);
 
-                                            retrievedFile.submissions.push(submission._id);
-                                            var comment = JSON.parse(fields.comments[0])[key];
-                                            console.log("comment", comment);
-                                            retrievedFile.studentComments = comment;
-                                            console.log("about to save file");
-                                            retrievedFile.save();
+                                // TODO catch edge case if assignment changes while this might be being used.
+                                // Generally, assignments won"t be being modified when we try to grab files,
+                                // so the new-file-creation for all students should be safe usually.
 
-                                        });
+                                // retrievedStudent.files = []
+                                var file = _.findWhere(retrievedStudent.files, {
+                                            assignment: assignment_index+1,
+                                            template: template_index+1});
+                                console.log("files:", retrievedStudent.files,
+                                            "assignment", assignment_index+1,
+                                            "template", template_index+1);
+                                if (!file){
+                                    console.log("file not found, creating. this should only occur the first time this user submits this file");
+                                    file = new File({
+                                        assignment: assignment_index+1,
+                                        template: template_index+1
+                                    });
+                                    retrievedStudent.files.push(file);
+                                }
+                                console.log("file before pushing submission", file);
+                                file.submissions.push(submission);
+                                console.log("after", file);
+                                var comment = JSON.parse(fields.comments[0])[key];
+                                console.log("comment", comment);
+                                file.studentComments = comment;
+                                var new_files = [];
+                                retrievedStudent.files.forEach(function(f){
+                                    new_files.push(f);
+                                });
+                                console.log("new files",
+                                            util.inspect(new_files,
+                                                         true, 10));
+                                console.log("old files",
+                                            util.inspect(retrievedStudent.files,
+                                                         true, 10));
+                                retrievedStudent.update({
+                                    $set: {"files": new_files}
+                                }, function (err) {
+                                    if (err){
+                                        console.log("save error", err);
+                                    }
+                                    console.log("saved student", retrievedStudent);
                                 });
                             });
                         });
@@ -142,7 +174,7 @@ function copyFile(source, target, cb) {
             cbCalled = true;
         }
     }
-};
+}
 
 
 function isLoggedIn(req, res, next) {
@@ -153,4 +185,4 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't, redirect them to the home page
     res.redirect('/');
-};
+}
