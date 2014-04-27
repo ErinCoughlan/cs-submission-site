@@ -96,12 +96,22 @@
                     $scope.courseid = $scope.courses[0].name;
                 }
 
+
+                // TODO: These routes should be combined into one route
                 // get the list of files for the assignment
                 $http.get('/course/' + $scope.courseid + '/assignment/' + params.assignmentId).success(
                     function (data) {
                         console.log(data);
                         $scope.assignment = data.assignment;
                         $scope.files = data.files;
+
+                        // try to get files for currently-logged-in student
+                        $http.get('/course/' + $scope.courseid + '/assignment/' +
+                          params.assignmentId + '/student').success(
+                              function (data) {
+                                $scope.combinedFiles = data.combinedFiles;
+                              }
+                          );
                     }
                 );
             }

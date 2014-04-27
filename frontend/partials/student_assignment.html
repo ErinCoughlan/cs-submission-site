@@ -6,7 +6,7 @@
     <form id="form-submit">
         <input id="assignment" type="hidden" name="assignment" value="{{assignment.name}}">
         <table id="files-table" cellspacing="0" cellpadding="0">
-            <tr ng-repeat="file in files">
+            <tr ng-repeat="file in combinedFiles">
                 <td>
                     {{file.name}}
                 </td>

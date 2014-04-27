@@ -13,6 +13,55 @@ var path = require("path");
 var fs = require("fs");
 
 module.exports = function(app, passport){
+    // get a student's files, if possible, for a given assignment.
+
+    app.get("/course/:course/assignment/:assignment/student", isLoggedIn, function(req, res) {
+        var courseName     = req.params.course;
+        var assignmentName = req.params.assignment;
+        var studentUserId  = req.session.passport.user;
+
+        Course.findOne({'name': courseName}, function(err, course) {
+          if(err) {
+            console.log(err);
+            return;
+          }
+
+          if(!course) {
+            console.log("Failed to find course " + courseName + "by name");
+          }
+
+          var assignmentIndex = Helpers.getAssignmentIndex(assignmentName, course.assignments);
+          Student.findOne({'course_id': course._id, 'user_id': studentUserId},
+            function(err, student) {
+              if(err) {
+                console.log(err);
+                return;
+              }
+
+              if(!student) {
+                console.log("Failed to find student");
+                return;
+              }
+              var studentFiles = [];
+              student.files.forEach(function(file) {
+                if(file.assignment === assignmentIndex) {
+                  studentFiles.push(file);
+                }
+              });
+
+              if(studentFiles === []) {
+                console.log("Failed to find student files for assignment " +
+                  assignmentName);
+              }
+
+              assignment = course.assignments[assignmentIndex];
+
+              combinedFiles = Helpers.mergeFiles(studentFiles, assignment.files);
+
+              res.json({"combinedFiles": combinedFiles});
+            });
+        });
+    });
     // recieve file uploads
     app.post("/course/:course/assignment/:assignment/", isLoggedIn, function(req, res) {
         console.log(req.files);
@@ -114,7 +163,7 @@ module.exports = function(app, passport){
                                     retrievedStudent.files.push(file);
                                 }
                                 console.log("file before pushing submission", file);
-                                file.submissions.push(submission);
+                                file.submissions.push(submission._id);
                                 console.log("after", file);
                                 var comment = JSON.parse(fields.comments[0])[key];
                                 console.log("comment", comment);
