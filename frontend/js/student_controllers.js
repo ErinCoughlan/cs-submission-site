@@ -2,7 +2,7 @@
 //  Spring 2014 - Erin Coughlan & Philip Davis & Luke Sedney
 
 // for the benefit of JSLint:
-/*global submissionApp, angular, document, alert, console*/
+/*global submissionApp, angular, document, alert, console, FormData, location*/
 
 
 (function(){
@@ -107,11 +107,12 @@
 
                         // try to get files for currently-logged-in student
                         $http.get('/course/' + $scope.courseid + '/assignment/' +
-                          params.assignmentId + '/student').success(
-                              function (data) {
-                                $scope.combinedFiles = data.combinedFiles;
-                              }
-                          );
+                            params.assignmentId + '/student').success(
+                                function (data) {
+                                    console.log("combinedfiles", data);
+                                    $scope.combinedFiles = data.combinedFiles;
+                                }
+                            );
                     }
                 );
             }
@@ -123,7 +124,7 @@
             console.log($scope, $scope.assignment, $scope.assignment.files);
             var fd = new FormData();
             var comments = {};
-            $scope.files.forEach(function(file){
+            $scope.combinedFiles.forEach(function(file){
                 console.log("file", file);
                 if(file.file_to_submit){
                     console.log("to submit", file.file_to_submit);
