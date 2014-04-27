@@ -23,33 +23,33 @@
             <div id="profMain">
                 <div class="edit title">Click an assignment name to edit.</div>
                 <table ng-repeat="assignment in assignments" cellspacing="0" cellpadding="0">
-                    <tr id="{{assignment.name | letters}}" class="fixedHeader">
+                    <tr class="fixedHeader">
                         <th colspan="2">
                             <a class="underline" onclick="makeEditable(this)">
-                                <div style="display: inline;">{{assignment.name}}</div>
+                                <div class="assignmentName" style="display: inline;">{{assignment.name}}</div>
                             </a>
                         </th>
                         <th class="alignRight">
                             <div style="display: inline;">Due: </div>
-                            <div class="edit" ui-editable="assignment.due">{{assignment.due | date : 'MMM d, yyyy h:mm a'}}</div>
+                            <div class="edit assignmentDue" ui-editable="assignment.due">{{assignment.due | date : 'MMM d, yyyy h:mm a'}}</div>
                         </th>
                     </tr>
-                    <tr ng-repeat="file in assignment.files">
+                    <tr class="file" ng-repeat="file in assignment.files">
                         <td>
-                            <div class="edit" ui-editable="file.name">{{file.name}}</div>
+                            <div class="edit filename-{{$index}}" ui-editable="file.name">{{file.name}}</div>
                         </td>
                         <td>
                             <div style="display: inline;">Points: </div>
-                            <div class="edit" ui-editable="file.maxScore">{{file.maxScore}}</div>
+                            <div class="edit maxPoints-{{$index}}" ui-editable="file.maxScore">{{file.maxScore}}</div>
                         </td>
                         <td>
                             <div style="display: inline;">Partner: </div>
-                            <div class="edit" ui-editable="file.partnerable">{{file.partnerable | yesNo}}</div>
+                            <div class="edit partnerable-{{$index}}" ui-editable="file.partnerable">{{file.partnerable | yesNo}}</div>
                         </td>
                     </tr>
                     <tr class="editButtons">
                         <td colspan="3">
-                            <input type="submit" value="Save" onclick="saveAssignment(this)">
+                            <input type="submit" value="Save" ng-click="saveAssignment(this, assignment._id)">
                             <input type="submit" value="Delete Assignment" ng-click="deleteAssignment(assignment.name)">
                         </td>
                     </tr>
@@ -66,7 +66,7 @@
                             <input type="datetime-local" required="required" name="dueDate">
                         </th>
                     </tr>
-                    <tr class="file">
+                    <tr class="newFile">
                         <td>
                             <input type="text" required="required" name="filename-0" placeholder="File Name">
                         </td>

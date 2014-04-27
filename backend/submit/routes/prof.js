@@ -165,7 +165,6 @@ module.exports = function(app, passport){
                 fileTemplate.name = f.name;
                 fileTemplate.maxScore = Number(f.maxPoints);
                 fileTemplate.partnerable = f.partnerable;
-                fileTemplate.save();
 
                 totalPoints += Number(f.maxPoints);
                 templates.push(fileTemplate);
@@ -206,22 +205,58 @@ module.exports = function(app, passport){
 
     app.post("/course/:course/saveAssignment", function(req, res) {
         var coursename = req.params.course;
-        var aName = req.body.name;
+        var id = req.body.id;
+        var name = req.body.name;
+        var due = req.body.due;
+        var files = req.body.files;
+
+        var totalPoints = 0;
 
         Course.findOne({
             "name": coursename
         }, function(err, course) {
-            // Find the correct assignment so we can modify it
+            var templates = [];
+            for (var i = 0; i < files.length; i++) {
+                var f = files[i];
+                fileTemplate = new FileTemplate();
+                fileTemplate.name = f.name;
+                fileTemplate.maxScore = Number(f.maxPoints);
+                fileTemplate.partnerable = f.partnerable;
+
+                totalPoints += Number(f.maxPoints);
+                templates.push(fileTemplate);
+            }
+
+            // Remove the assignment from the course
             var index = 0;
             course.assignments.forEach(function(assignment) {
-                if (assignment.name === aName) {
-                    // Any changes go here
+                console.log(id);
+                console.log(assignment._id);
+                if (assignment._id == id) {
+                    console.log("matched id " + totalPoints);
+                    assignment.name = name;
+                    assignment.due = new Date(due);
+                    assignment.point = Number(totalPoints);
+                    assignment.files = templates;
+
                     course.save();
+
                 }
 
                 index += 1;
+
+                /*
+                Assignment.update({ _id: id }, {
+                    name: name,
+                    due: due,
+                    point: Number(totalPoints),
+                    files: templates
+                }, function (err, numberAffected, raw) {
+                    console.log("Updated " + numberAffected + " assignments");
+                }); */
             });
         });
+        res.send("success");
     })
 
 };
