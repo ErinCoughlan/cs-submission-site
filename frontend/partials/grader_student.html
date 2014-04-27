@@ -14,13 +14,13 @@
             </td>
             <td class="lastCol">
                 <div ng-if="!isDefined(student.grade)">
-                    <a ng-href="/course/{{course.name}}/assignment/{{assignment.name}}/student/{{student.name}}/file/{{file.name}}/grade/">
+                    <a ng-href="/course/{{course.name}}/assignment/{{assignment.name}}/student/{{student.name}}/file/{{file.name}}/grade">
                         <input class="gradeButton" type="button" id="grade_{{file.name}}_{{student.student}}" value="Grade Problem">
                     </a>
                 </div>
                 <div ng-if="isDefined(student.grade)">
-                  <a ng-href="/course/{{course.name}}/assignment/{{assignment.name}}/student/{{student.student}}/file/{{file.name}}/grade/">
-                    <input class="gradeButton" type="button" id="grade_{{file.name}}_{{student.student}}" value="Graded by {{student.gradedBy}}">
+                  <a ng-href="/course/{{course.name}}/assignment/{{assignment.name}}/student/{{student.student}}/file/{{file.name}}/grade">
+                    <input class="gradeButton" type="button" id="grade_{{file.name}}_{{student.student}}" value="Graded by {{student.gradedBy}}" onclick="window.location='/grade'">
                   </a>
                 </div>
             </td>

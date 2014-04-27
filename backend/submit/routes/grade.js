@@ -3,10 +3,12 @@
 var Course = require('../models/course');
 var Grader = require('../models/grader');
 var Assignment = require('../models/assignment');
+var Submission = require('../models/submission');
 var Student = require('../models/student');
 var FileTemplate = require('../models/fileTemplate');
 var File = require('../models/student');
 var Helpers = require('../helpers');
+
 
 // TODO: All these functions should make sure the current user is a grutor
 module.exports = function(app, passport) {
@@ -15,11 +17,13 @@ module.exports = function(app, passport) {
     });
 
     app.post("/course/:course/assignment/:assignment/student/:student/file/:file/grade", isLoggedIn, function(req, res) {
-        var graderUser         = req.session.passport.user;
+        var graderUserId       = req.session.passport.user;
         var courseName         = req.params.course;
-        var assignmentName     = req.params.assignments;
+        var assignmentName     = req.params.assignment;
         var studentName        = req.params.student;
         var fileName           = req.params.file;
+
+
 
         // Grab the course for this file
         Course.findOne({"name": courseName}, function(err, course) {
@@ -35,22 +39,30 @@ module.exports = function(app, passport) {
 
 
             if(!assignment) {
-                console.log("Failed to find assignemnt by name");
+                console.log("Failed to find assignemnt " + assignmentName + " by name");
                 return;
             }
 
-            Grader.find({"course_id": course._id, "name": graderUser.name},
+            Grader.findOne({"course_id": course._id, "user_id": graderUserId},
                         function(err, grader) {
-                            Student.find({"course_id": course.id, "name": studentName},
+                            Student.findOne({"course_id": course.id, "name": studentName},
                                          function(err, student) {
-                                             var file = Helpers.fileInAssignmentWithName(
+                                             var fileIndex = Helpers.fileInAssignmentWithName(
                                                  assignments,
                                                  assignmentName,
-                                                 files,
+                                                 student.files,
                                                  fileName
                                              );
 
                                              // TODO: actually save the grade
+                                             student.files[fileIndex].gradedBy       = grader._id;
+                                             student.files[fileIndex].gradedByName   = grader.name;
+                                             student.files[fileIndex].grade          = req.body.grade;
+                                             student.files[fileIndex].graderComments = req.body.graderComment;
+
+                                             student = Helpers.updateStudentFiles(student);
+
+                                             res.redirect('/home');
                                          });
                         });
         });
@@ -62,11 +74,10 @@ module.exports = function(app, passport) {
     app.get("/course/:course/assignment/:assignment/student/:student/file/:file/grade/info/", isLoggedIn, function(req, res) {
         var graderUser     = req.session.passport.user;
         var courseName     = req.params.course;
-        var assignmentName = req.params.assignments;
+        var assignmentName = req.params.assignment;
         var studentName    = req.params.student;
         var fileName       = req.params.file;
 
-        console.log(req.params);
         // Hit the database for all the things we need to save this. Cry inside.
         Course.findOne({"name": courseName}, function(err, course) {
             if (err) {
@@ -84,19 +95,21 @@ module.exports = function(app, passport) {
                         function(err, grader) {
                             Student.findOne({"course_id": course.id, "name": studentName},
                                             function(err, student) {
-                                                var file = Helpers.fileInAssignmentWithName(
+                                                var fileIndex = Helpers.fileInAssignmentWithName(
                                                     assignments,
                                                     assignmentName,
-                                                    files,
+                                                    student.files,
                                                     fileName
                                                 );
 
+                                                var file = student.files[fileIndex];
 
-                                                if(!file) {
+                                                if(fileIndex == -1) {
                                                     file = {"name": fileName};
                                                 }
 
                                                 data = {
+                                                    "template": assignment.files[file.template],
                                                     "file": file,
                                                     "student": student,
                                                     "course": course,
@@ -111,7 +124,7 @@ module.exports = function(app, passport) {
 
 
     // TODO validate that it's a grutor for the class
-    app.get("/course/:course/assignment/:assignment/student/:student/file/:file/grade/", isLoggedIn, function(req, res) {
+    app.get("/course/:course/assignment/:assignment/student/:student/file/:file/grade", isLoggedIn, function(req, res) {
         res.render("grade", {
           'course': req.params.course,
           'assignment': req.params.assignment,
@@ -187,14 +200,12 @@ module.exports = function(app, passport) {
                 // TODO catch edge case if assignment changes while this might be being used.
                 // Generally, assignments won"t be being modified when we try to grab files,
                 // so the new-file-creation for all students should be safe usually.
-                console.log(student._id, assignment._id);
 
                 var file = retrievedFile;
 
                 // Get the relevant submission (the last added, i.e. most recently submitted)
                 var submission = file.submissions[file.submissions.length - 1];
 
-                console.log("location", submission);
                 var readStream = fs.createReadStream(
                     submission.document);
                 // set the actual file name and extension. can't do that now because the database doesn't work.

@@ -22,18 +22,18 @@
         <div id="contentArea">
             <div id="gradeMain">
                 <div class="gradeHeader">
-                    Homework 1 - Problem: {{file.name}} - Student: {{student.name}}
+                    Homework 1 - Problem: {{template.name}} - Student: {{student.name}}
                 </div>
                 <hr class="iRule">
                 <form id="form-grade" class="center" name="form-grade" enctype="multipart/form-data">
                     <div class="formGroup">
                         <div class="lfloat">
                             <div class="formBox">
-                                Score: <input type="text" class="score" name="score"> out of 42
+                                Score: <input type="text" class="score" name="score"> out of {{template.maxScore}}
                             </div>
                             <div class="formBox">
                                 Grader Comments: <br>
-                                <textarea  rows="18" cols="80" ng-model="file.comment_to_submit">{{file.comment || ''}}</textarea>
+                                <textarea  rows="18" cols="80" name="graderComment" ng-model="file.comment_to_submit">{{file.comment || ''}}</textarea>
                             </div>
                         </div>
                         <div class="rfloat">
@@ -54,7 +54,7 @@
                             </div>
                         </div>
                     </div>
-                    <input type="submit" id="submit" value="Submit" ng-href="/home">
+                    <input type="submit" id="submit" value="Submit" ng-click="saveGrade()">
                 </form>
             </div>
         </div>
