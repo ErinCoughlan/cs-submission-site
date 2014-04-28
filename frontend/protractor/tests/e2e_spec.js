@@ -36,8 +36,19 @@ describe('e2e', function() {
         expect(course.getText()).toEqual('CS5');
     });
 
+    var assignment = element(by.repeater('assignment in assignments'));
+
     it('should see the first assignment', function() {
-        var assignment = element(by.repeater('assignment in assignments'));
         expect(assignment.getText()).toEqual('Homework 1\nNA/50');
-    });    
+    });   
+
+    it('should show first assignment files when clicked', function() {
+        assignment.click();
+        // wait for element to exist after clicking before trying to read it
+        var file_name_selector = '#files-table tr:first-child td:first-child';
+        ptor.wait(function(){
+            return ptor.isElementPresent(by.css(file_name_selector));
+        });
+        expect($(file_name_selector).getText()).toEqual('python.py');
+    });       
 });
