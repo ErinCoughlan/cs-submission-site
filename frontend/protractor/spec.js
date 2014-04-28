@@ -10,7 +10,10 @@ exports.config = {
 
   // Spec patterns are relative to the location of the spec file. They may
   // include glob patterns.
-  specs: ['tests/*spec.js'],
+  suites: {
+    e2e: ['tests/e2e_spec.js'],
+    all: ['tests/*spec.js']
+  },
 
   // Options to be passed to Jasmine-node.
   jasmineNodeOpts: {
