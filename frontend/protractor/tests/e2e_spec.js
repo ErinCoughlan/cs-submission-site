@@ -1,9 +1,10 @@
-describe('login page', function() {
+describe('e2e', function() {
 
     var ptor = protractor.getInstance();
 
     var original_url = 'http://localhost:3000/';
 
+    //load the login page, give it some time
     ptor.ignoreSynchronization = true;
     ptor.driver.get(original_url);
     ptor.wait(
@@ -29,5 +30,12 @@ describe('login page', function() {
         // check if we went to the home page 
         var url = ptor.getCurrentUrl();
         expect(url).toEqual('http://localhost:3000/home');
+    });
+
+    it('should show course dropdown menu', function() {
+
+        var course = $('li[ng-show="altCourses.length>0"] a').getText();
+
+        expect(course).toEqual('CS5');
     });
 });
