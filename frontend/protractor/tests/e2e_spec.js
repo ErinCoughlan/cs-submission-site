@@ -4,8 +4,9 @@ describe('e2e', function() {
 
     var original_url = 'http://localhost:3000/';
 
-    //load the login page, give it some time
+    //load the login page, give it some time.
     ptor.ignoreSynchronization = true;
+    //we use .driver when the page doesn't have angular
     ptor.driver.get(original_url);
     ptor.wait(
         function() {
@@ -14,7 +15,7 @@ describe('e2e', function() {
                     console.log(url);
                     return original_url == url;
                 });
-        }, 2000, 'It\'s taking too long to load ' + original_url + '!'
+        }, 5000, 'It\'s taking too long to load ' + original_url + '!'
     );
 
     it('should have logic', function() {
@@ -40,15 +41,15 @@ describe('e2e', function() {
 
     it('should see the first assignment', function() {
         expect(assignment.getText()).toEqual('Homework 1\nNA/50');
-    });   
+    });
 
-    it('should show first assignment files when clicked', function() {
+    it('should show first assignment file when clicked', function() {
         assignment.click();
         // wait for element to exist after clicking before trying to read it
         var file_name_selector = '#files-table tr:first-child td:first-child';
-        ptor.wait(function(){
+        ptor.wait(function() {
             return ptor.isElementPresent(by.css(file_name_selector));
         });
         expect($(file_name_selector).getText()).toEqual('python.py');
-    });       
+    });
 });
