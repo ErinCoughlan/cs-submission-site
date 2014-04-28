@@ -5,11 +5,11 @@
 /*global submissionApp, angular, document, alert, console, FormData, $, window, location*/
 
 
-(function(){
+(function() {
     "use strict";
     var courseId;
 
-    submissionApp.controller('GraderCtrl', function ($scope, $http, $route, $routeParams, $location) {
+    submissionApp.controller('GraderCtrl', function($scope, $http, $route, $routeParams, $location) {
         this.$route = $route;
         this.$location = $location;
         this.$routeParams = $routeParams;
@@ -17,17 +17,19 @@
         var splitUrl = $location.absUrl().split('/');
         var indexCourse = splitUrl.indexOf("course");
         if (indexCourse != -1) {
-            courseId = splitUrl[indexCourse+1];
+            courseId = splitUrl[indexCourse + 1];
         }
 
         // get the list of all courses (eventually for the given user)
         $http.get('/courses').success(
-            function (data) {
+            function(data) {
                 $scope.courses = data.courses;
                 var index;
 
                 if (courseId) {
-                    index = $scope.courses.map(function(e) { return e.name; }).indexOf(courseId);
+                    index = $scope.courses.map(function(e) {
+                        return e.name;
+                    }).indexOf(courseId);
                     $scope.course = $scope.courses[index];
                     $scope.courseid = $scope.courses[index].name;
                 } else {
@@ -36,8 +38,8 @@
                 }
 
                 // get the list of assignments
-                $http.get('/assignments/'+ $scope.courseid).success(
-                    function (data) {
+                $http.get('/assignments/' + $scope.courseid).success(
+                    function(data) {
                         $scope.assignments = data.assignments;
                     }
                 );
@@ -50,11 +52,13 @@
 
                 // Remove the current course and sort the rest for the dropdown
                 var altCourses = $scope.courses;
-                index = altCourses.map(function(e) { return e.name; }).indexOf($scope.course.name);
+                index = altCourses.map(function(e) {
+                    return e.name;
+                }).indexOf($scope.course.name);
                 if (index > -1) {
                     altCourses.splice(index, 1);
                 }
-                altCourses.sort(function(a,b) {
+                altCourses.sort(function(a, b) {
                     if (a.name === b.name) {
                         return 0;
                     } else if (a.name > b.name) {
@@ -83,8 +87,8 @@
         };
     });
 
-    submissionApp.controller('GraderAssignmentCtrl', function ($scope, $http, $routeParams) {
-        $scope.isDefined = function (item){
+    submissionApp.controller('GraderAssignmentCtrl', function($scope, $http, $routeParams) {
+        $scope.isDefined = function(item) {
             return angular.isDefined(item) && (item !== null);
         };
 
@@ -92,11 +96,13 @@
 
         // get the list of all courses (eventually for the given user)
         $http.get('/courses').success(
-            function (data) {
+            function(data) {
                 $scope.courses = data.courses;
 
                 if (courseId) {
-                    var index = $scope.courses.map(function(e) { return e.name; }).indexOf(courseId);
+                    var index = $scope.courses.map(function(e) {
+                        return e.name;
+                    }).indexOf(courseId);
                     $scope.course = $scope.courses[index];
                     $scope.courseid = $scope.courses[index].name;
                 } else {
@@ -106,7 +112,7 @@
 
                 // get the list of files for the assignment
                 $http.get('/grader/course/' + $scope.courseid + '/assignment/' + params.assignmentId).success(
-                    function (data) {
+                    function(data) {
                         $scope.assignment = data.assignment;
                         $scope.files = data.files;
                         $scope.students = data.students;
@@ -117,8 +123,8 @@
     });
 
 
-    submissionApp.controller('GraderStudentCtrl', function ($scope, $http, $routeParams) {
-        $scope.isDefined = function (item){
+    submissionApp.controller('GraderStudentCtrl', function($scope, $http, $routeParams) {
+        $scope.isDefined = function(item) {
             return angular.isDefined(item) && (item !== null);
         };
 
@@ -126,11 +132,13 @@
 
         // get the list of all courses (eventually for the given user)
         $http.get('/courses').success(
-            function (data) {
+            function(data) {
                 $scope.courses = data.courses;
 
                 if (courseId) {
-                    var index = $scope.courses.map(function(e) { return e.name; }).indexOf(courseId);
+                    var index = $scope.courses.map(function(e) {
+                        return e.name;
+                    }).indexOf(courseId);
                     $scope.course = $scope.courses[index];
                     $scope.courseid = $scope.courses[index].name;
                 } else {
@@ -141,18 +149,18 @@
                 // get the list of files for the assignment
 
                 $http.get('/grader/course/' + $scope.courseid + '/student/' + params.studentId + "/").success(
-                    function (data) {
+                    function(data) {
                         $scope.assignments = data.course.assignments;
-                        $scope.files       = data.files;
-                        $scope.student     = data.student;
+                        $scope.files = data.files;
+                        $scope.student = data.student;
                     }
                 );
             }
         );
     });
 
-    submissionApp.controller('GradePageCtrl', function ($scope, $http, $routeParams, $location) {
-        $scope.isDefined = function (item){
+    submissionApp.controller('GradePageCtrl', function($scope, $http, $routeParams, $location) {
+        $scope.isDefined = function(item) {
             return angular.isDefined(item) && (item !== null);
         };
 
@@ -162,10 +170,10 @@
 
         // TODO: Handle errors (i.e. startIndex == -1)
         $scope.splitURL = splitURL;
-        $scope.courseName     = splitURL[startIndex + 1];
+        $scope.courseName = splitURL[startIndex + 1];
         $scope.assignmentName = splitURL[startIndex + 3];
-        $scope.studentName    = splitURL[startIndex + 5];
-        $scope.fileName       = splitURL[startIndex + 7];
+        $scope.studentName = splitURL[startIndex + 5];
+        $scope.fileName = splitURL[startIndex + 7];
         $scope.courseid = submissionApp.courseid;
 
 
@@ -184,25 +192,28 @@
             var fd = new FormData(form);
 
             var grade = $("input[name='score']").val();
-            var graderComments   = $("input[name='graderComment']").val();
+            var graderComments = $("input[name='graderComment']").val();
 
-            var dataStr = JSON.stringify({ grade: grade,
-                                          graderComments: graderComments });
-
-
-            $.ajax({
-                url : postURL,
-                data : dataStr,
-                type : "POST",
-                contentType : "application/json",
-                success : function(m) {
-                    console.log(m);
-                    window.location.href="/home";
-                },
-                failure : function (m) {
-                    console.log(m);
-                }
+            var dataStr = JSON.stringify({
+                grade: grade,
+                graderComments: graderComments
             });
+
+
+            $http({
+                url: postURL,
+                data: dataStr,
+                type: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).error(function(m) {
+                console.log(m);
+                window.location.href = "/home";
+            }).error(function(m) {
+                console.log(m);
+            });
+
         };
 
         this.params = $routeParams;
@@ -212,7 +223,7 @@
         this.params = $routeParams;
         $scope.infoURL = infoURL;
         $http.get(infoURL).success(
-            function (data) {
+            function(data) {
                 $scope.course = data.course;
                 $scope.file = data.file;
                 $scope.student = data.student;
@@ -241,8 +252,8 @@ function toggleRowChildren(parentRowElement, parentClass) {
     console.log(parentRowElement);
     // escape periods because jquery thinks they are selectors
     var childClass = parentRowElement.attr('id');
-    $('tr.'+childClass, parentRowElement.parent()).toggle();
-    $('tr.'+childClass).each(function(){
+    $('tr.' + childClass, parentRowElement.parent()).toggle();
+    $('tr.' + childClass).each(function() {
         if ($(this).hasClass(parentClass) && !$(this).hasClass('collapsed')) {
             toggleRowChildren($(this), parentClass);
         }
@@ -253,5 +264,5 @@ function toggleRowChildren(parentRowElement, parentClass) {
 
 function gradeUnsubmitted(e) {
     e.stopPropagation();
-    var grade = parseInt(prompt("What grade would you like to give all unsubmitted assignments?",0));
+    var grade = parseInt(prompt("What grade would you like to give all unsubmitted assignments?", 0));
 }
