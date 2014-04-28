@@ -4,9 +4,11 @@ describe('e2e', function() {
 
     var original_url = 'http://localhost:3000/';
 
-    //load the login page, give it some time.
+    // load the login page, give it some time. 
+    // synchronization makes protractor wait for angular to load. 
+    // we set it to ignore for now because there is no angular on the login page.
     ptor.ignoreSynchronization = true;
-    //we use .driver when the page doesn't have angular
+    // we use .driver when the page doesn't have angular
     ptor.driver.get(original_url);
     ptor.wait(
         function() {
@@ -18,15 +20,21 @@ describe('e2e', function() {
         }, 5000, 'It\'s taking too long to load ' + original_url + '!'
     );
 
+    // log in
+    $("input[name='username']").sendKeys('testuser');
+    $("input[name='password']").sendKeys('pass');
+    $("input[value='Log In']").click();
+
+    beforeEach(function() {
+        // turn sync on again inside the tests.
+        browser.ignoreSynchronization = false;
+    });
+
     it('should have logic', function() {
         expect(3).toEqual(3);
     });
 
-    it('should log in to the home page', function() {
-        $("input[name='username']").sendKeys('testuser');
-        $("input[name='password']").sendKeys('pass');
-        $("input[value='Log In']").click();
-
+    it('should go to the home page', function() {
         // check if we went to the home page 
         var url = ptor.getCurrentUrl();
         expect(url).toEqual('http://localhost:3000/home');
@@ -45,11 +53,7 @@ describe('e2e', function() {
 
     it('should show first assignment file when clicked', function() {
         assignment.click();
-        // wait for element to exist after clicking before trying to read it
-        var file_name_selector = '#files-table tr:first-child td:first-child';
-        ptor.wait(function() {
-            return ptor.isElementPresent(by.css(file_name_selector));
-        });
-        expect($(file_name_selector).getText()).toEqual('python.py');
+        var file_name= $('#files-table tr:first-child td:first-child');
+        expect(file_name.getText()).toEqual('python.py');
     });
 });
