@@ -22,7 +22,6 @@ describe('e2e', function() {
     });
 
     it('should log in to the home page', function() {
-
         $("input[name='username']").sendKeys('testuser');
         $("input[name='password']").sendKeys('pass');
         $("input[value='Log In']").click();
@@ -32,10 +31,13 @@ describe('e2e', function() {
         expect(url).toEqual('http://localhost:3000/home');
     });
 
-    it('should show course dropdown menu', function() {
-
-        var course = $('li[ng-show="altCourses.length>0"] a').getText();
-
-        expect(course).toEqual('CS5');
+    it('should default to CS5', function() {
+        var course = $('li[ng-show="altCourses.length>0"] a');
+        expect(course.getText()).toEqual('CS5');
     });
+
+    it('should see the first assignment', function() {
+        var assignment = element(by.repeater('assignment in assignments'));
+        expect(assignment.getText()).toEqual('Homework 1\nNA/50');
+    });    
 });
