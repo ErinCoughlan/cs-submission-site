@@ -91,6 +91,8 @@ module.exports = function(app, passport) {
                        // Save student's new array.
                        student = Helpers.updateStudentFiles(student);
 
+                       console.log(student.files[1]);
+
                        // TODO: Ultimately, this should probably be /, not /home
                        res.redirect('/home');
                    });

@@ -203,7 +203,7 @@
             $http({
                 url: postURL,
                 data: dataStr,
-                type: "POST",
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 }
