@@ -86,7 +86,7 @@ module.exports = function(app, passport) {
                        student.files[fileIndex].gradedBy       = grader._id;
                        student.files[fileIndex].gradedByName   = grader.name;
                        student.files[fileIndex].grade          = req.body.grade;
-                       student.files[fileIndex].graderComments = req.body.graderComment;
+                       student.files[fileIndex].graderComments = req.body.graderComments;
 
                        // Save student's new array.
                        student = Helpers.updateStudentFiles(student);
