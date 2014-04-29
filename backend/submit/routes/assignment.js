@@ -127,7 +127,7 @@ module.exports = function(app, passport){
                   return;
                 }
 
-                if (!student) {
+                if (!students) {
                   console.log("Failed to get student");
                   return;
                 }
