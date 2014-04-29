@@ -14,7 +14,7 @@
         this.$location = $location;
         this.$routeParams = $routeParams;
 
-        var splitUrl = $location.absUrl().split('/[\/#/');
+        var splitUrl = $location.absUrl().split(/[\/#]+/);
         var indexCourse = splitUrl.indexOf("course");
         if (indexCourse != -1) {
             courseId = splitUrl[indexCourse + 1];
@@ -165,7 +165,7 @@
         };
 
         // TODO: I don't know why $location.url() is empty;
-        var splitURL = $location.absUrl().split('/[\/#/');
+        var splitURL = $location.absUrl().split(/[\/#]+/);
         var startIndex = splitURL.indexOf("course");
 
         // TODO: Handle errors (i.e. startIndex == -1)

@@ -14,10 +14,12 @@
         this.$location = $location;
         this.$routeParams = $routeParams;
 
-        var splitUrl = $location.absUrl().split('/[\/#/');
+        var splitUrl = $location.absUrl().split(/[\/#]+/);
+        console.log(splitUrl);
         var indexCourse = splitUrl.indexOf("course");
         if (indexCourse != -1) {
             courseId = splitUrl[indexCourse+1];
+            console.log(courseId);
         }
 
 
