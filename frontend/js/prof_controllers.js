@@ -189,9 +189,7 @@
             console.log(new Date(due).toISOString());
 
             var table = $(".newAssignment");
-            console.log(table);
-            var rows = table.find(".file");
-            console.log(rows);
+            var rows = table.find(".newFile");
             for (var i = 0; i < rows.length; i++) {
                 var filename = $("input[name='filename-" + i + "']").val();
                 var maxPoints = $("input[name='maxPoints-" + i + "']").val();
@@ -252,13 +250,31 @@
             var due = $('.editable .assignmentDue').text();
             var files = [];
 
+            // Get the edited row data
             var rows = $(".editable .file");
-            for (var i = 0; i < rows.length; i++) {
+            console.log(rows);
+            var length = rows.length;
+            for (var i = 0; i < length; i++) {
                 var filename = $(".editable .filename-" + i).text();
                 var maxPoints = $(".editable .maxPoints-" + i).text();
                 var partnerable = $(".editable .partnerable-" + i).text();
                 // Change partnerable to a boolean
                 partnerable = (["yes", "Yes", "true"].indexOf(partnerable) != -1);
+                var file = {
+                    name: filename,
+                    maxPoints: maxPoints,
+                    partnerable: partnerable
+                };
+                files.push(file);
+            }
+
+            // Get any new row data
+            rows = $(".editable .newFile");
+            console.log(rows);
+            for (var i = length; i < length + rows.length; i++) {
+                var filename = $("input[name='filename-" + i + "']").val();
+                var maxPoints = $("input[name='maxPoints-" + i + "']").val();
+                var partnerable = $("input[name='partnerable-" + i + "']:checked").val();
                 var file = {
                     name: filename,
                     maxPoints: maxPoints,
@@ -282,7 +298,7 @@
                 data: assignment
             }).success(function(data) {
                 console.log("saved assignment");
-                //location.reload();
+                location.reload();
             });
 
             // Remove the editable class
@@ -304,52 +320,7 @@ function addFile(e) {
     var index = addNewRow.index() - 1;
 
     // Make sure this is actual html somehow
-    var html = '<tr class="file">' +
-        '<td>' +
-        '<input type="text" name="filename-' + index + '" placeholder="File Name">' +
-        '</td>' +
-        '<td>' +
-        'Points: ' +
-        '<input type="number" class="score" name="maxPoints-' + index + '" placeholder="Points">' +
-        '</td>' +
-        '<td>' +
-        'Partner: ' +
-        '<input type="radio" name="partnerable-' + index + '" value="true">Yes ' +
-        '<input type="radio" name="partnerable-' + index + '" checked="true" value="false">No ' +
-        '</td>' +
-        '</tr>';
-
-    addNewRow.before(html);
-};
-
-
-/**
- * Adds a row to the table so that another file can be added.
- * TODO: Use a template for html for security
- */
-function addFileEditable(e) {
-    var table = $(e).parents('table');
-    var addNewRow = $(e).parents('.addNew');
-    var index = addNewRow.index() - 1;
-    /*
-
-    <tr class="file" ng-repeat="file in assignment.files">
-                        <td>
-                            <div class="edit filename-{{$index}}" ui-editable="file.name">{{file.name}}</div>
-                        </td>
-                        <td>
-                            <div style="display: inline;">Points: </div>
-                            <div class="edit maxPoints-{{$index}}" ui-editable="file.maxScore">{{file.maxScore}}</div>
-                        </td>
-                        <td>
-                            <div style="display: inline;">Partner: </div>
-                            <div class="edit partnerable-{{$index}}" ui-editable="file.partnerable">{{file.partnerable | yesNo}}</div>
-                        </td>
-                    </tr>
-                    */
-
-    // Make sure this is actual html somehow
-    var html = '<tr class="file">' +
+    var html = '<tr class="newFile">' +
         '<td>' +
         '<input type="text" name="filename-' + index + '" placeholder="File Name">' +
         '</td>' +
