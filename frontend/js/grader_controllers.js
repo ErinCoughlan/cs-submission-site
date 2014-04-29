@@ -192,7 +192,7 @@
             var fd = new FormData(form);
 
             var grade = $("input[name='score']").val();
-            var graderComments = $("input[name='graderComment']").val();
+            var graderComments = $("textarea[name='graderComment']").val();
 
             var dataStr = JSON.stringify({
                 grade: grade,
