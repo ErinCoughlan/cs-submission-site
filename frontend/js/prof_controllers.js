@@ -183,10 +183,6 @@
             var files = [];
 
             var dueWithTimezone = new Date(due).toString();
-            console.log(dueWithTimezone);
-            console.log(new Date(due).toString());
-            console.log(new Date(due).toUTCString());
-            console.log(new Date(due).toISOString());
 
             var table = $(".newAssignment");
             var rows = table.find(".newFile");
