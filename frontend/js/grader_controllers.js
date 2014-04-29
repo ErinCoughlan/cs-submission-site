@@ -207,7 +207,7 @@
                 headers: {
                     "Content-Type": "application/json"
                 }
-            }).error(function(m) {
+            }).success(function(m) {
                 console.log(m);
                 window.location.href = "/home";
             }).error(function(m) {
