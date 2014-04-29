@@ -188,7 +188,10 @@
             console.log(new Date(due).toUTCString());
             console.log(new Date(due).toISOString());
 
-            var rows = $(".newFile");
+            var table = $(".newAssignment");
+            console.log(table);
+            var rows = table.find(".file");
+            console.log(rows);
             for (var i = 0; i < rows.length; i++) {
                 var filename = $("input[name='filename-" + i + "']").val();
                 var maxPoints = $("input[name='maxPoints-" + i + "']").val();
@@ -297,10 +300,11 @@
  */
 function addFile(e) {
     var table = $(e).parents('table');
-    var index = $('#addNew').index() - 1;
+    var addNewRow = $(e).parents('.addNew');
+    var index = addNewRow.index() - 1;
 
     // Make sure this is actual html somehow
-    var html = '<tr class="newFile">' +
+    var html = '<tr class="file">' +
         '<td>' +
         '<input type="text" name="filename-' + index + '" placeholder="File Name">' +
         '</td>' +
@@ -315,8 +319,53 @@ function addFile(e) {
         '</td>' +
         '</tr>';
 
-    $('#addNew').before(html);
-}
+    addNewRow.before(html);
+};
+
+
+/**
+ * Adds a row to the table so that another file can be added.
+ * TODO: Use a template for html for security
+ */
+function addFileEditable(e) {
+    var table = $(e).parents('table');
+    var addNewRow = $(e).parents('.addNew');
+    var index = addNewRow.index() - 1;
+    /*
+
+    <tr class="file" ng-repeat="file in assignment.files">
+                        <td>
+                            <div class="edit filename-{{$index}}" ui-editable="file.name">{{file.name}}</div>
+                        </td>
+                        <td>
+                            <div style="display: inline;">Points: </div>
+                            <div class="edit maxPoints-{{$index}}" ui-editable="file.maxScore">{{file.maxScore}}</div>
+                        </td>
+                        <td>
+                            <div style="display: inline;">Partner: </div>
+                            <div class="edit partnerable-{{$index}}" ui-editable="file.partnerable">{{file.partnerable | yesNo}}</div>
+                        </td>
+                    </tr>
+                    */
+
+    // Make sure this is actual html somehow
+    var html = '<tr class="file">' +
+        '<td>' +
+        '<input type="text" name="filename-' + index + '" placeholder="File Name">' +
+        '</td>' +
+        '<td>' +
+        'Points: ' +
+        '<input type="number" class="score" name="maxPoints-' + index + '" placeholder="Points">' +
+        '</td>' +
+        '<td>' +
+        'Partner: ' +
+        '<input type="radio" name="partnerable-' + index + '" value="true">Yes ' +
+        '<input type="radio" name="partnerable-' + index + '" checked="true" value="false">No ' +
+        '</td>' +
+        '</tr>';
+
+    addNewRow.before(html);
+};
 
 
 /**
@@ -327,4 +376,4 @@ function makeEditable(e) {
     var table = $(e).parents("table");
     table.addClass("editable");
     $('.editable .edit').trigger("edit");
-}
+};

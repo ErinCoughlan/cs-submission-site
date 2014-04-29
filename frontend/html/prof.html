@@ -47,6 +47,11 @@
                             <div class="edit partnerable-{{$index}}" ui-editable="file.partnerable">{{file.partnerable | yesNo}}</div>
                         </td>
                     </tr>
+                    <tr class="editButtons addNew">
+                        <td colspan="3">
+                            <input type="button" value="Add Another File" name="addFile" onClick="addFile(this)">
+                        </td>
+                    </tr>
                     <tr class="editButtons">
                         <td colspan="3">
                             <input type="submit" value="Save" ng-click="saveAssignment(this, assignment._id)">
@@ -66,7 +71,7 @@
                             <input type="datetime-local" required="required" name="dueDate">
                         </th>
                     </tr>
-                    <tr class="newFile">
+                    <tr class="file">
                         <td>
                             <input type="text" required="required" name="filename-0" placeholder="File Name">
                         </td>
@@ -80,7 +85,7 @@
                             <input type="radio" required="required" name="partnerable-0" checked="true" value="false">No
                         </td>
                     </tr>
-                    <tr id="addNew">
+                    <tr class="addNew">
                         <td colspan="3">
                             <input type="button" value="Add Another File" name="addFile" onClick="addFile(this)">
                         </td>
