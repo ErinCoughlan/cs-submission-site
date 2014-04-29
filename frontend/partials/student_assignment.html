@@ -20,7 +20,11 @@
                 </td>
                 <td>
                     <input ng-if="!isDefined(file.grade)" type="file" file-model="file.file_to_submit">
-                    <div ng-if="isDefined(file.grade)">Graded.</div>
+                    <div ng-if="isDefined(file.grade)">Graded.
+                        <div ng-if="isDefined(file.graderComments)">Comments: {{file.graderComments}}</div>
+                        <div ng-if="!isDefined(file.graderComments)">Comments: none</div>
+                    </div>
+                    
                     <div ng-if="file.submissions">
                         <a ng-href="/course/{{courseid}}/assignment/{{assignment.name}}/file/{{file.name}}/submit/"
                         class="download-link">
