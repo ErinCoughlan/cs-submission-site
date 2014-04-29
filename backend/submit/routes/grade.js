@@ -24,8 +24,7 @@ module.exports = function(app, passport) {
      *       The code should really, really, really be refactored to split these
      *       into reusable helpers.
      */
-    app.post("/course/:course/assignment/:assignment/student/:student/file/:file\
-      /grade", isLoggedIn, function(req, res) {
+    app.post("/course/:course/assignment/:assignment/student/:student/file/:file/grade", isLoggedIn, function(req, res) {
         var graderUserId       = req.session.passport.user;
         var courseName         = req.params.course;
         var assignmentName     = req.params.assignment;
@@ -100,8 +99,7 @@ module.exports = function(app, passport) {
     });
 
     // Get JSONified info for the given file. Used by angular to fill in the page.
-    app.get("/course/:course/assignment/:assignment/student/:student/file/:file/\
-      grade/info/", isLoggedIn, function(req, res) {
+    app.get("/course/:course/assignment/:assignment/student/:student/file/:file/grade/info/", isLoggedIn, function(req, res) {
         var graderUser     = req.session.passport.user;
         var courseName     = req.params.course;
         var assignmentName = req.params.assignment;
@@ -167,8 +165,7 @@ module.exports = function(app, passport) {
      *       If so, we should do it that way rather than ugly hard-coded parsing
      *       in grader_controller.
      */
-    app.get("/course/:course/assignment/:assignment/student/:student/file/:file\
-    /grade", isLoggedIn, function(req, res) {
+    app.get("/course/:course/assignment/:assignment/student/:student/file/:file/grade", isLoggedIn, function(req, res) {
         res.render("grade", {
           'course': req.params.course,
           'assignment': req.params.assignment,
