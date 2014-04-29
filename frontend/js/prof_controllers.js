@@ -14,7 +14,7 @@
         this.$location = $location;
         this.$routeParams = $routeParams;
 
-        var splitUrl = $location.absUrl().split('/');
+        var splitUrl = $location.absUrl().split('/[\/#/');
         var indexCourse = splitUrl.indexOf("course");
         if (indexCourse != -1) {
             courseId = splitUrl[indexCourse + 1];
