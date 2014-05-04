@@ -13,7 +13,10 @@ Harvey Mudd College CS Submission Site.
    file system right now. Since we’re already using MongoDB, it might make
    sense to use GridFS or similar. 
  * Locking files while grading them is not implemented.
- 
+ * There is currently no information about Euros.  Although we keep track of the
+   times assignments are due and the times that students submit, we don’t actually
+   use Euros.
+   
 ## Current Known Bugs/Problems ##
  * Deleting an assignment or a file could potentially cause major problems since
    student files only reference the array index of their assignment and template.
@@ -48,3 +51,7 @@ Harvey Mudd College CS Submission Site.
    we should probably set it to an empty string.
  * Angular assumes dates/times are in GMT and attempts to localize them, even
    if they are already localized.
+ * There is no validation when editing an assignment to see if the user entered
+   in a valid date.  A possible improvement for this would be to create
+   custom editable inputs to use with jEditable, such as the yes/no toggle for
+   partners.
