@@ -39,10 +39,10 @@ Harvey Mudd College CS Submission Site.
  * We began factoring out frequently-used code into helper functions so that
    it would be easier to modify later (e.g. if models get split), but there
    is still a large body of duplicated code in the routes.
-  * Angular currently has to manually parse URLs sometimes
-    (see grader_controller.js for an example). There should be a way to pass
-    variables to angular from node, but we never found a good way to do this.
-  * Most things redirect to /home rather than /, because right now / is the
-    login page regardless of whether the current user is logged in.
-  * Rather than by default setting a user's email to placeholder@cs.hmc.edu,
-    we should probably set it to an empty string.
+ * Angular currently has to manually parse URLs sometimes
+   (see grader_controller.js for an example). There should be a way to pass
+   variables to angular from node, but we never found a good way to do this.
+ * Most things redirect to /home rather than /, because right now / is the
+   login page regardless of whether the current user is logged in.
+ * Rather than by default setting a user's email to placeholder@cs.hmc.edu,
+   we should probably set it to an empty string.
