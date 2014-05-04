@@ -47,7 +47,7 @@ describe('e2e', function() {
     var assignment = element(by.repeater('assignment in assignments'));
 
     it('should see the first assignment', function() {
-        expect(assignment.getText()).toEqual('Homework 1\nNA/50');
+        expect(assignment.getText()).toContain('Homework 1');
     });
 
     it('should show first assignment file when clicked', function() {
