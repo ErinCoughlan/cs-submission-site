@@ -1,4 +1,4 @@
-# cs-submission-site #
+# Harvey Mudd Computer Science submission site #
 
 Harvey Mudd College CS Submission Site.
 
