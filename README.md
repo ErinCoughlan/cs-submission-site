@@ -34,7 +34,7 @@ Harvey Mudd College CS Submission Site.
    object after modifying it (e.g. saving after grading one of a student's
    files). An ordinary .save() doesn't capture the change, so we had to create
    a copy of the array and then use .update($set: {'fieldname': newArray})
-   instead. Again, splitting the models and using referece + populate would
+   instead. Again, splitting the models and using reference + populate would
    likely fix this.
  * We began factoring out frequently-used code into helper functions so that
    it would be easier to modify later (e.g. if models get split), but there
