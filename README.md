@@ -8,10 +8,10 @@ Harvey Mudd College CS Submission Site.
  * The grade page does not have an inline editor to mark up students' code
    the way the current site permits.
  * There is no support for autograding, rerunning tests, etc.
- * File submission doesn't actually work properly right now. It saves a path
-   to the document on the user's local machine, rather than actually saving
-   the file somewhere and storing the path to that copy. Since the site already
-   uses MongoDB, GridFS might be worth looking into.
+ * File submission doesn't actually work properly right now. It saves a
+   document to somewhere within the git repository, but there is no organized
+   file system right now. Since we’re already using MongoDB, it might make
+   sense to use GridFS or similar. 
  * Locking files while grading them is not implemented.
  
 ## Current Known Bugs/Problems ##
