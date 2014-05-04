@@ -60,6 +60,7 @@ module.exports = function(app, passport) {
                                               fileName
                                             );
 
+
                         var fileIndex = Helpers.fileInStudentWithNumber(
                                                 student.files,
                                                 course.assignments,
@@ -82,6 +83,7 @@ module.exports = function(app, passport) {
                          fileIndex = student.files.length - 1;
                        }
 
+
                        // Set graded information
                        student.files[fileIndex].gradedBy       = grader._id;
                        student.files[fileIndex].gradedByName   = grader.name;
@@ -90,8 +92,6 @@ module.exports = function(app, passport) {
 
                        // Save student's new array.
                        student = Helpers.updateStudentFiles(student);
-
-                       console.log(student.files[1]);
 
                        // TODO: Ultimately, this should probably be /, not /home
                        res.redirect('/home');
