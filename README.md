@@ -1,5 +1,5 @@
-cs-submission-site
-==================
+# cs-submission-site #
+
 Harvey Mudd College CS Submission Site.
 
 ## Current Incomplete/Missing Features ##
