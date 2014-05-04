@@ -46,3 +46,5 @@ Harvey Mudd College CS Submission Site.
    login page regardless of whether the current user is logged in.
  * Rather than by default setting a user's email to placeholder@cs.hmc.edu,
    we should probably set it to an empty string.
+ * Angular assumes dates/times are in GMT and attempts to localize them, even
+   if they are already localized.
