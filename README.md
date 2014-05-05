@@ -68,4 +68,4 @@ protractor ./frontend/protractor/config.js --suite e2e
 
  * The tests log in to a test user, look at the student view, and make sure that certain course and assignment information can be found. It then goes to the professor view by URL, and checks if navigation to the grader view is possible.
 
- * The current tests include examples of navigation and interaction, and looking at the way they are written it should make it clear how to add additional tests. 
+ * The current tests include examples of navigation and interaction, and looking at the way they are written should make it clear how to add additional tests. 
