@@ -55,3 +55,17 @@ Harvey Mudd College CS Submission Site.
    in a valid date.  A possible improvement for this would be to create
    custom editable inputs to use with jEditable, such as the yes/no toggle for
    partners.
+
+## Tests ##
+
+ * A series of end-to-end tests are run using protractor with webdriver. The setup of webdriver is described here, but varies depending on the OS: https://github.com/angular/protractor/blob/master/docs/getting-started.md
+
+ * There must be a running webdriver-manager at localhost port 4444, and the node server must be running at localhost port 3000. If these ports need to be changed for some reason, the configuration for the webdriver port can be changed at cs-submission-site/frontend/protractor/config.js, and the port for the server can be changed
+at cs-submission-site/frontend/protractor/tests/e2e_spec.js.
+
+ * The tests can be run by typing the following in a terminal at the project root folder:
+protractor ./frontend/protractor/config.js --suite e2e
+
+ * The tests log in to a test user, look at the student view, and make sure that certain course and assignment information can be found. It then goes to the professor view by URL, and checks if navigation to the grader view is possible.
+
+ * The current tests include examples of navigation and interaction, and looking at the way they are written it should make it clear how to add additional tests. 
